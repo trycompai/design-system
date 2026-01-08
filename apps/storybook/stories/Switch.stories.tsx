@@ -50,7 +50,7 @@ export const SettingsExample: Story = {
     <div className="w-[350px]">
       <Stack gap="4">
         <div className="flex items-center justify-between">
-          <Stack gap="0.5">
+          <Stack gap="xs">
             <Label htmlFor="marketing">Marketing emails</Label>
             <span className="text-xs text-muted-foreground">
               Receive emails about new products and features.
@@ -59,7 +59,7 @@ export const SettingsExample: Story = {
           <Switch id="marketing" />
         </div>
         <div className="flex items-center justify-between">
-          <Stack gap="0.5">
+          <Stack gap="xs">
             <Label htmlFor="security">Security alerts</Label>
             <span className="text-xs text-muted-foreground">
               Get notified about security updates.
@@ -68,7 +68,7 @@ export const SettingsExample: Story = {
           <Switch id="security" defaultChecked />
         </div>
         <div className="flex items-center justify-between">
-          <Stack gap="0.5">
+          <Stack gap="xs">
             <Label htmlFor="newsletter">Newsletter</Label>
             <span className="text-xs text-muted-foreground">Weekly digest of what's new.</span>
           </Stack>

@@ -62,10 +62,10 @@ export const Centered: Story = {
       <PageLayout variant="center" contentWidth="md">
         <Card width="full">
           <CardHeader>
-            <Stack align="center" gap="1.5" textAlign="center">
+            <div className="flex flex-col items-center gap-1 text-center">
               <Heading level="2">Sign In</Heading>
               <Text variant="muted">Welcome back! Please sign in to continue.</Text>
-            </Stack>
+            </div>
           </CardHeader>
           <CardContent>
             <Stack gap="3">
@@ -87,15 +87,15 @@ export const AuthPage: Story = {
       <PageLayout variant="center" padding="lg" contentWidth="lg">
         <Card width="full">
           <CardHeader>
-            <Stack align="center" gap="3" textAlign="center">
+            <div className="flex flex-col items-center gap-3 text-center">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
                 <span className="text-xl font-bold text-primary">A</span>
               </div>
-              <Stack align="center" gap="1">
+              <Stack align="center" gap="xs">
                 <Heading level="1">Create an account</Heading>
                 <Text variant="muted">Get started with your free account today</Text>
               </Stack>
-            </Stack>
+            </div>
           </CardHeader>
           <CardContent>
             <Stack gap="4">

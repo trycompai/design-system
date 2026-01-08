@@ -1,9 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
   AppShell,
+  AppShellBody,
   AppShellContent,
+  AppShellNav,
   AppShellNavbar,
+  AppShellNavFooter,
+  AppShellNavGroup,
+  AppShellNavItem,
   AppShellSearch,
+  AppShellSidebar,
   AppShellUserMenu,
   Avatar,
   AvatarFallback,
@@ -17,28 +23,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   Heading,
+  HStack,
   PageHeader,
   PageHeaderActions,
   PageHeaderDescription,
-  PageHeaderTitle,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarSeparator,
-  Stack,
   Text,
+  useAppShell,
 } from '@trycompai/design-system';
 import {
   BellIcon,
+  BookOpenIcon,
+  ChevronDownIcon,
+  CodeIcon,
   HomeIcon,
+  KeyIcon,
   LayoutDashboardIcon,
   LogOutIcon,
+  PanelLeftIcon,
   SettingsIcon,
   UserIcon,
   UsersIcon,
@@ -51,75 +52,70 @@ const meta = {
     layout: 'fullscreen',
   },
   tags: ['autodocs'],
-  argTypes: {
-    sidebarSide: {
-      control: 'select',
-      options: ['left', 'right'],
-    },
-    sidebarVariant: {
-      control: 'select',
-      options: ['sidebar', 'floating', 'inset'],
-    },
-    sidebarCollapsible: {
-      control: 'select',
-      options: ['offExamples', 'icon', 'none'],
-    },
-  },
 } satisfies Meta<typeof AppShell>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const SidebarDemo = () => (
-  <>
-    <SidebarContent>
-      <SidebarGroup>
-        <SidebarGroupLabel>Navigation</SidebarGroupLabel>
-        <SidebarGroupContent>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton isActive>
-                <HomeIcon />
-                <span>Home</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton>
-                <LayoutDashboardIcon />
-                <span>Dashboard</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton>
-                <UsersIcon />
-                <span>Team</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton>
-                <SettingsIcon />
-                <span>Settings</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroupContent>
-      </SidebarGroup>
-    </SidebarContent>
-    <SidebarFooter>
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton>
-            <Avatar size="sm">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback>JD</AvatarFallback>
-            </Avatar>
-            <span>John Doe</span>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      </SidebarMenu>
-    </SidebarFooter>
-  </>
+const OrgSelector = () => (
+  <DropdownMenu>
+    <DropdownMenuTrigger>
+      <Button variant="ghost" size="sm">
+        <HStack gap="xs" align="center">
+          <div className="size-5 rounded bg-emerald-500" />
+          <Text size="sm" weight="medium">Personal</Text>
+          <ChevronDownIcon className="size-3" />
+        </HStack>
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent align="start">
+      <DropdownMenuLabel>Organizations</DropdownMenuLabel>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem>
+        <div className="size-4 rounded bg-emerald-500" />
+        Personal
+      </DropdownMenuItem>
+      <DropdownMenuItem>
+        <div className="size-4 rounded bg-blue-500" />
+        Acme Corp
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
 );
+
+const Logo = () => (
+  <HStack gap="sm" align="center">
+    <div className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground text-sm font-bold">
+      C
+    </div>
+    <Text weight="semibold" size="sm">Comp</Text>
+  </HStack>
+);
+
+const SidebarNav = () => {
+  const { toggleSidebar } = useAppShell();
+  return (
+    <>
+      <AppShellNav>
+        <AppShellNavGroup label="Getting started">
+          <AppShellNavItem icon={<HomeIcon />} isActive>Overview</AppShellNavItem>
+          <AppShellNavItem icon={<BookOpenIcon />}>Quickstart</AppShellNavItem>
+        </AppShellNavGroup>
+        <AppShellNavGroup label="Build">
+          <AppShellNavItem icon={<LayoutDashboardIcon />}>Dashboard</AppShellNavItem>
+          <AppShellNavItem icon={<KeyIcon />}>API Keys</AppShellNavItem>
+          <AppShellNavItem icon={<UsersIcon />}>Team</AppShellNavItem>
+          <AppShellNavItem icon={<SettingsIcon />}>Settings</AppShellNavItem>
+        </AppShellNavGroup>
+      </AppShellNav>
+      <AppShellNavFooter>
+        <AppShellNavItem icon={<BookOpenIcon />}>Docs</AppShellNavItem>
+        <AppShellNavItem icon={<CodeIcon />}>API reference</AppShellNavItem>
+        <AppShellNavItem icon={<PanelLeftIcon />} onClick={toggleSidebar}>Collapse</AppShellNavItem>
+      </AppShellNavFooter>
+    </>
+  );
+};
 
 const UserMenuDemo = () => (
   <DropdownMenu>
@@ -153,19 +149,24 @@ const UserMenuDemo = () => (
 
 export const Default: Story = {
   render: () => (
-      <AppShell sidebar={<SidebarDemo />}>
-        <AppShellNavbar
-          showSidebarToggle
-          centerContent={<AppShellSearch placeholder="Search..." />}
-          endContent={
-            <AppShellUserMenu>
-              <Button variant="ghost" size="icon-sm">
-                <BellIcon />
-              </Button>
-              <UserMenuDemo />
-            </AppShellUserMenu>
-          }
-        />
+    <AppShell>
+      <AppShellNavbar
+        showSidebarToggle={false}
+        startContent={<Logo />}
+        centerContent={<AppShellSearch />}
+        endContent={
+          <AppShellUserMenu>
+            <Button variant="ghost" size="icon-sm">
+              <BellIcon />
+            </Button>
+            <UserMenuDemo />
+          </AppShellUserMenu>
+        }
+      />
+      <AppShellBody>
+        <AppShellSidebar>
+          <SidebarNav />
+        </AppShellSidebar>
         <AppShellContent>
           <PageHeader title="Dashboard">
             <PageHeaderDescription>Welcome back! Here&apos;s an overview of your account.</PageHeaderDescription>
@@ -175,141 +176,129 @@ export const Default: Story = {
           </PageHeader>
           <Text>Your main content goes here.</Text>
         </AppShellContent>
-      </AppShell>
+      </AppShellBody>
+    </AppShell>
   ),
 };
 
-export const WithFloatingSidebar: Story = {
+export const CollapsibleSidebar: Story = {
   render: () => (
-    <div className="h-screen">
-      <AppShell sidebar={<SidebarDemo />} sidebarVariant="floating">
-        <AppShellNavbar
-          showSidebarToggle
-          centerContent={<AppShellSearch placeholder="Search..." />}
-          endContent={
-            <AppShellUserMenu>
-              <UserMenuDemo />
-            </AppShellUserMenu>
-          }
-        />
+    <AppShell>
+      <AppShellNavbar
+        showSidebarToggle={false}
+        startContent={<OrgSelector />}
+        endContent={
+          <AppShellUserMenu>
+            <UserMenuDemo />
+          </AppShellUserMenu>
+        }
+      />
+      <AppShellBody>
+        <AppShellSidebar collapsible>
+          <SidebarNav />
+        </AppShellSidebar>
         <AppShellContent>
-          <Heading level="1">Floating Sidebar Variant</Heading>
-          <Text variant="muted">The sidebar floats with rounded corners and shadow.</Text>
-        </AppShellContent>
-      </AppShell>
-    </div>
-  ),
-};
-
-export const WithInsetSidebar: Story = {
-  render: () => (
-    <div className="h-screen">
-      <AppShell sidebar={<SidebarDemo />} sidebarVariant="inset">
-        <AppShellNavbar
-          showSidebarToggle
-          centerContent={<AppShellSearch placeholder="Search..." />}
-          endContent={
-            <AppShellUserMenu>
-              <UserMenuDemo />
-            </AppShellUserMenu>
-          }
-        />
-        <AppShellContent>
-          <Heading level="1">Inset Sidebar Variant</Heading>
-          <Text variant="muted">The content area has an inset appearance with rounded corners.</Text>
-        </AppShellContent>
-      </AppShell>
-    </div>
-  ),
-};
-
-export const IconCollapsible: Story = {
-  render: () => (
-    <div className="h-screen">
-      <AppShell sidebar={<SidebarDemo />} sidebarCollapsible="icon">
-        <AppShellNavbar
-          showSidebarToggle
-          centerContent={<AppShellSearch placeholder="Search..." />}
-          endContent={
-            <AppShellUserMenu>
-              <UserMenuDemo />
-            </AppShellUserMenu>
-          }
-        />
-        <AppShellContent>
-          <Heading level="1">Icon Collapsible</Heading>
+          <Heading level="1">Collapsible Sidebar</Heading>
           <Text variant="muted">
-            Toggle the sidebar to see it collapse to icons only. Use Cmd/Ctrl + B keyboard shortcut.
+            Click the sidebar toggle in the navbar to show/hide the sidebar.
           </Text>
         </AppShellContent>
-      </AppShell>
-    </div>
+      </AppShellBody>
+    </AppShell>
   ),
 };
 
 export const WithBreadcrumbs: Story = {
   render: () => (
-    <div className="h-screen">
-      <AppShell sidebar={<SidebarDemo />}>
-        <AppShellNavbar
-          showSidebarToggle
-          startContent={
-            <Stack direction="row" gap="1" align="center">
-              <Text variant="muted" size="sm">
-                Dashboard
-              </Text>
-              <Text variant="muted" size="sm">
-                /
-              </Text>
-              <Text size="sm">Settings</Text>
-            </Stack>
-          }
-          endContent={
-            <AppShellUserMenu>
-              <Badge variant="secondary">Pro</Badge>
-              <UserMenuDemo />
-            </AppShellUserMenu>
-          }
-        />
+    <AppShell>
+      <AppShellNavbar
+        showSidebarToggle={false}
+        startContent={
+          <HStack gap="xs" align="center">
+            <OrgSelector />
+            <Text variant="muted" size="sm">/</Text>
+            <Text size="sm">Dashboard</Text>
+            <Text variant="muted" size="sm">/</Text>
+            <Text size="sm">Settings</Text>
+          </HStack>
+        }
+        endContent={
+          <AppShellUserMenu>
+            <Badge variant="secondary">Pro</Badge>
+            <UserMenuDemo />
+          </AppShellUserMenu>
+        }
+      />
+      <AppShellBody>
+        <AppShellSidebar>
+          <SidebarNav />
+        </AppShellSidebar>
         <AppShellContent>
           <Heading level="1">With Breadcrumbs</Heading>
           <Text variant="muted">Using startContent to add breadcrumbs navigation.</Text>
         </AppShellContent>
-      </AppShell>
-    </div>
+      </AppShellBody>
+    </AppShell>
   ),
 };
 
 export const MinimalNavbar: Story = {
   render: () => (
-    <div className="h-screen">
-      <AppShell sidebar={<SidebarDemo />}>
-        <AppShellNavbar showSidebarToggle endContent={<UserMenuDemo />} />
+    <AppShell>
+      <AppShellNavbar showSidebarToggle={false} endContent={<UserMenuDemo />} />
+      <AppShellBody>
+        <AppShellSidebar>
+          <SidebarNav />
+        </AppShellSidebar>
         <AppShellContent>
           <Heading level="1">Minimal Navbar</Heading>
           <Text variant="muted">Just the sidebar toggle and user menu.</Text>
         </AppShellContent>
-      </AppShell>
-    </div>
+      </AppShellBody>
+    </AppShell>
   ),
 };
 
 export const NoPadding: Story = {
   render: () => (
-    <div className="h-screen">
-      <AppShell sidebar={<SidebarDemo />}>
-        <AppShellNavbar
-          showSidebarToggle
-          centerContent={<AppShellSearch placeholder="Search..." />}
-          endContent={<UserMenuDemo />}
-        />
+    <AppShell>
+      <AppShellNavbar
+        showSidebarToggle={false}
+        startContent={<OrgSelector />}
+        endContent={<UserMenuDemo />}
+      />
+      <AppShellBody>
+        <AppShellSidebar>
+          <SidebarNav />
+        </AppShellSidebar>
         <AppShellContent padding="none">
-          <div className="bg-muted h-full">
+          <div className="bg-muted h-full p-6">
             <Heading level="1">No Content Padding</Heading>
             <Text variant="muted">Content area has no padding for full-width layouts.</Text>
           </div>
         </AppShellContent>
-      </AppShell>
-    </div>
+      </AppShellBody>
+    </AppShell>
+  ),
+};
+
+export const WideSidebar: Story = {
+  render: () => (
+    <AppShell>
+      <AppShellNavbar
+        showSidebarToggle={false}
+        startContent={<OrgSelector />}
+        endContent={<UserMenuDemo />}
+      />
+      <AppShellBody>
+        <AppShellSidebar width="lg">
+          <SidebarNav />
+        </AppShellSidebar>
+        <AppShellContent>
+          <Heading level="1">Wide Sidebar</Heading>
+          <Text variant="muted">Using width="lg" for a wider sidebar.</Text>
+        </AppShellContent>
+      </AppShellBody>
+    </AppShell>
   ),
 };

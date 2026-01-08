@@ -20,9 +20,10 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       const isDark = context.globals?.backgrounds?.value === '#09090b';
+      const isFullscreen = context.parameters?.layout === 'fullscreen';
       return (
         <div className={isDark ? 'dark' : ''}>
-          <div className="bg-background text-foreground p-6 min-h-screen">
+          <div className={`bg-background text-foreground min-h-screen ${isFullscreen ? '' : 'p-6'}`}>
             <Story />
           </div>
         </div>

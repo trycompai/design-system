@@ -128,7 +128,7 @@ export const UserCard: Story = {
         <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
-      <Stack gap="0.5">
+      <Stack gap="xs">
         <Text weight="medium">John Doe</Text>
         <Text size="sm" variant="muted">
           john@example.com

@@ -1,33 +1,32 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import { SearchIcon } from 'lucide-react';
+import { PanelLeftIcon, SearchIcon } from 'lucide-react';
 import * as React from 'react';
 
 import { Kbd } from '../atoms/kbd';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../molecules/input-group';
-import { Sidebar, SidebarInset, SidebarProvider, SidebarTrigger } from './sidebar';
+
+// ============ CONTEXT ============
+
+type AppShellContextProps = {
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
+  toggleSidebar: () => void;
+};
+
+const AppShellContext = React.createContext<AppShellContextProps | null>(null);
+
+function useAppShell() {
+  const context = React.useContext(AppShellContext);
+  if (!context) {
+    throw new Error('useAppShell must be used within an AppShell.');
+  }
+  return context;
+}
 
 // ============ VARIANTS ============
 
-const appShellVariants = cva('', {
-  variants: {
-    sidebarSide: {
-      left: '',
-      right: '',
-    },
-    sidebarVariant: {
-      sidebar: '',
-      floating: '',
-      inset: '',
-    },
-  },
-  defaultVariants: {
-    sidebarSide: 'left',
-    sidebarVariant: 'sidebar',
-  },
-});
-
 const appShellNavbarVariants = cva(
-  'flex h-14 shrink-0 items-center gap-2 border-b bg-background transition-[width,height] ease-linear group-has-data-[variant=inset]/sidebar-wrapper:min-h-14',
+  'flex h-14 shrink-0 items-center gap-2 bg-muted px-4',
   {
     variants: {
       position: {
@@ -42,7 +41,24 @@ const appShellNavbarVariants = cva(
   },
 );
 
-const appShellContentVariants = cva('flex flex-1 flex-col', {
+const appShellSidebarVariants = cva(
+  'shrink-0 bg-muted p-2 h-full overflow-hidden hidden md:flex md:flex-col',
+  {
+    variants: {
+      width: {
+        sm: 'w-48',
+        default: 'w-64',
+        lg: 'w-72',
+        xl: 'w-80',
+      },
+    },
+    defaultVariants: {
+      width: 'default',
+    },
+  },
+);
+
+const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background border rounded-lg ml-2 mb-2 mr-2 min-h-0', {
   variants: {
     padding: {
       none: '',
@@ -72,25 +88,19 @@ const appShellSearchVariants = cva('', {
 
 // ============ TYPES ============
 
-interface AppShellProps
-  extends Omit<React.ComponentProps<'div'>, 'className'>,
-    VariantProps<typeof appShellVariants> {
-  /** Content for the sidebar slot */
-  sidebar?: React.ReactNode;
+interface AppShellProps extends Omit<React.ComponentProps<'div'>, 'className'> {
   /** Default sidebar open state */
   defaultSidebarOpen?: boolean;
   /** Controlled sidebar open state */
   sidebarOpen?: boolean;
   /** Callback when sidebar state changes */
   onSidebarOpenChange?: (open: boolean) => void;
-  /** Sidebar collapsible behavior */
-  sidebarCollapsible?: 'offExamples' | 'icon' | 'none';
 }
 
 interface AppShellNavbarProps
   extends Omit<React.ComponentProps<'header'>, 'className'>,
     VariantProps<typeof appShellNavbarVariants> {
-  /** Shows sidebar toggle button on the left */
+  /** Shows sidebar toggle button */
   showSidebarToggle?: boolean;
   /** Content for the start slot (after sidebar toggle) */
   startContent?: React.ReactNode;
@@ -98,6 +108,13 @@ interface AppShellNavbarProps
   centerContent?: React.ReactNode;
   /** Content for the end slot (typically user menu) */
   endContent?: React.ReactNode;
+}
+
+interface AppShellSidebarProps
+  extends Omit<React.ComponentProps<'aside'>, 'className'>,
+    VariantProps<typeof appShellSidebarVariants> {
+  /** Collapsible on mobile */
+  collapsible?: boolean;
 }
 
 interface AppShellContentProps
@@ -113,35 +130,55 @@ interface AppShellSearchProps
 
 interface AppShellUserMenuProps extends Omit<React.ComponentProps<'div'>, 'className'> {}
 
+interface AppShellBodyProps extends Omit<React.ComponentProps<'div'>, 'className'> {}
+
 // ============ COMPONENTS ============
 
 function AppShell({
-  sidebar,
-  sidebarSide = 'left',
-  sidebarVariant = 'sidebar',
-  sidebarCollapsible = 'offExamples',
   defaultSidebarOpen = true,
-  sidebarOpen,
+  sidebarOpen: sidebarOpenProp,
   onSidebarOpenChange,
   children,
   ...props
 }: AppShellProps) {
+  const [_sidebarOpen, _setSidebarOpen] = React.useState(defaultSidebarOpen);
+  const sidebarOpen = sidebarOpenProp ?? _sidebarOpen;
+
+  const setSidebarOpen = React.useCallback(
+    (open: boolean) => {
+      if (onSidebarOpenChange) {
+        onSidebarOpenChange(open);
+      } else {
+        _setSidebarOpen(open);
+      }
+    },
+    [onSidebarOpenChange],
+  );
+
+  const toggleSidebar = React.useCallback(() => {
+    setSidebarOpen(!sidebarOpen);
+  }, [sidebarOpen, setSidebarOpen]);
+
+  const contextValue = React.useMemo<AppShellContextProps>(
+    () => ({
+      sidebarOpen,
+      setSidebarOpen,
+      toggleSidebar,
+    }),
+    [sidebarOpen, setSidebarOpen, toggleSidebar],
+  );
+
   return (
-    <SidebarProvider
-      defaultOpen={defaultSidebarOpen}
-      open={sidebarOpen}
-      onOpenChange={onSidebarOpenChange}
-      {...props}
-    >
-      <Sidebar
-        side={sidebarSide ?? undefined}
-        variant={sidebarVariant ?? undefined}
-        collapsible={sidebarCollapsible}
+    <AppShellContext.Provider value={contextValue}>
+      <div
+        data-slot="app-shell"
+        data-sidebar-open={sidebarOpen}
+        className="flex h-svh w-full flex-col bg-background overflow-hidden"
+        {...props}
       >
-        {sidebar}
-      </Sidebar>
-      <SidebarInset>{children}</SidebarInset>
-    </SidebarProvider>
+        {children}
+      </div>
+    </AppShellContext.Provider>
   );
 }
 
@@ -154,23 +191,97 @@ function AppShellNavbar({
   children,
   ...props
 }: AppShellNavbarProps) {
+  const { toggleSidebar, sidebarOpen } = useAppShell();
+
   return (
-    <header data-slot="app-shell-navbar" className={appShellNavbarVariants({ position })} {...props}>
+    <header data-slot="app-shell-navbar" className={`${appShellNavbarVariants({ position })} relative`} {...props}>
       {/* Left section: sidebar toggle + start content */}
-      <div className="flex items-center gap-2">
-        {showSidebarToggle && <SidebarTrigger />}
+      <div className="flex items-center gap-2 z-10">
+        {/* Mobile hamburger menu - always visible on mobile */}
+        <button
+          type="button"
+          onClick={toggleSidebar}
+          className="inline-flex md:hidden size-8 items-center justify-center rounded-md hover:bg-background/50"
+          aria-label="Toggle sidebar"
+        >
+          <PanelLeftIcon className="size-4" />
+        </button>
+        {/* Desktop toggle - visible when sidebar is collapsed or when prop is true */}
+        {(showSidebarToggle || !sidebarOpen) && (
+          <button
+            type="button"
+            onClick={toggleSidebar}
+            className="hidden md:inline-flex size-8 items-center justify-center rounded-md hover:bg-background/50"
+            aria-label="Toggle sidebar"
+          >
+            <PanelLeftIcon className="size-4" />
+          </button>
+        )}
         {startContent}
       </div>
 
-      {/* Center section: search or custom content */}
-      <div className="flex flex-1 items-center justify-center px-4">{centerContent}</div>
+      {/* Center section: absolutely positioned for true center */}
+      {centerContent && (
+        <div className="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none">
+          <div className="pointer-events-auto">{centerContent}</div>
+        </div>
+      )}
 
       {/* Right section: user menu + end content */}
-      <div className="flex items-center gap-2 px-4">{endContent}</div>
+      <div className="flex items-center gap-2 z-10 ml-auto">{endContent}</div>
 
       {/* Allow additional children for custom layouts */}
       {children}
     </header>
+  );
+}
+
+function AppShellBody({ children, ...props }: AppShellBodyProps) {
+  return (
+    <div data-slot="app-shell-body" className="flex flex-1 overflow-hidden bg-muted min-h-0" {...props}>
+      {children}
+    </div>
+  );
+}
+
+function AppShellSidebar({
+  width = 'default',
+  collapsible = true,
+  children,
+  ...props
+}: AppShellSidebarProps) {
+  const { sidebarOpen, setSidebarOpen } = useAppShell();
+
+  return (
+    <>
+      {/* Mobile overlay backdrop */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      {/* Mobile sidebar - slide over */}
+      <aside
+        data-slot="app-shell-sidebar-mobile"
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-muted p-2 transform transition-transform duration-200 ease-in-out md:hidden ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+        {...props}
+      >
+        {children}
+      </aside>
+      {/* Desktop sidebar */}
+      {(!collapsible || sidebarOpen) && (
+        <aside
+          data-slot="app-shell-sidebar"
+          className={appShellSidebarVariants({ width })}
+          {...props}
+        >
+          {children}
+        </aside>
+      )}
+    </>
   );
 }
 
@@ -213,14 +324,81 @@ function AppShellUserMenu({ children, ...props }: AppShellUserMenuProps) {
   );
 }
 
+// ============ NAV COMPONENTS ============
+
+interface AppShellNavProps extends Omit<React.ComponentProps<'nav'>, 'className'> {}
+
+interface AppShellNavGroupProps extends Omit<React.ComponentProps<'div'>, 'className'> {
+  label?: string;
+}
+
+interface AppShellNavItemProps extends Omit<React.ComponentProps<'button'>, 'className'> {
+  isActive?: boolean;
+  icon?: React.ReactNode;
+}
+
+interface AppShellNavFooterProps extends Omit<React.ComponentProps<'div'>, 'className'> {}
+
+function AppShellNav({ children, ...props }: AppShellNavProps) {
+  return (
+    <nav data-slot="app-shell-nav" className="flex-1 space-y-4 py-2" {...props}>
+      {children}
+    </nav>
+  );
+}
+
+function AppShellNavGroup({ label, children, ...props }: AppShellNavGroupProps) {
+  return (
+    <div data-slot="app-shell-nav-group" {...props}>
+      {label && (
+        <div className="px-2 pb-1 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+          {label}
+        </div>
+      )}
+      <div className="space-y-1">{children}</div>
+    </div>
+  );
+}
+
+function AppShellNavItem({ isActive, icon, children, ...props }: AppShellNavItemProps) {
+  return (
+    <button
+      data-slot="app-shell-nav-item"
+      data-active={isActive}
+      className={`flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-background/60 ${
+        isActive ? 'bg-background text-foreground font-medium shadow-sm' : 'text-muted-foreground hover:text-foreground'
+      }`}
+      {...props}
+    >
+      {icon && <span className="size-4 shrink-0 [&>svg]:size-4">{icon}</span>}
+      {children}
+    </button>
+  );
+}
+
+function AppShellNavFooter({ children, ...props }: AppShellNavFooterProps) {
+  return (
+    <div data-slot="app-shell-nav-footer" className="mt-auto border-t border-border/40 pt-2 space-y-1" {...props}>
+      {children}
+    </div>
+  );
+}
+
 export {
   AppShell,
+  AppShellBody,
   AppShellContent,
+  AppShellNav,
   AppShellNavbar,
+  AppShellNavFooter,
+  AppShellNavGroup,
+  AppShellNavItem,
   AppShellSearch,
+  AppShellSidebar,
   AppShellUserMenu,
   appShellContentVariants,
   appShellNavbarVariants,
   appShellSearchVariants,
-  appShellVariants,
+  appShellSidebarVariants,
+  useAppShell,
 };

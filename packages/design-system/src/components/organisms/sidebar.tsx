@@ -350,12 +350,27 @@ function SidebarContent({ ...props }: Omit<React.ComponentProps<'div'>, 'classNa
   );
 }
 
-function SidebarGroup({ ...props }: Omit<React.ComponentProps<'div'>, 'className'>) {
+const sidebarGroupVariants = cva('relative flex w-full min-w-0 flex-col', {
+  variants: {
+    padding: {
+      default: 'p-2',
+      none: 'p-0',
+    },
+  },
+  defaultVariants: {
+    padding: 'default',
+  },
+});
+
+function SidebarGroup({
+  padding = 'default',
+  ...props
+}: Omit<React.ComponentProps<'div'>, 'className'> & VariantProps<typeof sidebarGroupVariants>) {
   return (
     <div
       data-slot="sidebar-group"
       data-sidebar="group"
-      className="p-2 relative flex w-full min-w-0 flex-col"
+      className={sidebarGroupVariants({ padding })}
       {...props}
     />
   );
@@ -643,6 +658,7 @@ export {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
+  sidebarGroupVariants,
   SidebarGroupAction,
   SidebarGroupContent,
   SidebarGroupLabel,

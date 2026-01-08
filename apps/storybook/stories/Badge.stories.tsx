@@ -63,7 +63,7 @@ export const Link: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <Stack direction="row" gap="2" wrap>
+    <Stack direction="row" gap="sm" wrap="wrap">
       <Badge variant="default">Default</Badge>
       <Badge variant="secondary">Secondary</Badge>
       <Badge variant="destructive">Destructive</Badge>

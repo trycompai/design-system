@@ -94,7 +94,7 @@ export const PromiseToast: Story = {
 
 export const AllTypes: Story = {
   render: () => (
-    <Stack direction="row" gap="2" wrap>
+    <Stack direction="row" gap="sm" wrap="wrap">
       <Button variant="outline" onClick={() => toast('Default toast')}>
         Default
       </Button>
