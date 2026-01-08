@@ -1,4 +1,5 @@
 export * from './alert-dialog';
+export * from './app-shell';
 export * from './calendar';
 export * from './carousel';
 export * from './chart';
