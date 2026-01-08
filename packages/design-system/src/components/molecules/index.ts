@@ -20,6 +20,7 @@ export * from './resizable';
 export * from './scroll-area';
 export * from './section';
 export * from './select';
+export * from './settings';
 export * from './table';
 export * from './tabs';
 export * from './toggle-group';
