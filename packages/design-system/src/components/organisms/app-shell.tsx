@@ -63,7 +63,7 @@ const appShellSidebarVariants = cva(
   },
 );
 
-const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background border rounded-lg ml-2 mb-2 mr-2 min-h-0', {
+const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background border rounded-lg m-2 min-h-0', {
   variants: {
     padding: {
       none: '',
