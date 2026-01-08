@@ -47,7 +47,7 @@ const appShellNavbarVariants = cva(
 );
 
 const appShellSidebarVariants = cva(
-  'shrink-0 bg-muted p-2 h-full overflow-hidden hidden md:flex md:flex-col rounded-tl-lg',
+  'shrink-0 bg-muted p-2 h-full overflow-hidden hidden md:flex md:flex-col rounded-l-lg',
   {
     variants: {
       width: {
