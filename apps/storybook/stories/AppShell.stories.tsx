@@ -8,6 +8,8 @@ import {
   AppShellNavFooter,
   AppShellNavGroup,
   AppShellNavItem,
+  AppShellRail,
+  AppShellRailItem,
   AppShellSidebar,
   AppShellUserMenu,
   Avatar,
@@ -34,14 +36,18 @@ import {
 import {
   BellIcon,
   BookOpenIcon,
+  BriefcaseIcon,
   ChevronDownIcon,
   CodeIcon,
+  CreditCardIcon,
   HomeIcon,
   KeyIcon,
   LayoutDashboardIcon,
   LogOutIcon,
   PanelLeftIcon,
+  PieChartIcon,
   SettingsIcon,
+  ShieldCheckIcon,
   UserIcon,
   UsersIcon,
 } from 'lucide-react';
@@ -372,6 +378,65 @@ export const WideSidebar: Story = {
         <AppShellContent>
           <Heading level="1">Wide Sidebar</Heading>
           <Text variant="muted">Using width="lg" for a wider sidebar.</Text>
+        </AppShellContent>
+      </AppShellBody>
+    </AppShell>
+  ),
+};
+
+const RailSidebarNav = () => (
+  <>
+    <AppShellNav>
+      <AppShellNavGroup label="HR">
+        <AppShellNavItem icon={<UsersIcon />} isActive>Employees</AppShellNavItem>
+        <AppShellNavItem icon={<BriefcaseIcon />}>Recruiting</AppShellNavItem>
+        <AppShellNavItem icon={<BookOpenIcon />}>Learning</AppShellNavItem>
+      </AppShellNavGroup>
+      <AppShellNavGroup label="Manage">
+        <AppShellNavItem icon={<SettingsIcon />}>Settings</AppShellNavItem>
+      </AppShellNavGroup>
+    </AppShellNav>
+    <AppShellNavFooter>
+      <AppShellNavItem icon={<BookOpenIcon />}>Help</AppShellNavItem>
+    </AppShellNavFooter>
+  </>
+);
+
+export const WithRail: Story = {
+  render: () => (
+    <AppShell>
+      <AppShellNavbar
+        showSidebarToggle={false}
+        startContent={<Logo />}
+        centerContent={<CommandSearch groups={searchGroups} placeholder="Search..." />}
+        endContent={
+          <AppShellUserMenu>
+            <Button variant="ghost" size="icon-sm">
+              <BellIcon />
+            </Button>
+            <UserMenuDemo />
+          </AppShellUserMenu>
+        }
+      />
+      <AppShellBody>
+        <AppShellRail>
+          <AppShellRailItem icon={<UsersIcon />} label="HR" isActive />
+          <AppShellRailItem icon={<CreditCardIcon />} label="Finance" />
+          <AppShellRailItem icon={<ShieldCheckIcon />} label="Compliance" />
+          <AppShellRailItem icon={<PieChartIcon />} label="Analytics" />
+          <AppShellRailItem icon={<SettingsIcon />} label="Settings" />
+        </AppShellRail>
+        <AppShellSidebar collapsible>
+          <RailSidebarNav />
+        </AppShellSidebar>
+        <AppShellContent>
+          <PageHeader title="Employees">
+            <PageHeaderDescription>Manage your team members and their information.</PageHeaderDescription>
+            <PageHeaderActions>
+              <Button>Add Employee</Button>
+            </PageHeaderActions>
+          </PageHeader>
+          <Text>Rippling-style layout with app rail on the left. Use <strong>⌘\</strong> to toggle the sidebar.</Text>
         </AppShellContent>
       </AppShellBody>
     </AppShell>

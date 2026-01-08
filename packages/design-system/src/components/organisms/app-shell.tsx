@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import { PanelLeftIcon, SearchIcon } from 'lucide-react';
+import { ChevronRightIcon, PanelLeftIcon, SearchIcon } from 'lucide-react';
 import * as React from 'react';
 
 import { Kbd } from '../atoms/kbd';
@@ -137,6 +137,17 @@ interface AppShellUserMenuProps extends Omit<React.ComponentProps<'div'>, 'class
 
 interface AppShellBodyProps extends Omit<React.ComponentProps<'div'>, 'className'> {}
 
+interface AppShellRailProps extends Omit<React.ComponentProps<'div'>, 'className'> {
+  /** Show the sidebar toggle button in the rail */
+  showSidebarToggle?: boolean;
+}
+
+interface AppShellRailItemProps extends Omit<React.ComponentProps<'button'>, 'className'> {
+  isActive?: boolean;
+  icon: React.ReactNode;
+  label?: string;
+}
+
 // ============ COMPONENTS ============
 
 function AppShell({
@@ -270,6 +281,53 @@ function AppShellBody({ children, ...props }: AppShellBodyProps) {
     <div data-slot="app-shell-body" className="flex flex-1 overflow-hidden bg-muted min-h-0" {...props}>
       {children}
     </div>
+  );
+}
+
+function AppShellRail({ showSidebarToggle = true, children, ...props }: AppShellRailProps) {
+  const { sidebarOpen, toggleSidebar } = useAppShell();
+
+  return (
+    <div
+      data-slot="app-shell-rail"
+      className="hidden md:flex flex-col items-center w-14 shrink-0 bg-muted py-2 gap-1"
+      {...props}
+    >
+      {/* App/module items */}
+      <div className="flex flex-col items-center gap-1 flex-1">
+        {children}
+      </div>
+      {/* Sidebar toggle at bottom */}
+      {showSidebarToggle && (
+        <button
+          type="button"
+          onClick={toggleSidebar}
+          className="flex size-10 items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-background/50 transition-colors"
+          aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+        >
+          <PanelLeftIcon className={`size-5 transition-transform ${sidebarOpen ? '' : 'rotate-180'}`} />
+        </button>
+      )}
+    </div>
+  );
+}
+
+function AppShellRailItem({ isActive, icon, label, ...props }: AppShellRailItemProps) {
+  return (
+    <button
+      data-slot="app-shell-rail-item"
+      data-active={isActive}
+      className={`flex size-10 items-center justify-center rounded-md transition-colors ${
+        isActive
+          ? 'bg-background text-foreground shadow-sm'
+          : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
+      }`}
+      title={label}
+      aria-label={label}
+      {...props}
+    >
+      <span className="size-5 [&>svg]:size-5">{icon}</span>
+    </button>
   );
 }
 
@@ -422,6 +480,8 @@ export {
   AppShellNavFooter,
   AppShellNavGroup,
   AppShellNavItem,
+  AppShellRail,
+  AppShellRailItem,
   AppShellSearch,
   AppShellSidebar,
   AppShellUserMenu,
