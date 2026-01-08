@@ -8,7 +8,6 @@ import {
   AppShellNavFooter,
   AppShellNavGroup,
   AppShellNavItem,
-  AppShellSearch,
   AppShellSidebar,
   AppShellUserMenu,
   Avatar,
@@ -16,8 +15,10 @@ import {
   AvatarImage,
   Badge,
   Button,
+  CommandSearch,
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -69,15 +70,62 @@ const OrgSelector = () => (
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="start">
-      <DropdownMenuLabel>Organizations</DropdownMenuLabel>
+      <DropdownMenuGroup>
+        <DropdownMenuLabel>Organizations</DropdownMenuLabel>
+        <DropdownMenuItem>
+          <div className="size-4 rounded bg-emerald-500" />
+          Personal
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <div className="size-4 rounded bg-blue-500" />
+          Acme Corp
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+    </DropdownMenuContent>
+  </DropdownMenu>
+);
+
+const LogoIcon = () => (
+  <div className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground text-sm font-bold">
+    C
+  </div>
+);
+
+const ProjectSelector = () => (
+  <DropdownMenu>
+    <DropdownMenuTrigger>
+      <button
+        type="button"
+        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium hover:bg-background/50 transition-colors"
+      >
+        <div className="size-2 rounded-full bg-blue-500" />
+        Acme Corp
+        <ChevronDownIcon className="size-3 text-muted-foreground" />
+      </button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent align="start" style={{ minWidth: '220px' }}>
+      <DropdownMenuGroup>
+        <DropdownMenuLabel>Projects</DropdownMenuLabel>
+        <DropdownMenuItem>
+          <div className="size-2 rounded-full bg-blue-500" />
+          <span className="flex-1">Acme Corp</span>
+          <span className="text-xs text-muted-foreground">Pro</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <div className="size-2 rounded-full bg-purple-500" />
+          <span className="flex-1">Side Project</span>
+          <span className="text-xs text-muted-foreground">Free</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <div className="size-2 rounded-full bg-orange-500" />
+          <span className="flex-1">Personal</span>
+          <span className="text-xs text-muted-foreground">Free</span>
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
       <DropdownMenuSeparator />
       <DropdownMenuItem>
-        <div className="size-4 rounded bg-emerald-500" />
-        Personal
-      </DropdownMenuItem>
-      <DropdownMenuItem>
-        <div className="size-4 rounded bg-blue-500" />
-        Acme Corp
+        <KeyIcon className="size-4" />
+        Create new project
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
@@ -85,12 +133,38 @@ const OrgSelector = () => (
 
 const Logo = () => (
   <HStack gap="sm" align="center">
-    <div className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground text-sm font-bold">
-      C
-    </div>
-    <Text weight="semibold" size="sm">Comp</Text>
+    <LogoIcon />
+    <ProjectSelector />
   </HStack>
 );
+
+const searchGroups = [
+  {
+    id: 'pages',
+    label: 'Pages',
+    items: [
+      { id: 'overview', label: 'Overview', icon: <HomeIcon className="size-4" />, shortcut: '⌘1' },
+      { id: 'dashboard', label: 'Dashboard', icon: <LayoutDashboardIcon className="size-4" />, shortcut: '⌘2' },
+      { id: 'settings', label: 'Settings', icon: <SettingsIcon className="size-4" />, shortcut: '⌘,' },
+    ],
+  },
+  {
+    id: 'actions',
+    label: 'Actions',
+    items: [
+      { id: 'new-project', label: 'Create new project', icon: <KeyIcon className="size-4" /> },
+      { id: 'invite-team', label: 'Invite team member', icon: <UsersIcon className="size-4" /> },
+    ],
+  },
+  {
+    id: 'help',
+    label: 'Help',
+    items: [
+      { id: 'docs', label: 'Documentation', icon: <BookOpenIcon className="size-4" /> },
+      { id: 'api', label: 'API Reference', icon: <CodeIcon className="size-4" /> },
+    ],
+  },
+];
 
 const SidebarNav = () => {
   const { toggleSidebar } = useAppShell();
@@ -128,16 +202,17 @@ const UserMenuDemo = () => (
       </Button>
     </DropdownMenuTrigger>
     <DropdownMenuContent align="end">
-      <DropdownMenuLabel>My Account</DropdownMenuLabel>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem>
-        <UserIcon />
-        Profile
-      </DropdownMenuItem>
-      <DropdownMenuItem>
-        <SettingsIcon />
-        Settings
-      </DropdownMenuItem>
+      <DropdownMenuGroup>
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuItem>
+          <UserIcon />
+          Profile
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <SettingsIcon />
+          Settings
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
       <DropdownMenuSeparator />
       <DropdownMenuItem>
         <LogOutIcon />
@@ -153,7 +228,7 @@ export const Default: Story = {
       <AppShellNavbar
         showSidebarToggle={false}
         startContent={<Logo />}
-        centerContent={<AppShellSearch />}
+        centerContent={<CommandSearch groups={searchGroups} placeholder="Search..." />}
         endContent={
           <AppShellUserMenu>
             <Button variant="ghost" size="icon-sm">
