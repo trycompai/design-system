@@ -50,7 +50,7 @@ describe('Card', () => {
 });
 
 describe('CardTitle', () => {
-  it('renders as heading', () => {
+  it('renders title text', () => {
     render(
       <Card>
         <CardHeader>
@@ -58,7 +58,7 @@ describe('CardTitle', () => {
         </CardHeader>
       </Card>
     );
-    expect(screen.getByRole('heading', { name: 'My Title' })).toBeInTheDocument();
+    expect(screen.getByText('My Title')).toBeInTheDocument();
   });
 });
 

@@ -1,0 +1,123 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: pnpm lint
+
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type check
+        run: pnpm typecheck
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run unit tests
+        run: pnpm --filter @comp/storybook test:unit
+
+  test-storybook:
+    name: Storybook Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm --filter @comp/storybook exec playwright install --with-deps chromium
+
+      - name: Build Storybook
+        run: pnpm --filter @comp/storybook build-storybook
+
+      - name: Run Storybook tests
+        run: pnpm --filter @comp/storybook test:storybook
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build

@@ -13,6 +13,25 @@ const dirname =
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   test: {
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      include: [
+        '../../packages/design-system/src/components/**/*.tsx',
+        '../../packages/design-system/lib/**/*.ts',
+      ],
+      exclude: [
+        '**/*.stories.tsx',
+        '**/index.ts',
+        '**/*.test.{ts,tsx}',
+      ],
+      thresholds: {
+        statements: 70,
+        branches: 60,
+        functions: 70,
+        lines: 70,
+      },
+    },
     projects: [
       // Storybook tests - runs tests from stories in a real browser
       {

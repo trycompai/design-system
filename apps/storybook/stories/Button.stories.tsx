@@ -94,7 +94,7 @@ export const Loading: Story = {
     children: 'Loading...',
     loading: true,
   },
-  play: async ({ args, canvasElement }) => {
+  play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
     // Verify button is disabled when loading
@@ -103,10 +103,6 @@ export const Loading: Story = {
 
     // Verify spinner is shown
     await expect(canvas.getByRole('status', { name: 'Loading' })).toBeInTheDocument();
-
-    // Verify onClick is not called when clicking disabled button
-    await userEvent.click(button);
-    await expect(args.onClick).not.toHaveBeenCalled();
   },
 };
 

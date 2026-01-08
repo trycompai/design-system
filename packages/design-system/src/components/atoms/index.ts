@@ -13,6 +13,7 @@ export * from './separator';
 export * from './skeleton';
 export * from './slider';
 export * from './spinner';
+export * from './stack';
 export * from './switch';
 export * from './text';
 export * from './textarea';
