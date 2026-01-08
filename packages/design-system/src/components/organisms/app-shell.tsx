@@ -31,7 +31,7 @@ function useAppShell() {
 // ============ VARIANTS ============
 
 const appShellNavbarVariants = cva(
-  'flex h-14 shrink-0 items-center gap-2 bg-background/50 border-b border-border/50 px-4',
+  'flex h-14 shrink-0 items-center gap-2 bg-background/50 px-4',
   {
     variants: {
       position: {
@@ -47,7 +47,7 @@ const appShellNavbarVariants = cva(
 );
 
 const appShellSidebarVariants = cva(
-  'shrink-0 bg-muted p-2 h-full overflow-hidden hidden md:flex md:flex-col rounded-l-lg',
+  'shrink-0 bg-background p-2 h-full overflow-hidden hidden md:flex md:flex-col rounded-tl-xl',
   {
     variants: {
       width: {
@@ -63,7 +63,7 @@ const appShellSidebarVariants = cva(
   },
 );
 
-const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background border rounded-lg ml-2 mb-2 mr-2 min-h-0', {
+const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background border rounded-lg m-2 min-h-0', {
   variants: {
     padding: {
       none: '',
@@ -213,7 +213,7 @@ function AppShell({
       <div
         data-slot="app-shell"
         data-sidebar-open={sidebarOpen}
-        className="flex h-svh w-full flex-col bg-background overflow-hidden"
+        className="flex h-svh w-full flex-col bg-muted overflow-hidden"
         {...props}
       >
         {children}
