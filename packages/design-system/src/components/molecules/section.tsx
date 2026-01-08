@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Heading } from '../atoms/heading';
 import { Text } from '../atoms/text';
-import { Stack } from './stack';
+import { Stack } from '../atoms/stack';
 
 interface SectionProps extends Omit<React.ComponentProps<'section'>, 'className'> {
   title?: string;

@@ -19,7 +19,6 @@ export * from './resizable';
 export * from './scroll-area';
 export * from './section';
 export * from './select';
-export * from './stack';
 export * from './table';
 export * from './tabs';
 export * from './toggle-group';
