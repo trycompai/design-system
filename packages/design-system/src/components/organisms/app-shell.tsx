@@ -47,7 +47,7 @@ const appShellNavbarVariants = cva(
 );
 
 const appShellSidebarVariants = cva(
-  'shrink-0 bg-background p-2 overflow-hidden hidden md:flex md:flex-col rounded-tl-xl mt-2 mb-2 border-r border-border',
+  'shrink-0 bg-background p-2 overflow-hidden hidden md:flex md:flex-col rounded-l-xl mt-2 mb-2 ml-2 border-r border-border',
   {
     variants: {
       width: {
@@ -63,7 +63,7 @@ const appShellSidebarVariants = cva(
   },
 );
 
-const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background mt-2 mr-2 mb-2 rounded-r-lg min-h-0', {
+const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background mt-2 mr-2 mb-2 rounded-r-xl min-h-0', {
   variants: {
     padding: {
       none: '',
@@ -278,7 +278,7 @@ function AppShellNavbar({
 
 function AppShellBody({ children, ...props }: AppShellBodyProps) {
   return (
-    <div data-slot="app-shell-body" className="flex flex-1 overflow-hidden bg-muted min-h-0" {...props}>
+    <div data-slot="app-shell-body" className="flex flex-1 overflow-hidden bg-background/50 min-h-0" {...props}>
       {children}
     </div>
   );
@@ -290,7 +290,7 @@ function AppShellRail({ showSidebarToggle = true, children, ...props }: AppShell
   return (
     <div
       data-slot="app-shell-rail"
-      className="hidden md:flex flex-col items-center w-14 shrink-0 bg-background/50 border-r border-border/50 py-2 gap-1"
+      className="hidden md:flex flex-col items-center w-14 shrink-0 py-2 gap-1"
       {...props}
     >
       {/* App/module items */}
