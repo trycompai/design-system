@@ -6,11 +6,20 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
   Grid,
   Heading,
   HStack,
+  PageHeader,
   PageLayout,
   Stack,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   Text,
 } from '@trycompai/design-system';
 
@@ -203,6 +212,48 @@ export const CustomMaxWidth: Story = {
             </Card>
           ))}
         </Grid>
+      </Stack>
+    </PageLayout>
+  ),
+};
+
+export const WithTabs: Story = {
+  args: {
+    variant: 'default',
+    padding: 'default',
+    container: true,
+  },
+  render: (args) => (
+    <PageLayout {...args}>
+      <Stack gap="6">
+        <PageHeader title="My expenses" />
+        <Tabs defaultValue="all">
+          <TabsList variant="underline">
+            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="reimbursements">Reimbursements</TabsTrigger>
+          </TabsList>
+          <TabsContent value="all">
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>There are no expenses</EmptyTitle>
+                <EmptyDescription>
+                  Your expenses will appear here once you add them.
+                </EmptyDescription>
+              </EmptyHeader>
+              <Button>Add expense</Button>
+            </Empty>
+          </TabsContent>
+          <TabsContent value="reimbursements">
+            <Empty>
+              <EmptyHeader>
+                <EmptyTitle>No reimbursements</EmptyTitle>
+                <EmptyDescription>
+                  Submitted reimbursement requests will appear here.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </TabsContent>
+        </Tabs>
       </Stack>
     </PageLayout>
   ),
