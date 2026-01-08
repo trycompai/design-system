@@ -31,7 +31,7 @@ function useAppShell() {
 // ============ VARIANTS ============
 
 const appShellNavbarVariants = cva(
-  'flex h-14 shrink-0 items-center gap-2 bg-muted px-4',
+  'flex h-14 shrink-0 items-center gap-2 bg-background/50 border-b border-border/50 px-4',
   {
     variants: {
       position: {
