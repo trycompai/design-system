@@ -47,7 +47,7 @@ const appShellNavbarVariants = cva(
 );
 
 const appShellSidebarVariants = cva(
-  'shrink-0 bg-background p-2 h-full overflow-hidden hidden md:flex md:flex-col rounded-tl-xl',
+  'shrink-0 bg-background p-2 overflow-hidden hidden md:flex md:flex-col rounded-tl-xl mt-2 mb-2',
   {
     variants: {
       width: {
@@ -63,7 +63,7 @@ const appShellSidebarVariants = cva(
   },
 );
 
-const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background border rounded-lg m-2 min-h-0', {
+const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background mt-2 mr-2 mb-2 rounded-r-lg min-h-0', {
   variants: {
     padding: {
       none: '',
