@@ -10,7 +10,7 @@ import {
   Stack,
   Text,
 } from '@trycompai/design-system';
-import { TrendingUpIcon, TrendingDownIcon } from 'lucide-react';
+import { TrendingDownIcon, TrendingUpIcon } from 'lucide-react';
 
 const metrics = [
   { label: 'Page Views', value: '124,892', change: '+12.5%', trend: 'up' },
@@ -27,7 +27,7 @@ const topPages = [
   { page: '/analytics', views: '8,432', percentage: 6.8 },
 ];
 
-export function AnalyticsPage() {
+export default function AnalyticsPage() {
   return (
     <Stack gap="6">
       <Stack gap="1">

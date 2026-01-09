@@ -12,11 +12,12 @@ import {
   Stack,
   Text,
 } from '@trycompai/design-system';
-import { PlusIcon, FolderIcon, UsersIcon, CalendarIcon } from 'lucide-react';
+import { CalendarIcon, FolderIcon, PlusIcon, UsersIcon } from 'lucide-react';
+import Link from 'next/link';
 
 const projects = [
   {
-    id: 1,
+    id: '1',
     name: 'Website Redesign',
     description: 'Complete overhaul of the company website with new branding',
     status: 'In Progress',
@@ -25,7 +26,7 @@ const projects = [
     dueDate: 'Feb 15, 2024',
   },
   {
-    id: 2,
+    id: '2',
     name: 'Mobile App v2.0',
     description: 'Major update to the mobile application with new features',
     status: 'On Track',
@@ -34,7 +35,7 @@ const projects = [
     dueDate: 'Mar 1, 2024',
   },
   {
-    id: 3,
+    id: '3',
     name: 'API Integration',
     description: 'Integration with third-party payment providers',
     status: 'At Risk',
@@ -43,7 +44,7 @@ const projects = [
     dueDate: 'Jan 30, 2024',
   },
   {
-    id: 4,
+    id: '4',
     name: 'Security Audit',
     description: 'Comprehensive security review and penetration testing',
     status: 'Completed',
@@ -52,7 +53,7 @@ const projects = [
     dueDate: 'Jan 10, 2024',
   },
   {
-    id: 5,
+    id: '5',
     name: 'Data Migration',
     description: 'Migrate legacy data to new cloud infrastructure',
     status: 'Overdue',
@@ -61,7 +62,7 @@ const projects = [
     dueDate: 'Jan 5, 2024',
   },
   {
-    id: 6,
+    id: '6',
     name: 'Design System',
     description: 'Build a comprehensive component library for the team',
     status: 'In Progress',
@@ -71,7 +72,7 @@ const projects = [
   },
 ];
 
-export function ProjectsPage() {
+export default function ProjectsPage() {
   return (
     <Stack gap="6">
       <div className="flex items-center justify-between">
@@ -87,34 +88,36 @@ export function ProjectsPage() {
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => (
-          <Card key={project.id}>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-                    <FolderIcon className="size-5 text-primary" />
+          <Link key={project.id} href={`/projects/${project.id}`}>
+            <Card>
+              <CardHeader>
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
+                      <FolderIcon className="size-5 text-primary" />
+                    </div>
+                    <Stack gap="1">
+                      <CardTitle>{project.name}</CardTitle>
+                    </Stack>
                   </div>
-                  <Stack gap="1">
-                    <CardTitle>{project.name}</CardTitle>
-                  </Stack>
+                  <Badge variant={project.statusVariant}>{project.status}</Badge>
                 </div>
-                <Badge variant={project.statusVariant}>{project.status}</Badge>
-              </div>
-              <CardDescription>{project.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <UsersIcon className="size-4" />
-                  <span>{project.members} members</span>
+                <CardDescription>{project.description}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <UsersIcon className="size-4" />
+                    <span>{project.members} members</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <CalendarIcon className="size-4" />
+                    <span>{project.dueDate}</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1">
-                  <CalendarIcon className="size-4" />
-                  <span>{project.dueDate}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </Link>
         ))}
       </div>
     </Stack>

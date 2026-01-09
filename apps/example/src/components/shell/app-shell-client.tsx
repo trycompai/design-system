@@ -72,7 +72,7 @@ function ProjectSelector() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger>
         <button
           type="button"
           className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium hover:bg-background/50 transition-colors"
@@ -168,7 +168,7 @@ function NotificationsPopover() {
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger>
         <Button variant="ghost" size="icon-sm">
           <div className="relative">
             <BellIcon />
@@ -253,7 +253,7 @@ function UserMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger>
         <Button variant="ghost" size="icon-sm">
           <Avatar size="sm">
             <AvatarImage src="https://github.com/shadcn.png" />
@@ -268,18 +268,18 @@ function UserMenu() {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link href="/settings">
+          <Link href="/settings">
+            <DropdownMenuItem>
               <UserIcon />
               Profile
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href="/settings">
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/settings">
+            <DropdownMenuItem>
               <SettingsIcon />
               Settings
-            </Link>
-          </DropdownMenuItem>
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <div className="flex items-center justify-between px-2 py-1.5">
@@ -331,7 +331,7 @@ interface SidebarNavItemProps {
 
 function SidebarNavItem({ item, isActive }: SidebarNavItemProps) {
   return (
-    <Link href={item.href} passHref legacyBehavior>
+    <Link href={item.href}>
       <AppShellNavItem icon={item.icon} isActive={isActive}>
         {item.label}
       </AppShellNavItem>
@@ -373,7 +373,7 @@ export function AppShellClient({ children }: AppShellClientProps) {
       <AppShellBody>
         <AppShellRail>
           {railItems.map((item) => (
-            <Link key={item.id} href={item.href} passHref legacyBehavior>
+            <Link key={item.id} href={item.href}>
               <AppShellRailItem
                 icon={item.icon}
                 label={item.label}

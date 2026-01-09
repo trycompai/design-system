@@ -89,7 +89,7 @@ function getRoleBadgeVariant(role: string) {
   }
 }
 
-export function TeamPage() {
+export default function TeamPage() {
   return (
     <Stack gap="6">
       <div className="flex items-center justify-between">
