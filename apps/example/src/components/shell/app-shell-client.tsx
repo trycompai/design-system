@@ -174,7 +174,7 @@ function NotificationsPopover() {
         </div>
       </PopoverTrigger>
       <PopoverContent align="end" style={{ width: '320px', padding: 0 }}>
-        <div className="p-3 border-b border-border">
+        <div className="px-3 py-2 border-b border-border">
           <HStack justify="between" align="center">
             <Text weight="semibold">Notifications</Text>
             {unreadCount > 0 && (
@@ -186,30 +186,30 @@ function NotificationsPopover() {
           {notifications.map((notification) => (
             <div
               key={notification.id}
-              className={`p-3 border-b border-border last:border-0 hover:bg-muted/50 cursor-pointer ${
+              className={`px-3 py-2.5 border-b border-border last:border-0 hover:bg-muted/50 cursor-pointer ${
                 notification.unread ? 'bg-primary/5' : ''
               }`}
             >
               <HStack justify="between" align="start">
-                <Stack gap="xs">
+                <Stack gap="none">
                   <Text size="sm" weight="medium">
                     {notification.title}
                   </Text>
                   <Text size="sm" variant="muted">
                     {notification.description}
                   </Text>
+                  <Text size="xs" variant="muted" className="mt-0.5">
+                    {notification.time}
+                  </Text>
                 </Stack>
                 {notification.unread && (
-                  <div className="size-2 rounded-full bg-primary mt-1.5" />
+                  <div className="size-2 rounded-full bg-primary mt-1" />
                 )}
               </HStack>
-              <Text size="xs" variant="muted">
-                {notification.time}
-              </Text>
             </div>
           ))}
         </div>
-        <div className="p-2 border-t border-border">
+        <div className="px-2 py-1.5 border-t border-border">
           <Button variant="ghost" size="sm">
             View all notifications
           </Button>
