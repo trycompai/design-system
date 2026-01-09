@@ -12,6 +12,7 @@ import {
   AppShellRail,
   AppShellRailItem,
   AppShellSidebar,
+  AppShellSidebarHeader,
   AppShellUserMenu,
   Avatar,
   AvatarFallback,
@@ -38,7 +39,6 @@ import {
   Stack,
   Text,
   ThemeToggle,
-  useAppShell,
 } from '@trycompai/design-system';
 import {
   BellIcon,
@@ -51,7 +51,6 @@ import {
   KeyIcon,
   LayoutDashboardIcon,
   LogOutIcon,
-  PanelLeftIcon,
   PieChartIcon,
   SettingsIcon,
   ShieldCheckIcon,
@@ -179,33 +178,37 @@ const searchGroups = [
   },
 ];
 
-const SidebarNav = () => {
-  const { toggleSidebar } = useAppShell();
-  return (
-    <>
-      <AppShellNav>
-        <AppShellNavGroup label="Getting started">
-          <AppShellNavItem icon={<HomeIcon />} isActive>Overview</AppShellNavItem>
-          <AppShellNavItem icon={<BookOpenIcon />}>Quickstart</AppShellNavItem>
-        </AppShellNavGroup>
-        <AppShellNavGroup label="Build">
-          <AppShellNavItem icon={<LayoutDashboardIcon />}>Dashboard</AppShellNavItem>
-          <AppShellNavItem icon={<KeyIcon />}>API Keys</AppShellNavItem>
-          <AppShellNavItem icon={<UsersIcon />}>Team</AppShellNavItem>
-          <AppShellNavItem icon={<SettingsIcon />}>Settings</AppShellNavItem>
-        </AppShellNavGroup>
-      </AppShellNav>
-      <AppShellNavFooter>
-        <AppShellNavItem icon={<BookOpenIcon />}>Docs</AppShellNavItem>
-        <AppShellNavItem icon={<CodeIcon />}>API reference</AppShellNavItem>
-        <AppShellNavItem icon={<PanelLeftIcon />} onClick={toggleSidebar}>Collapse</AppShellNavItem>
-      </AppShellNavFooter>
-    </>
-  );
-};
+const SidebarNav = () => (
+  <>
+    <AppShellSidebarHeader
+      icon={<ShieldCheckIcon />}
+      title="Compliance"
+    />
+    <AppShellNav>
+      <AppShellNavGroup label="Getting started">
+        <AppShellNavItem icon={<HomeIcon />} isActive>Overview</AppShellNavItem>
+        <AppShellNavItem icon={<BookOpenIcon />}>Quickstart</AppShellNavItem>
+      </AppShellNavGroup>
+      <AppShellNavGroup label="Build">
+        <AppShellNavItem icon={<LayoutDashboardIcon />}>Dashboard</AppShellNavItem>
+        <AppShellNavItem icon={<KeyIcon />}>API Keys</AppShellNavItem>
+        <AppShellNavItem icon={<UsersIcon />}>Team</AppShellNavItem>
+        <AppShellNavItem icon={<SettingsIcon />}>Settings</AppShellNavItem>
+      </AppShellNavGroup>
+    </AppShellNav>
+    <AppShellNavFooter>
+      <AppShellNavItem icon={<BookOpenIcon />}>Docs</AppShellNavItem>
+      <AppShellNavItem icon={<CodeIcon />}>API reference</AppShellNavItem>
+    </AppShellNavFooter>
+  </>
+);
 
 const RailSidebarNav = () => (
   <>
+    <AppShellSidebarHeader
+      icon={<UsersIcon />}
+      title="HR"
+    />
     <AppShellNav>
       <AppShellNavGroup label="HR">
         <AppShellNavItem icon={<UsersIcon />} isActive>Employees</AppShellNavItem>

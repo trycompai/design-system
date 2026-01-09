@@ -446,6 +446,17 @@ function AppShellUserMenu({ children, ...props }: AppShellUserMenuProps) {
 
 // ============ NAV COMPONENTS ============
 
+interface AppShellSidebarHeaderProps extends Omit<React.ComponentProps<'div'>, 'className'> {
+  /** Icon for the current app/context */
+  icon?: React.ReactNode;
+  /** Title of the current app/context */
+  title: string;
+  /** Optional description or subtitle */
+  description?: string;
+  /** Optional action element (e.g., dropdown, button) */
+  action?: React.ReactNode;
+}
+
 interface AppShellNavProps extends Omit<React.ComponentProps<'nav'>, 'className'> {}
 
 interface AppShellNavGroupProps extends Omit<React.ComponentProps<'div'>, 'className'> {
@@ -458,6 +469,57 @@ interface AppShellNavItemProps extends Omit<React.ComponentProps<'button'>, 'cla
 }
 
 interface AppShellNavFooterProps extends Omit<React.ComponentProps<'div'>, 'className'> {}
+
+function AppShellSidebarHeader({ icon, title, description, action, children, ...props }: AppShellSidebarHeaderProps) {
+  return (
+    <div
+      data-slot="app-shell-sidebar-header"
+      className={[
+        'flex items-center gap-3 px-2 py-2 mb-2 border-b',
+        'border-border/40',
+        '[[data-variant=primary]_&]:border-primary-foreground/20',
+      ].join(' ')}
+      {...props}
+    >
+      {icon && (
+        <span
+          className={[
+            'flex size-8 items-center justify-center rounded-lg shrink-0',
+            'bg-muted text-foreground',
+            '[[data-variant=primary]_&]:bg-primary-foreground/20 [[data-variant=primary]_&]:text-primary-foreground',
+            '[&>svg]:size-4',
+          ].join(' ')}
+        >
+          {icon}
+        </span>
+      )}
+      <div className="flex-1 min-w-0">
+        <div
+          className={[
+            'font-semibold text-sm truncate',
+            'text-foreground',
+            '[[data-variant=primary]_&]:text-primary-foreground',
+          ].join(' ')}
+        >
+          {title}
+        </div>
+        {description && (
+          <div
+            className={[
+              'text-xs truncate',
+              'text-muted-foreground',
+              '[[data-variant=primary]_&]:text-primary-foreground/70',
+            ].join(' ')}
+          >
+            {description}
+          </div>
+        )}
+      </div>
+      {action && <div className="shrink-0">{action}</div>}
+      {children}
+    </div>
+  );
+}
 
 function AppShellNav({ children, ...props }: AppShellNavProps) {
   return (
@@ -557,6 +619,7 @@ export {
   AppShellRailItem,
   AppShellSearch,
   AppShellSidebar,
+  AppShellSidebarHeader,
   AppShellUserMenu,
   appShellContentVariants,
   appShellNavbarVariants,
