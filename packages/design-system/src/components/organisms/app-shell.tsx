@@ -338,15 +338,21 @@ function AppShellRailItem({ isActive, icon, label, ...props }: AppShellRailItemP
     <button
       data-slot="app-shell-rail-item"
       data-active={isActive}
-      className={`flex size-10 items-center justify-center rounded-md transition-colors ${
+      className={`relative flex size-10 items-center justify-center rounded-md transition-all duration-200 cursor-pointer ${
         isActive
-          ? 'bg-background text-foreground shadow-sm'
+          ? 'bg-primary/10 text-primary'
           : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
       }`}
       title={label}
       aria-label={label}
       {...props}
     >
+      {/* Active indicator pill */}
+      <span
+        className={`absolute left-0 w-1 rounded-full bg-primary transition-all duration-200 ease-out ${
+          isActive ? 'h-6 opacity-100' : 'h-0 opacity-0'
+        }`}
+      />
       <span className="size-5 [&>svg]:size-5">{icon}</span>
     </button>
   );
