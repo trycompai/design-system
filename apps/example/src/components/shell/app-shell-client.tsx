@@ -72,11 +72,11 @@ function ProjectSelector() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <span className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium hover:bg-background/50 transition-colors">
-          {currentProject.name}
-          <ChevronDownIcon className="size-3 text-muted-foreground" />
-        </span>
+      <DropdownMenuTrigger
+        render={<span className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium hover:bg-background/50 transition-colors cursor-pointer" />}
+      >
+        {currentProject.name}
+        <ChevronDownIcon className="size-3 text-muted-foreground" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" style={{ minWidth: '220px' }}>
         <DropdownMenuLabel>Projects</DropdownMenuLabel>
@@ -165,17 +165,17 @@ function NotificationsPopover() {
 
   return (
     <Popover>
-      <PopoverTrigger>
-        <span className="inline-flex size-7 items-center justify-center rounded-md hover:bg-muted transition-colors cursor-pointer">
-          <div className="relative">
-            <BellIcon className="size-4" />
-            {unreadCount > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 size-3.5 rounded-full bg-destructive text-[9px] font-medium text-white flex items-center justify-center">
-                {unreadCount}
-              </span>
-            )}
-          </div>
-        </span>
+      <PopoverTrigger
+        render={<span className="inline-flex size-7 items-center justify-center rounded-md hover:bg-muted transition-colors cursor-pointer" />}
+      >
+        <div className="relative">
+          <BellIcon className="size-4" />
+          {unreadCount > 0 && (
+            <span className="absolute -top-1.5 -right-1.5 size-3.5 rounded-full bg-destructive text-[9px] font-medium text-white flex items-center justify-center">
+              {unreadCount}
+            </span>
+          )}
+        </div>
       </PopoverTrigger>
       <PopoverContent align="end" style={{ width: '320px', padding: 0 }}>
         <div className="p-3 border-b border-border">
@@ -250,13 +250,13 @@ function UserMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <span className="inline-flex size-7 items-center justify-center rounded-full hover:bg-muted transition-colors cursor-pointer">
-          <Avatar size="sm">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>JD</AvatarFallback>
-          </Avatar>
-        </span>
+      <DropdownMenuTrigger
+        render={<span className="inline-flex size-7 items-center justify-center rounded-full hover:bg-muted transition-colors cursor-pointer" />}
+      >
+        <Avatar size="sm">
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>JD</AvatarFallback>
+        </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" style={{ minWidth: '200px' }}>
         <div className="px-2 py-1.5">
