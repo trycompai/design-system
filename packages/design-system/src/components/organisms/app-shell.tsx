@@ -3,6 +3,7 @@ import { ChevronRightIcon, PanelLeftIcon, SearchIcon } from 'lucide-react';
 import * as React from 'react';
 
 import { Kbd } from '../atoms/kbd';
+import { Stack } from '../atoms/stack';
 import { AIChat } from '../molecules/ai-chat';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../molecules/input-group';
 
@@ -620,7 +621,7 @@ function AppShellNavGroup({ label, children, ...props }: AppShellNavGroupProps) 
           {label}
         </div>
       )}
-      <div className="space-y-1.5">{children}</div>
+      <Stack gap="1">{children}</Stack>
     </div>
   );
 }
