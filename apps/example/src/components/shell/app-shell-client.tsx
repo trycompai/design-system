@@ -72,15 +72,13 @@ function ProjectSelector() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        render={<span className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium hover:bg-background/50 transition-colors cursor-pointer" />}
-      >
+      <DropdownMenuTrigger className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium hover:bg-background/50 transition-colors">
         {currentProject.name}
         <ChevronDownIcon className="size-3 text-muted-foreground" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" style={{ minWidth: '220px' }}>
-        <DropdownMenuLabel>Projects</DropdownMenuLabel>
         <DropdownMenuGroup>
+          <DropdownMenuLabel>Projects</DropdownMenuLabel>
           {projects.map((project) => (
             <DropdownMenuItem
               key={project.id}
@@ -165,9 +163,7 @@ function NotificationsPopover() {
 
   return (
     <Popover>
-      <PopoverTrigger
-        render={<span className="inline-flex size-7 items-center justify-center rounded-md hover:bg-muted transition-colors cursor-pointer" />}
-      >
+      <PopoverTrigger className="inline-flex size-7 items-center justify-center rounded-md hover:bg-muted transition-colors cursor-pointer">
         <div className="relative">
           <BellIcon className="size-4" />
           {unreadCount > 0 && (
@@ -250,11 +246,9 @@ function UserMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        render={<span className="inline-flex size-7 items-center justify-center rounded-full hover:bg-muted transition-colors cursor-pointer" />}
-      >
+      <DropdownMenuTrigger className="inline-flex size-7 items-center justify-center rounded-full hover:bg-muted transition-colors cursor-pointer">
         <Avatar size="sm">
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage src="https://i.pravatar.cc/150?u=john@example.com" />
           <AvatarFallback>JD</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

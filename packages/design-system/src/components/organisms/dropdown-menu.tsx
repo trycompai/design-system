@@ -3,6 +3,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 import { CheckIcon, ChevronRightIcon } from 'lucide-react';
+import { cn } from '../../../lib/utils';
 
 function DropdownMenu({ ...props }: MenuPrimitive.Root.Props) {
   return <MenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
@@ -29,13 +30,14 @@ const dropdownMenuTriggerVariants = cva('', {
 
 function DropdownMenuTrigger({
   variant = 'default',
+  className,
   ...props
-}: Omit<MenuPrimitive.Trigger.Props, 'className'> &
+}: MenuPrimitive.Trigger.Props &
   VariantProps<typeof dropdownMenuTriggerVariants>) {
   return (
     <MenuPrimitive.Trigger
       data-slot="dropdown-menu-trigger"
-      className={dropdownMenuTriggerVariants({ variant })}
+      className={cn(dropdownMenuTriggerVariants({ variant }), className)}
       {...props}
     />
   );
