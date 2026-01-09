@@ -1,4 +1,5 @@
 export * from './accordion';
+export * from './ai-chat';
 export * from './alert';
 export * from './breadcrumb';
 export * from './button-group';

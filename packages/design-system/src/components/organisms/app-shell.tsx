@@ -3,6 +3,7 @@ import { ChevronRightIcon, PanelLeftIcon, SearchIcon } from 'lucide-react';
 import * as React from 'react';
 
 import { Kbd } from '../atoms/kbd';
+import { AIChat } from '../molecules/ai-chat';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../molecules/input-group';
 
 // ============ CONTEXT ============
@@ -16,6 +17,15 @@ type AppShellContextProps = {
   mobileDrawerOpen: boolean;
   setMobileDrawerOpen: (open: boolean) => void;
   toggleMobileDrawer: () => void;
+  /** Rail content for mobile drawer */
+  railContent: React.ReactNode;
+  setRailContent: (content: React.ReactNode) => void;
+  /** Sidebar content for mobile drawer */
+  sidebarContent: React.ReactNode;
+  setSidebarContent: (content: React.ReactNode) => void;
+  /** Sidebar variant for mobile drawer styling */
+  sidebarVariant: 'default' | 'muted' | 'primary';
+  setSidebarVariant: (variant: 'default' | 'muted' | 'primary') => void;
 };
 
 const AppShellContext = React.createContext<AppShellContextProps | null>(null);
@@ -106,6 +116,10 @@ interface AppShellProps extends Omit<React.ComponentProps<'div'>, 'className'> {
   sidebarOpen?: boolean;
   /** Callback when sidebar state changes */
   onSidebarOpenChange?: (open: boolean) => void;
+  /** Show the floating AI chat button */
+  showAIChat?: boolean;
+  /** Custom content for the AI chat panel */
+  aiChatContent?: React.ReactNode;
 }
 
 interface AppShellNavbarProps
@@ -162,6 +176,8 @@ function AppShell({
   defaultSidebarOpen = true,
   sidebarOpen: sidebarOpenProp,
   onSidebarOpenChange,
+  showAIChat = false,
+  aiChatContent,
   children,
   ...props
 }: AppShellProps) {
@@ -171,6 +187,11 @@ function AppShell({
 
   // Mobile drawer state (always starts closed)
   const [mobileDrawerOpen, setMobileDrawerOpen] = React.useState(false);
+
+  // Content for mobile drawer (populated by Rail and Sidebar components)
+  const [railContent, setRailContent] = React.useState<React.ReactNode>(null);
+  const [sidebarContent, setSidebarContent] = React.useState<React.ReactNode>(null);
+  const [sidebarVariant, setSidebarVariant] = React.useState<'default' | 'muted' | 'primary'>('default');
 
   const setSidebarOpen = React.useCallback(
     (open: boolean) => {
@@ -191,12 +212,18 @@ function AppShell({
     setMobileDrawerOpen(!mobileDrawerOpen);
   }, [mobileDrawerOpen]);
 
-  // Listen for Cmd+\ to toggle sidebar
+  // Listen for Cmd+\ to toggle sidebar (desktop) or mobile drawer
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === '\\' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setSidebarOpen(!sidebarOpen);
+        // Check if we're on mobile (md breakpoint is 768px)
+        const isMobile = window.matchMedia('(max-width: 767px)').matches;
+        if (isMobile) {
+          setMobileDrawerOpen((prev) => !prev);
+        } else {
+          setSidebarOpen(!sidebarOpen);
+        }
       }
     };
 
@@ -212,8 +239,14 @@ function AppShell({
       mobileDrawerOpen,
       setMobileDrawerOpen,
       toggleMobileDrawer,
+      railContent,
+      setRailContent,
+      sidebarContent,
+      setSidebarContent,
+      sidebarVariant,
+      setSidebarVariant,
     }),
-    [sidebarOpen, setSidebarOpen, toggleSidebar, mobileDrawerOpen, toggleMobileDrawer],
+    [sidebarOpen, setSidebarOpen, toggleSidebar, mobileDrawerOpen, toggleMobileDrawer, railContent, sidebarContent, sidebarVariant],
   );
 
   return (
@@ -225,6 +258,7 @@ function AppShell({
         {...props}
       >
         {children}
+        {showAIChat && <AIChat>{aiChatContent}</AIChat>}
       </div>
     </AppShellContext.Provider>
   );
@@ -285,8 +319,43 @@ function AppShellNavbar({
 }
 
 function AppShellBody({ children, ...props }: AppShellBodyProps) {
+  const { mobileDrawerOpen, setMobileDrawerOpen, railContent, sidebarContent, sidebarVariant } = useAppShell();
+
   return (
     <div data-slot="app-shell-body" className="flex flex-1 overflow-hidden bg-background/50 min-h-0 gap-0" {...props}>
+      {/* Mobile drawer - shows both rail and sidebar */}
+      <div className="md:hidden">
+        {/* Backdrop */}
+        {mobileDrawerOpen && (
+          <div
+            className="fixed inset-0 z-40 bg-black/50"
+            onClick={() => setMobileDrawerOpen(false)}
+          />
+        )}
+        {/* Drawer panel */}
+        <div
+          data-slot="app-shell-mobile-drawer"
+          className={`fixed inset-y-0 left-0 z-50 flex transform transition-transform duration-200 ease-in-out ${
+            mobileDrawerOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+        >
+          {/* Rail section - only show if there are rail items */}
+          {railContent && (
+            <div className="flex flex-col items-center w-16 shrink-0 py-3 gap-1 bg-muted border-r border-border/40">
+              {railContent}
+            </div>
+          )}
+          {/* Sidebar section */}
+          <div
+            data-variant={sidebarVariant}
+            className={`flex flex-col w-64 p-2 ${
+              sidebarVariant === 'primary' ? 'bg-primary' : sidebarVariant === 'muted' ? 'bg-muted' : 'bg-background'
+            }`}
+          >
+            {sidebarContent}
+          </div>
+        </div>
+      </div>
       {children}
     </div>
   );
@@ -306,7 +375,13 @@ function AppShellMain({ children, ...props }: Omit<React.ComponentProps<'div'>, 
 }
 
 function AppShellRail({ showSidebarToggle = true, children, ...props }: AppShellRailProps) {
-  const { sidebarOpen, toggleSidebar } = useAppShell();
+  const { sidebarOpen, toggleSidebar, setRailContent } = useAppShell();
+
+  // Register rail content for mobile drawer
+  React.useEffect(() => {
+    setRailContent(children);
+    return () => setRailContent(null);
+  }, [children, setRailContent]);
 
   return (
     <div
@@ -367,29 +442,21 @@ function AppShellSidebar({
   children,
   ...props
 }: AppShellSidebarProps) {
-  const { sidebarOpen, mobileDrawerOpen, setMobileDrawerOpen } = useAppShell();
+  const { sidebarOpen, setSidebarContent, setSidebarVariant } = useAppShell();
   const isCollapsed = collapsible && !sidebarOpen;
+
+  // Register sidebar content and variant for mobile drawer
+  React.useEffect(() => {
+    setSidebarContent(children);
+    setSidebarVariant(variant ?? 'default');
+    return () => {
+      setSidebarContent(null);
+      setSidebarVariant('default');
+    };
+  }, [children, variant, setSidebarContent, setSidebarVariant]);
 
   return (
     <>
-      {/* Mobile overlay backdrop */}
-      {mobileDrawerOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
-          onClick={() => setMobileDrawerOpen(false)}
-        />
-      )}
-      {/* Mobile sidebar - slide over */}
-      <aside
-        data-slot="app-shell-sidebar-mobile"
-        data-variant={variant}
-        className={`fixed inset-y-0 left-0 z-50 w-64 p-2 transform transition-transform duration-200 ease-in-out md:hidden ${
-          variant === 'primary' ? 'bg-primary' : 'bg-muted'
-        } ${mobileDrawerOpen ? 'translate-x-0' : '-translate-x-full'}`}
-        {...props}
-      >
-        {children}
-      </aside>
       {/* Desktop sidebar - always rendered, animated collapse */}
       <aside
         data-slot="app-shell-sidebar"
@@ -493,8 +560,8 @@ function AppShellSidebarHeader({ icon, title, description, action, children, ...
         <span
           className={[
             'flex size-8 items-center justify-center rounded-lg shrink-0',
-            'bg-muted text-foreground',
-            '[[data-variant=primary]_&]:bg-primary-foreground/20 [[data-variant=primary]_&]:text-primary-foreground',
+            'bg-muted/50 dark:bg-muted text-foreground',
+            '[[data-variant=primary]_&]:bg-primary-foreground/15 [[data-variant=primary]_&]:text-primary-foreground',
             '[&>svg]:size-4',
           ].join(' ')}
         >
@@ -572,18 +639,18 @@ function AppShellNavItem({ isActive, icon, children, ...props }: AppShellNavItem
         // Base styles for default/muted sidebar variants
         isActive
           ? [
-              // Active state - default variant (white bg sidebar): use muted bg
-              '[[data-variant=default]_&]:bg-muted [[data-variant=default]_&]:text-foreground',
+              // Active state - default variant: softer in light, stronger in dark
+              '[[data-variant=default]_&]:bg-muted/50 [[data-variant=default]_&]:dark:bg-muted [[data-variant=default]_&]:text-foreground',
               // Active state - muted variant (gray bg sidebar): use white bg
               '[[data-variant=muted]_&]:bg-background [[data-variant=muted]_&]:text-foreground [[data-variant=muted]_&]:shadow-sm',
               // Active state - primary variant: use white/10 overlay
-              '[[data-variant=primary]_&]:bg-primary-foreground/20 [[data-variant=primary]_&]:text-primary-foreground',
+              '[[data-variant=primary]_&]:bg-primary-foreground/15 [[data-variant=primary]_&]:text-primary-foreground',
               'font-medium',
             ].join(' ')
           : [
               // Inactive - default/muted variants
               'text-muted-foreground hover:text-foreground',
-              '[[data-variant=default]_&]:hover:bg-muted/60',
+              '[[data-variant=default]_&]:hover:bg-muted/30 [[data-variant=default]_&]:dark:hover:bg-muted/60',
               '[[data-variant=muted]_&]:hover:bg-background/60',
               // Inactive - primary variant
               '[[data-variant=primary]_&]:text-primary-foreground/70 [[data-variant=primary]_&]:hover:text-primary-foreground [[data-variant=primary]_&]:hover:bg-primary-foreground/10',

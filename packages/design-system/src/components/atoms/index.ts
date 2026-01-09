@@ -8,6 +8,7 @@ export * from './heading';
 export * from './input';
 export * from './kbd';
 export * from './label';
+export * from './logo';
 export * from './progress';
 export * from './separator';
 export * from './skeleton';

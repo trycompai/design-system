@@ -2,6 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 import { cn } from '../../../lib/utils';
+import { Stack } from '../atoms/stack';
 
 const pageLayoutVariants = cva('min-h-dvh bg-background text-foreground', {
   variants: {
@@ -45,6 +46,8 @@ interface PageLayoutProps
   container?: boolean;
   /** Max width of the container. Only applies when container is true. */
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  /** Vertical gap between children. Defaults to 'lg' (gap-6). */
+  gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '0' | '1' | '2' | '3' | '4' | '6' | '8';
 }
 
 function PageLayout({
@@ -52,11 +55,18 @@ function PageLayout({
   padding,
   container = true,
   maxWidth,
+  gap = 'lg',
   children,
   ...props
 }: PageLayoutProps) {
   // For center variant, default to smaller max-width (sm) for auth-style pages
   const resolvedMaxWidth = maxWidth ?? (variant === 'center' ? 'sm' : 'lg');
+
+  const content = (
+    <Stack gap={gap}>
+      {children}
+    </Stack>
+  );
 
   return (
     <div
@@ -73,10 +83,10 @@ function PageLayout({
             variant === 'center' && 'flex items-center justify-center'
           )}
         >
-          {children}
+          {content}
         </div>
       ) : (
-        children
+        content
       )}
     </div>
   );

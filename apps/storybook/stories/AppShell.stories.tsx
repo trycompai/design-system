@@ -21,6 +21,7 @@ import {
   Button,
   Card,
   CardContent,
+  Checkbox,
   CommandSearch,
   DropdownMenu,
   DropdownMenuContent,
@@ -32,26 +33,34 @@ import {
   Grid,
   Heading,
   HStack,
+  Logo as CompLogo,
   PageHeader,
   PageHeaderActions,
   PageHeaderDescription,
   PageLayout,
+  Progress,
   Stack,
   Text,
   ThemeToggle,
 } from '@trycompai/design-system';
+import * as React from 'react';
 import {
+  AlertTriangleIcon,
   BellIcon,
   BookOpenIcon,
   BriefcaseIcon,
+  BuildingIcon,
   ChevronDownIcon,
+  ClipboardCheckIcon,
   CodeIcon,
   CreditCardIcon,
+  FileTextIcon,
   HomeIcon,
   KeyIcon,
   LayoutDashboardIcon,
   LogOutIcon,
   PieChartIcon,
+  PlugIcon,
   SettingsIcon,
   ShieldCheckIcon,
   UserIcon,
@@ -97,12 +106,6 @@ const OrgSelector = () => (
   </DropdownMenu>
 );
 
-const LogoIcon = () => (
-  <div className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground text-sm font-bold">
-    C
-  </div>
-);
-
 const ProjectSelector = () => (
   <DropdownMenu>
     <DropdownMenuTrigger>
@@ -110,7 +113,6 @@ const ProjectSelector = () => (
         type="button"
         className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium hover:bg-background/50 transition-colors"
       >
-        <div className="size-2 rounded-full bg-blue-500" />
         Acme Corp
         <ChevronDownIcon className="size-3 text-muted-foreground" />
       </button>
@@ -143,12 +145,29 @@ const ProjectSelector = () => (
   </DropdownMenu>
 );
 
-const Logo = () => (
-  <HStack gap="sm" align="center">
-    <LogoIcon />
-    <ProjectSelector />
-  </HStack>
-);
+const Logo = () => {
+  const [isDark, setIsDark] = React.useState(false);
+
+  React.useEffect(() => {
+    // Check initial state
+    setIsDark(document.documentElement.classList.contains('dark'));
+
+    // Watch for changes
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <HStack gap="xs" align="center">
+      <CompLogo style={{ height: 22, width: 'auto' }} variant={isDark ? 'light' : 'dark'} />
+      <Text variant="muted" className="pl-3 pr-1">/</Text>
+      <ProjectSelector />
+    </HStack>
+  );
+};
 
 const searchGroups = [
   {
@@ -189,16 +208,16 @@ const SidebarNav = () => (
         <AppShellNavItem icon={<HomeIcon />} isActive>Overview</AppShellNavItem>
         <AppShellNavItem icon={<BookOpenIcon />}>Quickstart</AppShellNavItem>
       </AppShellNavGroup>
-      <AppShellNavGroup label="Build">
-        <AppShellNavItem icon={<LayoutDashboardIcon />}>Dashboard</AppShellNavItem>
-        <AppShellNavItem icon={<KeyIcon />}>API Keys</AppShellNavItem>
-        <AppShellNavItem icon={<UsersIcon />}>Team</AppShellNavItem>
-        <AppShellNavItem icon={<SettingsIcon />}>Settings</AppShellNavItem>
+      <AppShellNavGroup label="Compliance">
+        <AppShellNavItem icon={<FileTextIcon />}>Policies</AppShellNavItem>
+        <AppShellNavItem icon={<ClipboardCheckIcon />}>Controls</AppShellNavItem>
+        <AppShellNavItem icon={<AlertTriangleIcon />}>Risks</AppShellNavItem>
+        <AppShellNavItem icon={<BuildingIcon />}>Vendors</AppShellNavItem>
+        <AppShellNavItem icon={<PlugIcon />}>Integrations</AppShellNavItem>
       </AppShellNavGroup>
     </AppShellNav>
     <AppShellNavFooter>
-      <AppShellNavItem icon={<BookOpenIcon />}>Docs</AppShellNavItem>
-      <AppShellNavItem icon={<CodeIcon />}>API reference</AppShellNavItem>
+      <AppShellNavItem icon={<SettingsIcon />}>Settings</AppShellNavItem>
     </AppShellNavFooter>
   </>
 );
@@ -225,43 +244,63 @@ const RailSidebarNav = () => (
   </>
 );
 
-const UserMenuDemo = () => (
-  <DropdownMenu>
-    <DropdownMenuTrigger>
-      <Button variant="ghost" size="icon-sm">
-        <Avatar size="sm">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>JD</AvatarFallback>
-        </Avatar>
-      </Button>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent align="end">
-      <DropdownMenuGroup>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+const UserMenuDemo = () => {
+  const [isDark, setIsDark] = React.useState(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.classList.contains('dark');
+    }
+    return false;
+  });
+
+  const handleThemeChange = (dark: boolean) => {
+    setIsDark(dark);
+    if (typeof document !== 'undefined') {
+      if (dark) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Button variant="ghost" size="icon-sm">
+          <Avatar size="sm">
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>JD</AvatarFallback>
+          </Avatar>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuItem>
+            <UserIcon />
+            Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <SettingsIcon />
+            Settings
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <div className="flex items-center justify-between px-2 py-1.5">
+            <Text size="sm">Theme</Text>
+            <ThemeToggle size="sm" isDark={isDark} onChange={handleThemeChange} />
+          </div>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <UserIcon />
-          Profile
+          <LogOutIcon />
+          Log out
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <SettingsIcon />
-          Settings
-        </DropdownMenuItem>
-      </DropdownMenuGroup>
-      <DropdownMenuSeparator />
-      <DropdownMenuGroup>
-        <div className="flex items-center justify-between px-2 py-1.5">
-          <Text size="sm">Theme</Text>
-          <ThemeToggle size="sm" />
-        </div>
-      </DropdownMenuGroup>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem>
-        <LogOutIcon />
-        Log out
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
-);
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
 
 export const Default: Story = {
   render: () => (
@@ -289,14 +328,58 @@ export const Default: Story = {
           <AppShellSidebar collapsible>
             <SidebarNav />
           </AppShellSidebar>
-          <AppShellContent>
-            <PageHeader title="Compliance">
-              <PageHeaderDescription>Monitor and manage your compliance posture.</PageHeaderDescription>
-              <PageHeaderActions>
-                <Button>Run Assessment</Button>
-              </PageHeaderActions>
-            </PageHeader>
-            <Text>Use <strong>⌘\</strong> to toggle the sidebar.</Text>
+          <AppShellContent padding="none">
+            <PageLayout padding="default" container={false}>
+              <PageHeader title="Overview">
+                <PageHeaderDescription>Track your progress towards SOC 2 compliance.</PageHeaderDescription>
+              </PageHeader>
+
+              {/* SOC 2 Progress Section */}
+              <Stack gap="md">
+                <HStack justify="between" align="center">
+                  <Heading level="3">SOC 2 Type II</Heading>
+                  <Badge>In Progress</Badge>
+                </HStack>
+                <Stack gap="sm">
+                  <HStack justify="between" align="baseline">
+                    <HStack align="baseline" gap="xs">
+                      <Text size="lg" weight="semibold">67%</Text>
+                      <Text variant="muted" size="sm">complete</Text>
+                    </HStack>
+                    <Text variant="muted" size="sm">98 of 146 controls</Text>
+                  </HStack>
+                  <Progress value={67} />
+                </Stack>
+              </Stack>
+
+              {/* Next Steps Section */}
+              <Stack gap="md">
+                <Heading level="3">Next steps</Heading>
+                <Stack gap="none">
+                  <div className="flex items-start gap-3 py-3 border-b border-border/40">
+                    <Checkbox />
+                    <Stack gap="none">
+                      <Text size="sm" weight="medium">Complete security awareness training</Text>
+                      <Text variant="muted" size="xs">3 team members haven't completed annual training</Text>
+                    </Stack>
+                  </div>
+                  <div className="flex items-start gap-3 py-3 border-b border-border/40">
+                    <Checkbox />
+                    <Stack gap="none">
+                      <Text size="sm" weight="medium">Review and approve access policies</Text>
+                      <Text variant="muted" size="xs">2 policies pending approval from admin</Text>
+                    </Stack>
+                  </div>
+                  <div className="flex items-start gap-3 py-3">
+                    <Checkbox />
+                    <Stack gap="none">
+                      <Text size="sm" weight="medium">Connect your cloud infrastructure</Text>
+                      <Text variant="muted" size="xs">AWS and GCP integrations available</Text>
+                    </Stack>
+                  </div>
+                </Stack>
+              </Stack>
+            </PageLayout>
           </AppShellContent>
         </AppShellMain>
       </AppShellBody>
@@ -601,6 +684,56 @@ export const PrimarySidebar: Story = {
           </PageHeader>
           <Text>The primary variant creates a bold, branded look.</Text>
         </AppShellContent>
+      </AppShellBody>
+    </AppShell>
+  ),
+};
+
+export const WithAIChat: Story = {
+  render: () => (
+    <AppShell showAIChat>
+      <AppShellNavbar
+        showSidebarToggle={false}
+        startContent={<Logo />}
+        centerContent={<CommandSearch groups={searchGroups} placeholder="Search..." />}
+        endContent={
+          <AppShellUserMenu>
+            <Button variant="ghost" size="icon-sm">
+              <BellIcon />
+            </Button>
+            <UserMenuDemo />
+          </AppShellUserMenu>
+        }
+      />
+      <AppShellBody>
+        <AppShellRail>
+          <AppShellRailItem icon={<ShieldCheckIcon />} label="Compliance" isActive />
+          <AppShellRailItem icon={<KeyIcon />} label="Cybersecurity" />
+          <AppShellRailItem icon={<LayoutDashboardIcon />} label="App Browser" />
+        </AppShellRail>
+        <AppShellMain>
+          <AppShellSidebar collapsible>
+            <SidebarNav />
+          </AppShellSidebar>
+          <AppShellContent padding="none">
+            <PageLayout padding="default" container={false}>
+              <PageHeader title="AI Assistant">
+                <PageHeaderDescription>Click the floating button in the bottom-right to open the AI chat.</PageHeaderDescription>
+              </PageHeader>
+
+              <Stack gap="md">
+                <Text>
+                  This example shows the optional AI chat feature. A floating sparkles button appears in the
+                  bottom-right corner. Click it to open a chat panel for AI-powered assistance.
+                </Text>
+                <Text variant="muted">
+                  The AI chat can be customized by passing content to the <code>aiChatContent</code> prop, or
+                  it will use a default chat interface.
+                </Text>
+              </Stack>
+            </PageLayout>
+          </AppShellContent>
+        </AppShellMain>
       </AppShellBody>
     </AppShell>
   ),

@@ -1,0 +1,122 @@
+'use client';
+
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Heading,
+  Stack,
+  Text,
+} from '@trycompai/design-system';
+import { PlusIcon, FolderIcon, UsersIcon, CalendarIcon } from 'lucide-react';
+
+const projects = [
+  {
+    id: 1,
+    name: 'Website Redesign',
+    description: 'Complete overhaul of the company website with new branding',
+    status: 'In Progress',
+    statusVariant: 'default' as const,
+    members: 5,
+    dueDate: 'Feb 15, 2024',
+  },
+  {
+    id: 2,
+    name: 'Mobile App v2.0',
+    description: 'Major update to the mobile application with new features',
+    status: 'On Track',
+    statusVariant: 'secondary' as const,
+    members: 8,
+    dueDate: 'Mar 1, 2024',
+  },
+  {
+    id: 3,
+    name: 'API Integration',
+    description: 'Integration with third-party payment providers',
+    status: 'At Risk',
+    statusVariant: 'outline' as const,
+    members: 3,
+    dueDate: 'Jan 30, 2024',
+  },
+  {
+    id: 4,
+    name: 'Security Audit',
+    description: 'Comprehensive security review and penetration testing',
+    status: 'Completed',
+    statusVariant: 'secondary' as const,
+    members: 2,
+    dueDate: 'Jan 10, 2024',
+  },
+  {
+    id: 5,
+    name: 'Data Migration',
+    description: 'Migrate legacy data to new cloud infrastructure',
+    status: 'Overdue',
+    statusVariant: 'destructive' as const,
+    members: 4,
+    dueDate: 'Jan 5, 2024',
+  },
+  {
+    id: 6,
+    name: 'Design System',
+    description: 'Build a comprehensive component library for the team',
+    status: 'In Progress',
+    statusVariant: 'default' as const,
+    members: 3,
+    dueDate: 'Apr 1, 2024',
+  },
+];
+
+export function ProjectsPage() {
+  return (
+    <Stack gap="6">
+      <div className="flex items-center justify-between">
+        <Stack gap="1">
+          <Heading level="1">Projects</Heading>
+          <Text variant="muted">Manage and track all your projects in one place.</Text>
+        </Stack>
+        <Button>
+          <PlusIcon />
+          New Project
+        </Button>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {projects.map((project) => (
+          <Card key={project.id}>
+            <CardHeader>
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
+                    <FolderIcon className="size-5 text-primary" />
+                  </div>
+                  <Stack gap="1">
+                    <CardTitle>{project.name}</CardTitle>
+                  </Stack>
+                </div>
+                <Badge variant={project.statusVariant}>{project.status}</Badge>
+              </div>
+              <CardDescription>{project.description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <UsersIcon className="size-4" />
+                  <span>{project.members} members</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <CalendarIcon className="size-4" />
+                  <span>{project.dueDate}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </Stack>
+  );
+}
