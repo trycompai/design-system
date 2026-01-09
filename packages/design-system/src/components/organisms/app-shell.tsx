@@ -428,14 +428,22 @@ function AppShellRail({ showSidebarToggle = true, children, ...props }: AppShell
     // Item center Y relative to container, minus half the indicator height (h-6 = 24px, so 12px)
     const top = itemRect.top - containerRect.top + (itemRect.height / 2) - 12;
 
-    // On first render, position instantly without animation
+    // On first render, position instantly but fade in gently
     if (isFirstRender.current) {
+      // Disable all transitions, set position, keep opacity at 0
       indicatorRef.current.style.transition = 'none';
       indicatorRef.current.style.top = `${top}px`;
-      indicatorRef.current.style.opacity = '1';
-      // Force reflow, then re-enable transitions
+      indicatorRef.current.style.opacity = '0';
+      // Force reflow
       indicatorRef.current.offsetHeight;
+      // Re-enable transitions, then fade in
       indicatorRef.current.style.transition = '';
+      // Use requestAnimationFrame to ensure the transition is applied
+      requestAnimationFrame(() => {
+        if (indicatorRef.current) {
+          indicatorRef.current.style.opacity = '1';
+        }
+      });
       isFirstRender.current = false;
     } else {
       indicatorRef.current.style.top = `${top}px`;
