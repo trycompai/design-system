@@ -46,24 +46,30 @@ const appShellNavbarVariants = cva(
   },
 );
 
+const sidebarWidths = {
+  sm: 'w-48',
+  default: 'w-64',
+  lg: 'w-72',
+  xl: 'w-80',
+} as const;
+
 const appShellSidebarVariants = cva(
-  'shrink-0 bg-background p-2 overflow-hidden hidden md:flex md:flex-col rounded-l-xl mt-2 mb-2 ml-2 border-r border-border',
+  'shrink-0 overflow-hidden hidden md:flex md:flex-col transition-[width,padding,opacity] duration-200 ease-in-out',
   {
     variants: {
-      width: {
-        sm: 'w-48',
-        default: 'w-64',
-        lg: 'w-72',
-        xl: 'w-80',
+      variant: {
+        default: 'bg-background border-r border-border/40',
+        muted: 'bg-muted border-r border-border/40',
+        primary: 'bg-primary border-r border-primary-foreground/10',
       },
     },
     defaultVariants: {
-      width: 'default',
+      variant: 'default',
     },
   },
 );
 
-const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background mt-2 mr-2 mb-2 rounded-r-xl min-h-0', {
+const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background min-h-0', {
   variants: {
     padding: {
       none: '',
@@ -118,6 +124,8 @@ interface AppShellNavbarProps
 interface AppShellSidebarProps
   extends Omit<React.ComponentProps<'aside'>, 'className'>,
     VariantProps<typeof appShellSidebarVariants> {
+  /** Width of the sidebar */
+  width?: keyof typeof sidebarWidths;
   /** Collapsible on mobile */
   collapsible?: boolean;
 }
@@ -278,7 +286,20 @@ function AppShellNavbar({
 
 function AppShellBody({ children, ...props }: AppShellBodyProps) {
   return (
-    <div data-slot="app-shell-body" className="flex flex-1 overflow-hidden bg-background/50 min-h-0" {...props}>
+    <div data-slot="app-shell-body" className="flex flex-1 overflow-hidden bg-background/50 min-h-0 gap-0" {...props}>
+      {children}
+    </div>
+  );
+}
+
+// Wrapper for sidebar + content that maintains consistent left edge
+function AppShellMain({ children, ...props }: Omit<React.ComponentProps<'div'>, 'className'>) {
+  return (
+    <div
+      data-slot="app-shell-main"
+      className="flex flex-1 min-h-0 ml-2 mr-2 mb-2 rounded-xl overflow-hidden bg-background"
+      {...props}
+    >
       {children}
     </div>
   );
@@ -333,11 +354,13 @@ function AppShellRailItem({ isActive, icon, label, ...props }: AppShellRailItemP
 
 function AppShellSidebar({
   width = 'default',
+  variant = 'default',
   collapsible = true,
   children,
   ...props
 }: AppShellSidebarProps) {
   const { sidebarOpen, mobileDrawerOpen, setMobileDrawerOpen } = useAppShell();
+  const isCollapsed = collapsible && !sidebarOpen;
 
   return (
     <>
@@ -351,23 +374,33 @@ function AppShellSidebar({
       {/* Mobile sidebar - slide over */}
       <aside
         data-slot="app-shell-sidebar-mobile"
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-muted p-2 transform transition-transform duration-200 ease-in-out md:hidden ${
-          mobileDrawerOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        data-variant={variant}
+        className={`fixed inset-y-0 left-0 z-50 w-64 p-2 transform transition-transform duration-200 ease-in-out md:hidden ${
+          variant === 'primary' ? 'bg-primary' : 'bg-muted'
+        } ${mobileDrawerOpen ? 'translate-x-0' : '-translate-x-full'}`}
         {...props}
       >
         {children}
       </aside>
-      {/* Desktop sidebar */}
-      {(!collapsible || sidebarOpen) && (
-        <aside
-          data-slot="app-shell-sidebar"
-          className={appShellSidebarVariants({ width })}
-          {...props}
+      {/* Desktop sidebar - always rendered, animated collapse */}
+      <aside
+        data-slot="app-shell-sidebar"
+        data-variant={variant}
+        data-collapsed={isCollapsed}
+        className={`${appShellSidebarVariants({ variant })} ${
+          isCollapsed ? 'w-0 p-0 border-0' : `${sidebarWidths[width]} p-2`
+        }`}
+        {...props}
+      >
+        {/* Inner container maintains width to prevent text squishing */}
+        <div
+          className={`flex flex-col h-full w-60 transition-opacity duration-100 ${
+            isCollapsed ? 'opacity-0' : 'opacity-100 delay-75'
+          }`}
         >
           {children}
-        </aside>
-      )}
+        </div>
+      </aside>
     </>
   );
 }
@@ -438,7 +471,15 @@ function AppShellNavGroup({ label, children, ...props }: AppShellNavGroupProps) 
   return (
     <div data-slot="app-shell-nav-group" {...props}>
       {label && (
-        <div className="px-2 pb-1 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+        <div
+          className={[
+            'px-2 pb-1 text-xs font-medium uppercase tracking-wider',
+            // Default & muted variants
+            'text-muted-foreground',
+            // Primary variant - light text
+            '[[data-variant=primary]_&]:text-primary-foreground/70',
+          ].join(' ')}
+        >
           {label}
         </div>
       )}
@@ -452,12 +493,35 @@ function AppShellNavItem({ isActive, icon, children, ...props }: AppShellNavItem
     <button
       data-slot="app-shell-nav-item"
       data-active={isActive}
-      className={`flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-background/60 ${
-        isActive ? 'bg-background text-foreground font-medium shadow-sm' : 'text-muted-foreground hover:text-foreground'
-      }`}
+      className={[
+        'flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-sm cursor-pointer',
+        // Smooth transitions for premium feel
+        'transition-all duration-150 ease-out',
+        // Subtle scale on hover for premium touch
+        'active:scale-[0.98]',
+        // Base styles for default/muted sidebar variants
+        isActive
+          ? [
+              // Active state - default variant (white bg sidebar): use muted bg
+              '[[data-variant=default]_&]:bg-muted [[data-variant=default]_&]:text-foreground',
+              // Active state - muted variant (gray bg sidebar): use white bg
+              '[[data-variant=muted]_&]:bg-background [[data-variant=muted]_&]:text-foreground [[data-variant=muted]_&]:shadow-sm',
+              // Active state - primary variant: use white/10 overlay
+              '[[data-variant=primary]_&]:bg-primary-foreground/20 [[data-variant=primary]_&]:text-primary-foreground',
+              'font-medium',
+            ].join(' ')
+          : [
+              // Inactive - default/muted variants
+              'text-muted-foreground hover:text-foreground',
+              '[[data-variant=default]_&]:hover:bg-muted/60',
+              '[[data-variant=muted]_&]:hover:bg-background/60',
+              // Inactive - primary variant
+              '[[data-variant=primary]_&]:text-primary-foreground/70 [[data-variant=primary]_&]:hover:text-primary-foreground [[data-variant=primary]_&]:hover:bg-primary-foreground/10',
+            ].join(' '),
+      ].join(' ')}
       {...props}
     >
-      {icon && <span className="size-4 shrink-0 [&>svg]:size-4">{icon}</span>}
+      {icon && <span className="size-4 shrink-0 [&>svg]:size-4 transition-transform duration-150 group-hover:scale-110">{icon}</span>}
       {children}
     </button>
   );
@@ -465,7 +529,15 @@ function AppShellNavItem({ isActive, icon, children, ...props }: AppShellNavItem
 
 function AppShellNavFooter({ children, ...props }: AppShellNavFooterProps) {
   return (
-    <div data-slot="app-shell-nav-footer" className="mt-auto border-t border-border/40 pt-2 space-y-1" {...props}>
+    <div
+      data-slot="app-shell-nav-footer"
+      className={[
+        'mt-auto border-t pt-2 space-y-1',
+        'border-border/40',
+        '[[data-variant=primary]_&]:border-primary-foreground/20',
+      ].join(' ')}
+      {...props}
+    >
       {children}
     </div>
   );
@@ -475,6 +547,7 @@ export {
   AppShell,
   AppShellBody,
   AppShellContent,
+  AppShellMain,
   AppShellNav,
   AppShellNavbar,
   AppShellNavFooter,

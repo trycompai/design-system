@@ -23,5 +23,6 @@ export * from './select';
 export * from './settings';
 export * from './table';
 export * from './tabs';
+export * from './theme-switcher';
 export * from './toggle-group';
 export * from './tooltip';

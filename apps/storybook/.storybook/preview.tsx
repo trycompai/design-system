@@ -16,6 +16,11 @@ const preview: Preview = {
         { name: 'dark', value: '#09090b' },
       ],
     },
+    options: {
+      storySort: {
+        order: ['Atoms', 'Molecules', 'Organisms', 'Layout', 'Pages'],
+      },
+    },
   },
   decorators: [
     (Story, context) => {

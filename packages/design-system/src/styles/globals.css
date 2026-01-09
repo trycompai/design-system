@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import '@fontsource-variable/plus-jakarta-sans';
 
 /* Include design system components in Tailwind's content scan */
 @source "../components/**/*.tsx";
@@ -14,8 +15,8 @@
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.6 0.13 163);
-    --primary-foreground: oklch(0.98 0.02 166);
+    --primary: oklch(0.596 0.145 163.225);
+    --primary-foreground: oklch(0.979 0.021 166.113);
     --secondary: oklch(0.967 0.001 286.375);
     --secondary-foreground: oklch(0.21 0.006 285.885);
     --muted: oklch(0.97 0 0);
@@ -29,16 +30,16 @@
     --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
     --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.85 0.13 165);
-    --chart-2: oklch(0.77 0.15 163);
-    --chart-3: oklch(0.7 0.15 162);
-    --chart-4: oklch(0.6 0.13 163);
-    --chart-5: oklch(0.51 0.1 166);
+    --chart-1: oklch(0.845 0.143 164.978);
+    --chart-2: oklch(0.765 0.177 163.223);
+    --chart-3: oklch(0.696 0.17 162.48);
+    --chart-4: oklch(0.596 0.145 163.225);
+    --chart-5: oklch(0.508 0.118 165.612);
     --radius: 0.45rem;
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.6 0.13 163);
-    --sidebar-primary-foreground: oklch(0.98 0.02 166);
+    --sidebar-primary: oklch(0.596 0.145 163.225);
+    --sidebar-primary-foreground: oklch(0.979 0.021 166.113);
     --sidebar-accent: oklch(0.97 0 0);
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
@@ -51,8 +52,8 @@
     --card-foreground: oklch(0.985 0 0);
     --popover: oklch(0.205 0 0);
     --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.7 0.15 162);
-    --primary-foreground: oklch(0.26 0.05 173);
+    --primary: oklch(0.696 0.17 162.48);
+    --primary-foreground: oklch(0.262 0.051 172.552);
     --secondary: oklch(0.274 0.006 286.033);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.269 0 0);
@@ -66,15 +67,15 @@
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
     --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.85 0.13 165);
-    --chart-2: oklch(0.77 0.15 163);
-    --chart-3: oklch(0.7 0.15 162);
-    --chart-4: oklch(0.6 0.13 163);
-    --chart-5: oklch(0.51 0.1 166);
+    --chart-1: oklch(0.845 0.143 164.978);
+    --chart-2: oklch(0.765 0.177 163.223);
+    --chart-3: oklch(0.696 0.17 162.48);
+    --chart-4: oklch(0.596 0.145 163.225);
+    --chart-5: oklch(0.508 0.118 165.612);
     --sidebar: oklch(0.205 0 0);
     --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.77 0.15 163);
-    --sidebar-primary-foreground: oklch(0.26 0.05 173);
+    --sidebar-primary: oklch(0.696 0.17 162.48);
+    --sidebar-primary-foreground: oklch(0.262 0.051 172.552);
     --sidebar-accent: oklch(0.269 0 0);
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
@@ -83,6 +84,7 @@
 }
 
 @theme inline {
+  --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

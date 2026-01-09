@@ -3,6 +3,7 @@ import {
   AppShell,
   AppShellBody,
   AppShellContent,
+  AppShellMain,
   AppShellNav,
   AppShellNavbar,
   AppShellNavFooter,
@@ -36,6 +37,7 @@ import {
   PageLayout,
   Stack,
   Text,
+  ThemeToggle,
   useAppShell,
 } from '@trycompai/design-system';
 import {
@@ -243,6 +245,13 @@ const UserMenuDemo = () => (
         </DropdownMenuItem>
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <div className="flex items-center justify-between px-2 py-1.5">
+          <Text size="sm">Theme</Text>
+          <ThemeToggle size="sm" />
+        </div>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
       <DropdownMenuItem>
         <LogOutIcon />
         Log out
@@ -268,18 +277,25 @@ export const Default: Story = {
         }
       />
       <AppShellBody>
-        <AppShellSidebar>
-          <SidebarNav />
-        </AppShellSidebar>
-        <AppShellContent>
-          <PageHeader title="Dashboard">
-            <PageHeaderDescription>Welcome back! Here&apos;s an overview of your account.</PageHeaderDescription>
-            <PageHeaderActions>
-              <Button>Create New</Button>
-            </PageHeaderActions>
-          </PageHeader>
-          <Text>Your main content goes here.</Text>
-        </AppShellContent>
+        <AppShellRail>
+          <AppShellRailItem icon={<ShieldCheckIcon />} label="Compliance" isActive />
+          <AppShellRailItem icon={<KeyIcon />} label="Cybersecurity" />
+          <AppShellRailItem icon={<LayoutDashboardIcon />} label="App Browser" />
+        </AppShellRail>
+        <AppShellMain>
+          <AppShellSidebar collapsible>
+            <SidebarNav />
+          </AppShellSidebar>
+          <AppShellContent>
+            <PageHeader title="Compliance">
+              <PageHeaderDescription>Monitor and manage your compliance posture.</PageHeaderDescription>
+              <PageHeaderActions>
+                <Button>Run Assessment</Button>
+              </PageHeaderActions>
+            </PageHeader>
+            <Text>Use <strong>⌘\</strong> to toggle the sidebar.</Text>
+          </AppShellContent>
+        </AppShellMain>
       </AppShellBody>
     </AppShell>
   ),
@@ -298,15 +314,17 @@ export const CollapsibleSidebar: Story = {
         }
       />
       <AppShellBody>
-        <AppShellSidebar collapsible>
-          <SidebarNav />
-        </AppShellSidebar>
-        <AppShellContent>
-          <Heading level="1">Collapsible Sidebar</Heading>
-          <Text variant="muted">
-            Click the sidebar toggle in the navbar to show/hide the sidebar.
-          </Text>
-        </AppShellContent>
+        <AppShellMain>
+          <AppShellSidebar collapsible>
+            <SidebarNav />
+          </AppShellSidebar>
+          <AppShellContent>
+            <Heading level="1">Collapsible Sidebar</Heading>
+            <Text variant="muted">
+              Click the sidebar toggle in the navbar to show/hide the sidebar.
+            </Text>
+          </AppShellContent>
+        </AppShellMain>
       </AppShellBody>
     </AppShell>
   ),
@@ -431,18 +449,20 @@ export const WithRail: Story = {
           <AppShellRailItem icon={<PieChartIcon />} label="Analytics" />
           <AppShellRailItem icon={<SettingsIcon />} label="Settings" />
         </AppShellRail>
-        <AppShellSidebar collapsible>
-          <RailSidebarNav />
-        </AppShellSidebar>
-        <AppShellContent>
-          <PageHeader title="Employees">
-            <PageHeaderDescription>Manage your team members and their information.</PageHeaderDescription>
-            <PageHeaderActions>
-              <Button>Add Employee</Button>
-            </PageHeaderActions>
-          </PageHeader>
-          <Text>Rippling-style layout with app rail on the left. Use <strong>⌘\</strong> to toggle the sidebar.</Text>
-        </AppShellContent>
+        <AppShellMain>
+          <AppShellSidebar collapsible>
+            <RailSidebarNav />
+          </AppShellSidebar>
+          <AppShellContent>
+            <PageHeader title="Employees">
+              <PageHeaderDescription>Manage your team members and their information.</PageHeaderDescription>
+              <PageHeaderActions>
+                <Button>Add Employee</Button>
+              </PageHeaderActions>
+            </PageHeader>
+            <Text>Rippling-style layout with app rail on the left. Use <strong>⌘\</strong> to toggle the sidebar.</Text>
+          </AppShellContent>
+        </AppShellMain>
       </AppShellBody>
     </AppShell>
   ),
@@ -527,6 +547,56 @@ export const WithPageLayoutFullWidth: Story = {
               ))}
             </Grid>
           </PageLayout>
+        </AppShellContent>
+      </AppShellBody>
+    </AppShell>
+  ),
+};
+
+export const MutedSidebar: Story = {
+  render: () => (
+    <AppShell>
+      <AppShellNavbar
+        showSidebarToggle={false}
+        startContent={<Logo />}
+        endContent={<UserMenuDemo />}
+      />
+      <AppShellBody>
+        <AppShellSidebar variant="muted">
+          <SidebarNav />
+        </AppShellSidebar>
+        <AppShellContent>
+          <PageHeader title="Muted Sidebar">
+            <PageHeaderDescription>
+              Sidebar with muted background - active items use white background for contrast.
+            </PageHeaderDescription>
+          </PageHeader>
+          <Text>The muted variant provides subtle contrast between sidebar and content.</Text>
+        </AppShellContent>
+      </AppShellBody>
+    </AppShell>
+  ),
+};
+
+export const PrimarySidebar: Story = {
+  render: () => (
+    <AppShell>
+      <AppShellNavbar
+        showSidebarToggle={false}
+        startContent={<Logo />}
+        endContent={<UserMenuDemo />}
+      />
+      <AppShellBody>
+        <AppShellSidebar variant="primary">
+          <SidebarNav />
+        </AppShellSidebar>
+        <AppShellContent>
+          <PageHeader title="Primary Sidebar">
+            <PageHeaderDescription>
+              Sidebar with primary (emerald) background - nav items use inverted colors.
+            </PageHeaderDescription>
+          </PageHeader>
+          <Text>The primary variant creates a bold, branded look.</Text>
         </AppShellContent>
       </AppShellBody>
     </AppShell>
