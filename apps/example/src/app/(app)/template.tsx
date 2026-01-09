@@ -21,7 +21,7 @@ export default function Template({ children }: TemplateProps) {
     <div
       style={{
         opacity,
-        transition: 'opacity 600ms ease-in-out',
+        transition: 'opacity 400ms ease-in-out',
       }}
     >
       {children}
