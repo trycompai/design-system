@@ -141,11 +141,11 @@
 }
 
 ::view-transition-old(page-content) {
-  animation: fade-out 120ms ease-out forwards;
+  animation: fade-out 250ms ease-out forwards;
 }
 
 ::view-transition-new(page-content) {
-  animation: fade-in 120ms ease-out forwards;
+  animation: fade-in 250ms ease-out forwards;
 }
 
 @keyframes fade-out {
@@ -161,7 +161,7 @@
 /* Page content animation fallback for non-View Transitions browsers */
 [data-slot="page-layout"] {
   view-transition-name: page-content;
-  animation: page-enter 150ms ease-out;
+  animation: page-enter 250ms ease-out;
 }
 
 @keyframes page-enter {
