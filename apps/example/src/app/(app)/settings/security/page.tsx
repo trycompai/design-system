@@ -14,7 +14,7 @@ import {
   Stack,
   Text,
 } from '@trycompai/design-system';
-import { Key, Mobile, Security } from '@carbon/icons-react';
+import { Mobile, Password, Security } from '@carbon/icons-react';
 
 export default function SettingsSecurityPage() {
   return (
@@ -98,7 +98,7 @@ export default function SettingsSecurityPage() {
             </div>
             <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-lg">
               <div className="flex size-10 items-center justify-center rounded-lg bg-muted">
-                <Key size={20} className="text-muted-foreground" />
+                <Password size={20} className="text-muted-foreground" />
               </div>
               <Stack gap="1">
                 <Text weight="medium">Security Keys</Text>
