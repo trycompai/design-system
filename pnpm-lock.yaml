@@ -21,6 +21,28 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
+  apps/design-system-mcp:
+    dependencies:
+      '@modelcontextprotocol/sdk':
+        specifier: 1.25.2
+        version: 1.25.2(hono@4.11.3)(zod@3.25.76)
+      zod:
+        specifier: 3.25.76
+        version: 3.25.76
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config
+      '@types/node':
+        specifier: ^22.18.0
+        version: 22.19.3
+      prettier:
+        specifier: ^3.7.4
+        version: 3.7.4
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+
   apps/example:
     dependencies:
       '@trycompai/design-system':

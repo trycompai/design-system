@@ -20,7 +20,7 @@ describe('Card', () => {
   });
 
   it('renders card with all slots', () => {
-    render(
+    const { container } = render(
       <Card>
         <CardHeader>
           <CardTitle>Title</CardTitle>
@@ -35,6 +35,12 @@ describe('Card', () => {
     expect(screen.getByText('Description')).toBeInTheDocument();
     expect(screen.getByText('Content')).toBeInTheDocument();
     expect(screen.getByText('Footer')).toBeInTheDocument();
+
+    // Ensure compound slots are direct children of the Card (no extra wrapper CardContent)
+    const card = container.firstChild as HTMLElement;
+    expect(card.querySelector(':scope > [data-slot="card-header"]')).toBeTruthy();
+    expect(card.querySelector(':scope > [data-slot="card-content"]')).toBeTruthy();
+    expect(card.querySelector(':scope > [data-slot="card-footer"]')).toBeTruthy();
   });
 
   it('renders simple content without explicit CardContent wrapper', () => {

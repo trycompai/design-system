@@ -6,6 +6,7 @@ A Turborepo containing the design system component library and Storybook documen
 
 - `@trycompai/design-system` - React component library with Tailwind CSS
 - `@comp/storybook` - Storybook documentation and component playground
+- `@comp/design-system-mcp` - MCP server that exposes the design system + stories over stdio
 
 ## Getting Started
 

@@ -2,7 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 const cardVariants = cva(
-  'bg-card text-card-foreground border border-border/40 shadow-[0_1px_3px_0_rgb(0_0_0/0.06)] gap-4 overflow-hidden rounded-xl py-4 text-sm has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:gap-3 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col',
+  'bg-card text-card-foreground border border-border/40 shadow-[0_1px_3px_0_rgb(0_0_0/0.06)] overflow-hidden rounded-xl py-4 text-sm has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col',
   {
     variants: {
       width: {
@@ -25,14 +25,18 @@ const cardVariants = cva(
         full: 'max-w-full',
       },
       spacing: {
-        default: '',
-        tight: 'gap-3',
-        relaxed: 'gap-6',
+        default: 'gap-4 data-[size=sm]:gap-3',
+        tight: 'gap-3 data-[size=sm]:gap-2.5',
+        relaxed: 'gap-6 data-[size=sm]:gap-4',
+      },
+      disabled: {
+        true: 'opacity-60 pointer-events-none select-none',
       },
     },
     defaultVariants: {
       width: 'auto',
       spacing: 'default',
+      disabled: undefined,
     },
   },
 );
@@ -56,6 +60,8 @@ function Card({
   size = 'default',
   width,
   maxWidth,
+  spacing,
+  disabled,
   title,
   description,
   headerAction,
@@ -68,6 +74,13 @@ function Card({
   // Check if children contain compound components (have data-slot)
   const hasCompoundChildren = React.Children.toArray(children).some((child) => {
     if (React.isValidElement(child)) {
+      // Prefer checking component identity. `data-slot` is applied inside the component render,
+      // so it won't exist on `child.props` unless manually passed in.
+      if (child.type === CardHeader || child.type === CardContent || child.type === CardFooter) {
+        return true;
+      }
+
+      // Fallback for direct DOM usage.
       const props = child.props as Record<string, unknown>;
       return (
         props['data-slot'] === 'card-header' ||
@@ -79,7 +92,13 @@ function Card({
   });
 
   return (
-    <div data-slot="card" data-size={size} className={cardVariants({ width, maxWidth })} {...props}>
+    <div
+      data-slot="card"
+      data-size={size}
+      data-disabled={disabled ? '' : undefined}
+      className={cardVariants({ width, maxWidth, spacing, disabled: disabled ? true : undefined })}
+      {...props}
+    >
       {hasHeader && (
         <CardHeader>
           {title && <CardTitle>{title}</CardTitle>}
