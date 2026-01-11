@@ -376,7 +376,6 @@ export function AppShellClient({ children }: AppShellClientProps) {
         <AppShellMain>
           <AppShellSidebar collapsible>
             <AppShellSidebarHeader
-              icon={sidebarConfig.icon}
               title={sidebarConfig.title}
             />
             <AppShellNav>

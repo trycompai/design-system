@@ -5,7 +5,6 @@ import {
   Button,
   PageHeader,
   PageHeaderActions,
-  PageHeaderDescription,
   PageLayout,
   Table,
   TableBody,
@@ -85,9 +84,6 @@ export default function PoliciesPage() {
   return (
     <PageLayout padding="none" container={false}>
       <PageHeader title="Policies">
-        <PageHeaderDescription>
-          Manage your organization&apos;s security and compliance policies.
-        </PageHeaderDescription>
         <PageHeaderActions>
           <Button iconLeft={<PlusIcon />}>New Policy</Button>
         </PageHeaderActions>

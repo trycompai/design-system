@@ -3,19 +3,21 @@
 import {
   Badge,
   Button,
-  Card,
-  CardContent,
-  Grid,
   HStack,
   PageHeader,
   PageHeaderActions,
-  PageHeaderDescription,
   PageLayout,
   Progress,
   Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   Text,
 } from '@trycompai/design-system';
-import { CheckCircleIcon, CircleIcon, FilterIcon } from 'lucide-react';
+import { CheckCircleIcon, CircleIcon, FilterIcon, PlusIcon } from 'lucide-react';
 
 const controlCategories = [
   {
@@ -74,50 +76,6 @@ const controlCategories = [
   },
 ];
 
-function ControlCard({ category }: { category: typeof controlCategories[0] }) {
-  const passRate = Math.round((category.passed / category.total) * 100);
-
-  return (
-    <Card>
-      <CardContent>
-        <Stack gap="4">
-          <Stack gap="1">
-            <Text weight="semibold">{category.name}</Text>
-            <Text variant="muted" size="sm">{category.description}</Text>
-          </Stack>
-
-          <Stack gap="2">
-            <HStack justify="between" align="center">
-              <Text size="sm" variant="muted">Progress</Text>
-              <Text size="sm" weight="medium">{passRate}%</Text>
-            </HStack>
-            <Progress value={passRate} />
-          </Stack>
-
-          <HStack gap="4">
-            <HStack gap="1" align="center">
-              <CheckCircleIcon className="size-4 text-green-600" />
-              <Text size="sm">{category.passed} passed</Text>
-            </HStack>
-            {category.failed > 0 && (
-              <HStack gap="1" align="center">
-                <CircleIcon className="size-4 text-red-500" />
-                <Text size="sm">{category.failed} failed</Text>
-              </HStack>
-            )}
-            {category.pending > 0 && (
-              <HStack gap="1" align="center">
-                <CircleIcon className="size-4 text-muted-foreground" />
-                <Text size="sm" variant="muted">{category.pending} pending</Text>
-              </HStack>
-            )}
-          </HStack>
-        </Stack>
-      </CardContent>
-    </Card>
-  );
-}
-
 export default function ControlsPage() {
   const totalControls = controlCategories.reduce((sum, c) => sum + c.total, 0);
   const passedControls = controlCategories.reduce((sum, c) => sum + c.passed, 0);
@@ -125,10 +83,8 @@ export default function ControlsPage() {
   return (
     <PageLayout padding="none" container={false}>
       <PageHeader title="Controls">
-        <PageHeaderDescription>
-          Monitor and manage your security controls across {totalControls} requirements.
-        </PageHeaderDescription>
         <PageHeaderActions>
+          <Button iconLeft={<PlusIcon />}>New Control</Button>
           <Button variant="outline" iconLeft={<FilterIcon />}>Filter</Button>
         </PageHeaderActions>
       </PageHeader>
@@ -139,11 +95,97 @@ export default function ControlsPage() {
           <Badge variant="secondary">{Math.round((passedControls / totalControls) * 100)}% complete</Badge>
         </HStack>
 
-        <Grid cols="3" gap="4">
-          {controlCategories.map((category) => (
-            <ControlCard key={category.id} category={category} />
-          ))}
-        </Grid>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Category</TableHead>
+              <TableHead>Progress</TableHead>
+              <TableHead>
+                <div className="text-right">Total</div>
+              </TableHead>
+              <TableHead>
+                <div className="text-right">Passed</div>
+              </TableHead>
+              <TableHead>
+                <div className="text-right">Failed</div>
+              </TableHead>
+              <TableHead>
+                <div className="text-right">Pending</div>
+              </TableHead>
+              <TableHead>
+                <div className="text-right">
+                  <span className="sr-only">Actions</span>
+                </div>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {controlCategories.map((category) => {
+              const passRate = Math.round((category.passed / category.total) * 100);
+              return (
+                <TableRow key={category.id}>
+                  <TableCell>
+                    <Stack gap="none">
+                      <Text weight="medium">{category.name}</Text>
+                      <Text size="sm" variant="muted">
+                        {category.description}
+                      </Text>
+                    </Stack>
+                  </TableCell>
+                  <TableCell>
+                    <div className="min-w-48">
+                      <Stack gap="2">
+                        <HStack justify="between" align="center">
+                          <Text size="sm" variant="muted">
+                            {passRate}%
+                          </Text>
+                          <Text size="sm" variant="muted">
+                            {category.passed}/{category.total}
+                          </Text>
+                        </HStack>
+                        <Progress value={passRate} />
+                      </Stack>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <HStack justify="end" align="center">
+                      <Text size="sm" variant="muted">
+                        {category.total}
+                      </Text>
+                    </HStack>
+                  </TableCell>
+                  <TableCell>
+                    <HStack justify="end" align="center" gap="1">
+                      <CheckCircleIcon className="size-4 text-green-600" />
+                      <Text size="sm">{category.passed}</Text>
+                    </HStack>
+                  </TableCell>
+                  <TableCell>
+                    <HStack justify="end" align="center" gap="1">
+                      <CircleIcon className="size-4 text-red-500" />
+                      <Text size="sm">{category.failed}</Text>
+                    </HStack>
+                  </TableCell>
+                  <TableCell>
+                    <HStack justify="end" align="center" gap="1">
+                      <CircleIcon className="size-4 text-muted-foreground" />
+                      <Text size="sm" variant="muted">
+                        {category.pending}
+                      </Text>
+                    </HStack>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex justify-end">
+                      <Button variant="ghost" size="sm">
+                        View
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       </Stack>
     </PageLayout>
   );

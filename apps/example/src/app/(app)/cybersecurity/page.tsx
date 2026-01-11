@@ -8,7 +8,6 @@ import {
   Heading,
   HStack,
   PageHeader,
-  PageHeaderDescription,
   PageLayout,
   Progress,
   Stack,
@@ -57,11 +56,7 @@ const recentThreats = [
 export default function CybersecurityPage() {
   return (
     <PageLayout padding="none" container={false}>
-      <PageHeader title="Cybersecurity Dashboard">
-        <PageHeaderDescription>
-          Monitor your organization&apos;s security posture and threats.
-        </PageHeaderDescription>
-      </PageHeader>
+      <PageHeader title="Cybersecurity Dashboard" />
 
       <Grid cols="4" gap="4">
         {securityMetrics.map((metric) => (

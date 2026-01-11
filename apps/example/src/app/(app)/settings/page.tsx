@@ -5,7 +5,6 @@ import {
   Input,
   Label,
   PageHeader,
-  PageHeaderDescription,
   PageLayout,
   SettingsCard,
   Stack,
@@ -14,11 +13,7 @@ import {
 export default function SettingsGeneralPage() {
   return (
     <PageLayout padding="none" container={false}>
-      <PageHeader title="General Settings">
-        <PageHeaderDescription>
-          Manage your organization settings and preferences.
-        </PageHeaderDescription>
-      </PageHeader>
+      <PageHeader title="General Settings" />
 
       <Stack gap="6">
         <SettingsCard

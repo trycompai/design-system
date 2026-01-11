@@ -6,14 +6,17 @@ import {
   AvatarImage,
   Badge,
   Button,
-  Card,
-  CardContent,
   HStack,
   PageHeader,
   PageHeaderActions,
-  PageHeaderDescription,
   PageLayout,
   Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   Text,
 } from '@trycompai/design-system';
 import { ExternalLinkIcon, MoreHorizontalIcon, PlusIcon, ShieldCheckIcon } from 'lucide-react';
@@ -106,62 +109,71 @@ function getStatusBadge(status: string) {
   }
 }
 
-function VendorCard({ vendor }: { vendor: typeof vendors[0] }) {
-  return (
-    <Card>
-      <CardContent>
-        <Stack gap="4">
-          <HStack justify="between" align="start">
-            <HStack gap="3" align="center">
-              <Avatar size="lg">
-                <AvatarImage src={vendor.logo} />
-                <AvatarFallback>{vendor.name.slice(0, 2).toUpperCase()}</AvatarFallback>
-              </Avatar>
-              <Stack gap="none">
-                <Text weight="semibold">{vendor.name}</Text>
-                <Text size="sm" variant="muted">{vendor.category}</Text>
-              </Stack>
-            </HStack>
-            <Button variant="ghost" size="icon-sm">
-              <MoreHorizontalIcon />
-            </Button>
-          </HStack>
-
-          <HStack justify="between" align="center">
-            {getRiskBadge(vendor.riskLevel)}
-            {getStatusBadge(vendor.status)}
-          </HStack>
-
-          <HStack justify="between" align="center">
-            <Text size="xs" variant="muted">Last assessment: {vendor.lastAssessment}</Text>
-            <Button variant="ghost" size="xs">
-              <ExternalLinkIcon className="size-3" />
-              View Details
-            </Button>
-          </HStack>
-        </Stack>
-      </CardContent>
-    </Card>
-  );
-}
-
 export default function VendorsPage() {
   return (
     <PageLayout padding="none" container={false}>
       <PageHeader title="Vendors">
-        <PageHeaderDescription>
-          Manage third-party vendors and track their security assessments.
-        </PageHeaderDescription>
         <PageHeaderActions>
-          <Button iconLeft={<PlusIcon />}>Add Vendor</Button>
+          <Button iconLeft={<PlusIcon />}>New Vendor</Button>
         </PageHeaderActions>
       </PageHeader>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {vendors.map((vendor) => (
-          <VendorCard key={vendor.id} vendor={vendor} />
-        ))}
-      </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Vendor</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead>Risk</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Last assessment</TableHead>
+            <TableHead>
+              <div className="text-right">
+                <span className="sr-only">Actions</span>
+              </div>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {vendors.map((vendor) => (
+            <TableRow key={vendor.id}>
+              <TableCell>
+                <HStack gap="3" align="center">
+                  <Avatar size="lg">
+                    <AvatarImage src={vendor.logo} />
+                    <AvatarFallback>{vendor.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                  <Text weight="medium">{vendor.name}</Text>
+                </HStack>
+              </TableCell>
+              <TableCell>
+                <Text size="sm" variant="muted">
+                  {vendor.category}
+                </Text>
+              </TableCell>
+              <TableCell>{getRiskBadge(vendor.riskLevel)}</TableCell>
+              <TableCell>{getStatusBadge(vendor.status)}</TableCell>
+              <TableCell>
+                <Text size="sm" variant="muted">
+                  {vendor.lastAssessment}
+                </Text>
+              </TableCell>
+              <TableCell>
+                <div className="flex justify-end">
+                  <HStack align="center" gap="2">
+                    <Button variant="ghost" size="sm">
+                      <ExternalLinkIcon className="size-3" />
+                      View
+                    </Button>
+                    <Button variant="ghost" size="icon-sm" aria-label="More actions">
+                      <MoreHorizontalIcon />
+                    </Button>
+                  </HStack>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </PageLayout>
   );
 }

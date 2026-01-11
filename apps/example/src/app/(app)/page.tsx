@@ -18,7 +18,6 @@ import {
   ItemMedia,
   ItemTitle,
   PageHeader,
-  PageHeaderDescription,
   PageLayout,
   Progress,
   Stack,
@@ -216,11 +215,7 @@ export default function OverviewPage() {
 
   return (
     <PageLayout padding="none" container={false}>
-      <PageHeader title="Overview">
-        <PageHeaderDescription>
-          Track your progress towards SOC 2 compliance.
-        </PageHeaderDescription>
-      </PageHeader>
+          <PageHeader title="Overview" />
 
       {/* Roadmap Summary + Phases */}
       <Stack gap="lg">

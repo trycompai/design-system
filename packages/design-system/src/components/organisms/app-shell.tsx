@@ -657,11 +657,13 @@ interface AppShellNavItemProps extends Omit<React.ComponentProps<'button'>, 'cla
 interface AppShellNavFooterProps extends Omit<React.ComponentProps<'div'>, 'className'> {}
 
 function AppShellSidebarHeader({ icon, title, description, action, children, ...props }: AppShellSidebarHeaderProps) {
+  const isSimpleHeader = !icon && !action && !children;
   return (
     <div
       data-slot="app-shell-sidebar-header"
       className={[
-        'flex items-center gap-3 px-2 py-2 mb-2 border-b',
+        'flex items-center px-2 mb-2 border-b',
+        isSimpleHeader ? 'py-3' : 'gap-3 py-2',
         'border-border/40',
         '[[data-variant=primary]_&]:border-primary-foreground/20',
       ].join(' ')}
@@ -682,7 +684,8 @@ function AppShellSidebarHeader({ icon, title, description, action, children, ...
       <div className="flex-1 min-w-0">
         <div
           className={[
-            'font-semibold text-sm truncate',
+            'font-semibold truncate',
+            isSimpleHeader ? 'text-base' : 'text-sm',
             'text-foreground',
             '[[data-variant=primary]_&]:text-primary-foreground',
           ].join(' ')}

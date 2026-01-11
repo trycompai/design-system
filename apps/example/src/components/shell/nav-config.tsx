@@ -98,7 +98,7 @@ export const sidebarConfigs: Record<string, SidebarConfig> = {
         items: [
           { id: 'policies', label: 'Policies', href: '/policies', icon: <FileTextIcon /> },
           { id: 'controls', label: 'Controls', href: '/controls', icon: <ClipboardCheckIcon /> },
-          { id: 'risks', label: 'Risks', href: '#', icon: <AlertTriangleIcon /> },
+          { id: 'risks', label: 'Risks', href: '/risks', icon: <AlertTriangleIcon /> },
           { id: 'vendors', label: 'Vendors', href: '/vendors', icon: <BuildingIcon /> },
           { id: 'integrations', label: 'Integrations', href: '#', icon: <PlugIcon /> },
         ],

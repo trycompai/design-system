@@ -13,8 +13,29 @@ interface PageHeaderProps extends Omit<React.ComponentProps<'div'>, 'className'>
 }
 
 function PageHeader({ title, description, meta, actions, children, ...props }: PageHeaderProps) {
+  const childArray = React.Children.toArray(children);
+  const extractedActionChildren: React.ReactNode[] = [];
+  const nonActionChildren: React.ReactNode[] = [];
+
+  childArray.forEach((child) => {
+    if (
+      React.isValidElement(child) &&
+      (child.type === PageHeaderActions ||
+        (typeof child.type === 'function' &&
+          (child.type as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot === 'actions'))
+    ) {
+      extractedActionChildren.push((child.props as { children?: React.ReactNode }).children);
+      return;
+    }
+    nonActionChildren.push(child);
+  });
+
+  const resolvedActions =
+    actions ??
+    (extractedActionChildren.length > 0 ? extractedActionChildren : undefined);
+
   return (
-    <div data-slot="page-header" className="flex items-center justify-between gap-4" {...props}>
+    <div data-slot="page-header" className="flex items-start justify-between gap-4" {...props}>
       <Stack gap="1">
         <Heading level="1">{title}</Heading>
         {description && (
@@ -27,9 +48,14 @@ function PageHeader({ title, description, meta, actions, children, ...props }: P
             {meta}
           </Text>
         )}
-        {children}
+        {nonActionChildren}
       </Stack>
-      {actions && <div className="flex shrink-0 items-center gap-3">{actions}</div>}
+      {resolvedActions &&
+        (React.isValidElement(resolvedActions) && resolvedActions.type === PageHeaderActions ? (
+          resolvedActions
+        ) : (
+          <PageHeaderActions>{resolvedActions}</PageHeaderActions>
+        ))}
     </div>
   );
 }
@@ -47,5 +73,8 @@ function PageHeaderActions({ ...props }: Omit<React.ComponentProps<'div'>, 'clas
     <div data-slot="page-header-actions" className="flex shrink-0 items-center gap-3" {...props} />
   );
 }
+
+// Mark compound slots so PageHeader can detect them even if module instances differ.
+(PageHeaderActions as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot = 'actions';
 
 export { PageHeader, PageHeaderActions, PageHeaderDescription, PageHeaderTitle };
