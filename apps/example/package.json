@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@carbon/icons-react": "^11.72.0",
     "@trycompai/design-system": "workspace:*",
     "lucide-react": "^0.469.0",
     "next": "^15.0.0",

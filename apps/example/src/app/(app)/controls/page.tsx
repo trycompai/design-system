@@ -17,7 +17,7 @@ import {
   TableRow,
   Text,
 } from '@trycompai/design-system';
-import { CheckCircleIcon, CircleIcon, FilterIcon, PlusIcon } from 'lucide-react';
+import { Add, CheckmarkFilled, CircleFilled, Filter } from '@carbon/icons-react';
 
 const controlCategories = [
   {
@@ -84,8 +84,8 @@ export default function ControlsPage() {
     <PageLayout padding="none" container={false}>
       <PageHeader title="Controls">
         <PageHeaderActions>
-          <Button iconLeft={<PlusIcon />}>New Control</Button>
-          <Button variant="secondary" iconLeft={<FilterIcon />}>Filter</Button>
+          <Button iconLeft={<Add size={16} />}>New Control</Button>
+          <Button variant="secondary" iconLeft={<Filter size={16} />}>Filter</Button>
         </PageHeaderActions>
       </PageHeader>
 
@@ -158,19 +158,19 @@ export default function ControlsPage() {
                   </TableCell>
                   <TableCell>
                     <HStack justify="end" align="center" gap="1">
-                      <CheckCircleIcon className="size-4 text-green-600" />
+                      <CheckmarkFilled size={16} className="text-green-600" />
                       <Text size="sm">{category.passed}</Text>
                     </HStack>
                   </TableCell>
                   <TableCell>
                     <HStack justify="end" align="center" gap="1">
-                      <CircleIcon className="size-4 text-red-500" />
+                      <CircleFilled size={16} className="text-red-500" />
                       <Text size="sm">{category.failed}</Text>
                     </HStack>
                   </TableCell>
                   <TableCell>
                     <HStack justify="end" align="center" gap="1">
-                      <CircleIcon className="size-4 text-muted-foreground" />
+                      <CircleFilled size={16} className="text-muted-foreground" />
                       <Text size="sm" variant="muted">
                         {category.pending}
                       </Text>

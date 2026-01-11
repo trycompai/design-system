@@ -16,7 +16,7 @@ import {
   TableRow,
   Text,
 } from '@trycompai/design-system';
-import { AlertTriangleIcon, MoreHorizontalIcon, PlusIcon } from 'lucide-react';
+import { Add, OverflowMenuHorizontal, Warning } from '@carbon/icons-react';
 
 const risks = [
   {
@@ -84,7 +84,7 @@ export default function RisksPage() {
     <PageLayout padding="none" container={false}>
       <PageHeader title="Risks">
         <PageHeaderActions>
-          <Button iconLeft={<PlusIcon />}>New Risk</Button>
+          <Button iconLeft={<Add size={16} />}>New Risk</Button>
         </PageHeaderActions>
       </PageHeader>
 
@@ -108,7 +108,7 @@ export default function RisksPage() {
             <TableRow key={risk.id}>
               <TableCell>
                 <HStack gap="2" align="center">
-                  <AlertTriangleIcon className="size-4 text-muted-foreground" />
+                  <Warning size={16} className="text-muted-foreground" />
                   <Text size="sm" weight="medium">
                     {risk.title}
                   </Text>
@@ -129,7 +129,7 @@ export default function RisksPage() {
               <TableCell>
                 <div className="flex justify-end">
                   <Button variant="ghost" size="icon-sm" aria-label="More actions">
-                    <MoreHorizontalIcon />
+                    <OverflowMenuHorizontal size={16} />
                   </Button>
                 </div>
               </TableCell>

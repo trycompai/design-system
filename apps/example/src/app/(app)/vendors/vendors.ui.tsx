@@ -1,5 +1,5 @@
 import { Badge, HStack, Text } from '@trycompai/design-system';
-import { ShieldCheckIcon } from 'lucide-react';
+import { Security } from '@carbon/icons-react';
 
 export function getRiskBadge(risk: string) {
   switch (risk) {
@@ -19,7 +19,7 @@ export function getStatusBadge(status: string) {
     case 'approved':
       return (
         <HStack gap="1" align="center">
-          <ShieldCheckIcon className="size-4 text-green-600" />
+          <Security size={16} className="text-green-600" />
           <Text size="sm">Approved</Text>
         </HStack>
       );

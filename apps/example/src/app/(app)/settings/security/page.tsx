@@ -14,7 +14,7 @@ import {
   Stack,
   Text,
 } from '@trycompai/design-system';
-import { KeyIcon, ShieldCheckIcon, SmartphoneIcon } from 'lucide-react';
+import { Key, Mobile, Security } from '@carbon/icons-react';
 
 export default function SettingsSecurityPage() {
   return (
@@ -27,7 +27,7 @@ export default function SettingsSecurityPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
-            <ShieldCheckIcon className="size-5 text-green-600" />
+            <Security size={20} className="text-green-600" />
             <CardTitle>Security Status</CardTitle>
           </div>
           <CardDescription>Your account security is strong.</CardDescription>
@@ -79,7 +79,7 @@ export default function SettingsSecurityPage() {
           <Stack gap="4">
             <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-lg">
               <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-                <SmartphoneIcon className="size-5 text-primary" />
+                <Mobile size={20} className="text-primary" />
               </div>
               <Stack gap="1">
                 <div className="flex items-center gap-2">
@@ -98,7 +98,7 @@ export default function SettingsSecurityPage() {
             </div>
             <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-lg">
               <div className="flex size-10 items-center justify-center rounded-lg bg-muted">
-                <KeyIcon className="size-5 text-muted-foreground" />
+                <Key size={20} className="text-muted-foreground" />
               </div>
               <Stack gap="1">
                 <Text weight="medium">Security Keys</Text>

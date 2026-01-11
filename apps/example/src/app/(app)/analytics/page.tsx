@@ -10,7 +10,7 @@ import {
   Stack,
   Text,
 } from '@trycompai/design-system';
-import { TrendingDownIcon, TrendingUpIcon } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight } from '@carbon/icons-react';
 
 const metrics = [
   { label: 'Page Views', value: '124,892', change: '+12.5%', trend: 'up' },
@@ -47,9 +47,9 @@ export default function AnalyticsPage() {
             <CardContent>
               <div className="flex items-center gap-1 text-sm">
                 {metric.trend === 'up' ? (
-                  <TrendingUpIcon className="size-4 text-green-600" />
+                  <ArrowUpRight size={16} className="text-green-600" />
                 ) : (
-                  <TrendingDownIcon className="size-4 text-green-600" />
+                  <ArrowDownRight size={16} className="text-green-600" />
                 )}
                 <span className="text-green-600">{metric.change}</span>
                 <span className="text-muted-foreground">vs last month</span>

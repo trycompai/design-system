@@ -1,20 +1,20 @@
 import {
-  AlertTriangleIcon,
-  BookOpenIcon,
-  BuildingIcon,
-  ClipboardCheckIcon,
-  CreditCardIcon,
-  FileTextIcon,
-  HelpCircleIcon,
-  HomeIcon,
-  KeyIcon,
-  LayoutDashboardIcon,
-  PieChartIcon,
-  PlugIcon,
-  SettingsIcon,
-  ShieldCheckIcon,
-  UsersIcon,
-} from 'lucide-react';
+  Book,
+  Building,
+  ChartPie,
+  Dashboard,
+  Document,
+  Help,
+  Home,
+  Password,
+  Plug,
+  Security,
+  Settings,
+  TaskComplete,
+  UserMultiple,
+  Wallet,
+  Warning,
+} from '@carbon/icons-react';
 import type { ReactNode } from 'react';
 
 export interface NavItem {
@@ -52,28 +52,28 @@ export const railItems: RailItem[] = [
     id: 'compliance',
     label: 'Compliance',
     href: '/',
-    icon: <ShieldCheckIcon />,
+    icon: <Security />,
     activePaths: ['/', '/policies', '/controls', '/risks', '/vendors', '/integrations'],
   },
   {
     id: 'cybersecurity',
     label: 'Cybersecurity',
     href: '/cybersecurity',
-    icon: <KeyIcon />,
+    icon: <Password />,
     activePaths: ['/cybersecurity'],
   },
   {
     id: 'analytics',
     label: 'Analytics',
     href: '/analytics',
-    icon: <PieChartIcon />,
+    icon: <ChartPie />,
     activePaths: ['/analytics'],
   },
   {
     id: 'settings',
     label: 'Settings',
     href: '/settings',
-    icon: <SettingsIcon />,
+    icon: <Settings />,
     activePaths: ['/settings'],
   },
 ];
@@ -82,92 +82,92 @@ export const railItems: RailItem[] = [
 export const sidebarConfigs: Record<string, SidebarConfig> = {
   compliance: {
     title: 'Compliance',
-    icon: <ShieldCheckIcon />,
+    icon: <Security />,
     groups: [
       {
         id: 'getting-started',
         label: 'Getting started',
         items: [
-          { id: 'overview', label: 'Overview', href: '/', icon: <HomeIcon /> },
-          { id: 'quickstart', label: 'Quickstart', href: '#', icon: <BookOpenIcon /> },
+          { id: 'overview', label: 'Overview', href: '/', icon: <Home /> },
+          { id: 'quickstart', label: 'Quickstart', href: '#', icon: <Book /> },
         ],
       },
       {
         id: 'compliance',
         label: 'Compliance',
         items: [
-          { id: 'policies', label: 'Policies', href: '/policies', icon: <FileTextIcon /> },
-          { id: 'controls', label: 'Controls', href: '/controls', icon: <ClipboardCheckIcon /> },
-          { id: 'risks', label: 'Risks', href: '/risks', icon: <AlertTriangleIcon /> },
-          { id: 'vendors', label: 'Vendors', href: '/vendors', icon: <BuildingIcon /> },
-          { id: 'integrations', label: 'Integrations', href: '#', icon: <PlugIcon /> },
+          { id: 'policies', label: 'Policies', href: '/policies', icon: <Document /> },
+          { id: 'controls', label: 'Controls', href: '/controls', icon: <TaskComplete /> },
+          { id: 'risks', label: 'Risks', href: '/risks', icon: <Warning /> },
+          { id: 'vendors', label: 'Vendors', href: '/vendors', icon: <Building /> },
+          { id: 'integrations', label: 'Integrations', href: '#', icon: <Plug /> },
         ],
       },
     ],
     footer: [
-      { id: 'settings', label: 'Settings', href: '/settings', icon: <SettingsIcon /> },
+      { id: 'settings', label: 'Settings', href: '/settings', icon: <Settings /> },
     ],
   },
   cybersecurity: {
     title: 'Cybersecurity',
-    icon: <KeyIcon />,
+    icon: <Password />,
     groups: [
       {
         id: 'security',
         label: 'Security',
         items: [
-          { id: 'dashboard', label: 'Dashboard', href: '/cybersecurity', icon: <LayoutDashboardIcon /> },
-          { id: 'vulnerabilities', label: 'Vulnerabilities', href: '#', icon: <AlertTriangleIcon /> },
-          { id: 'assets', label: 'Assets', href: '#', icon: <BuildingIcon /> },
+          { id: 'dashboard', label: 'Dashboard', href: '/cybersecurity', icon: <Dashboard /> },
+          { id: 'vulnerabilities', label: 'Vulnerabilities', href: '#', icon: <Warning /> },
+          { id: 'assets', label: 'Assets', href: '#', icon: <Building /> },
         ],
       },
     ],
     footer: [
-      { id: 'help', label: 'Help', href: '#', icon: <HelpCircleIcon /> },
+      { id: 'help', label: 'Help', href: '#', icon: <Help /> },
     ],
   },
   analytics: {
     title: 'Analytics',
-    icon: <PieChartIcon />,
+    icon: <ChartPie />,
     groups: [
       {
         id: 'reports',
         label: 'Reports',
         items: [
-          { id: 'dashboard', label: 'Dashboard', href: '/analytics', icon: <LayoutDashboardIcon /> },
-          { id: 'compliance-reports', label: 'Compliance Reports', href: '#', icon: <FileTextIcon /> },
-          { id: 'audit-logs', label: 'Audit Logs', href: '#', icon: <ClipboardCheckIcon /> },
+          { id: 'dashboard', label: 'Dashboard', href: '/analytics', icon: <Dashboard /> },
+          { id: 'compliance-reports', label: 'Compliance Reports', href: '#', icon: <Document /> },
+          { id: 'audit-logs', label: 'Audit Logs', href: '#', icon: <TaskComplete /> },
         ],
       },
     ],
     footer: [
-      { id: 'help', label: 'Help', href: '#', icon: <HelpCircleIcon /> },
+      { id: 'help', label: 'Help', href: '#', icon: <Help /> },
     ],
   },
   settings: {
     title: 'Settings',
-    icon: <SettingsIcon />,
+    icon: <Settings />,
     groups: [
       {
         id: 'organization',
         label: 'Organization',
         items: [
-          { id: 'general', label: 'General', href: '/settings', icon: <SettingsIcon /> },
-          { id: 'team', label: 'Team', href: '#', icon: <UsersIcon /> },
-          { id: 'billing', label: 'Billing', href: '#', icon: <CreditCardIcon /> },
+          { id: 'general', label: 'General', href: '/settings', icon: <Settings /> },
+          { id: 'team', label: 'Team', href: '#', icon: <UserMultiple /> },
+          { id: 'billing', label: 'Billing', href: '#', icon: <Wallet /> },
         ],
       },
       {
         id: 'account',
         label: 'Account',
         items: [
-          { id: 'profile', label: 'Profile', href: '#', icon: <UsersIcon /> },
-          { id: 'security', label: 'Security', href: '/settings/security', icon: <KeyIcon /> },
+          { id: 'profile', label: 'Profile', href: '#', icon: <UserMultiple /> },
+          { id: 'security', label: 'Security', href: '/settings/security', icon: <Password /> },
         ],
       },
     ],
     footer: [
-      { id: 'help', label: 'Help & Support', href: '#', icon: <HelpCircleIcon /> },
+      { id: 'help', label: 'Help & Support', href: '#', icon: <Help /> },
     ],
   },
 };

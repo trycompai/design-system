@@ -12,7 +12,7 @@ import {
   Stack,
   Text,
 } from '@trycompai/design-system';
-import { CalendarIcon, FolderIcon, PlusIcon, UsersIcon } from 'lucide-react';
+import { Add, Calendar, Folder, UserMultiple } from '@carbon/icons-react';
 import Link from 'next/link';
 
 const projects = [
@@ -80,10 +80,7 @@ export default function ProjectsPage() {
           <Heading level="1">Projects</Heading>
           <Text variant="muted">Manage and track all your projects in one place.</Text>
         </Stack>
-        <Button>
-          <PlusIcon />
-          New Project
-        </Button>
+        <Button iconLeft={<Add size={16} />}>New Project</Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -94,7 +91,7 @@ export default function ProjectsPage() {
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
                     <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
-                      <FolderIcon className="size-5 text-primary" />
+                      <Folder size={20} className="text-primary" />
                     </div>
                     <Stack gap="1">
                       <CardTitle>{project.name}</CardTitle>
@@ -107,11 +104,11 @@ export default function ProjectsPage() {
               <CardContent>
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <div className="flex items-center gap-1">
-                    <UsersIcon className="size-4" />
+                    <UserMultiple size={16} />
                     <span>{project.members} members</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <CalendarIcon className="size-4" />
+                    <Calendar size={16} />
                     <span>{project.dueDate}</span>
                   </div>
                 </div>

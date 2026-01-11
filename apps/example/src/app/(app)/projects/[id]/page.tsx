@@ -17,7 +17,7 @@ import {
   TabsTrigger,
   Text,
 } from '@trycompai/design-system';
-import { ArrowLeftIcon, CalendarIcon, CheckCircleIcon, CircleIcon, UsersIcon } from 'lucide-react';
+import { ArrowLeft, Calendar, CheckmarkFilled, CircleFilled, UserMultiple } from '@carbon/icons-react';
 import Link from 'next/link';
 import { use } from 'react';
 
@@ -52,7 +52,7 @@ export default function ProjectDetailPage({
       <HStack gap="4" align="center">
         <Link href="/projects">
           <Button variant="ghost" size="icon-sm">
-            <ArrowLeftIcon />
+            <ArrowLeft size={16} />
           </Button>
         </Link>
         <Stack gap="1">
@@ -60,11 +60,11 @@ export default function ProjectDetailPage({
           <HStack gap="4">
             <Badge>{project.status}</Badge>
             <HStack gap="1" align="center">
-              <UsersIcon className="size-4 text-muted-foreground" />
+              <UserMultiple size={16} className="text-muted-foreground" />
               <Text variant="muted" size="sm">{project.members} members</Text>
             </HStack>
             <HStack gap="1" align="center">
-              <CalendarIcon className="size-4 text-muted-foreground" />
+              <Calendar size={16} className="text-muted-foreground" />
               <Text variant="muted" size="sm">Due {project.dueDate}</Text>
             </HStack>
           </HStack>
@@ -141,9 +141,9 @@ export default function ProjectDetailPage({
                     className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50"
                   >
                     {task.completed ? (
-                      <CheckCircleIcon className="size-5 text-green-600" />
+                      <CheckmarkFilled size={20} className="text-green-600" />
                     ) : (
-                      <CircleIcon className="size-5 text-muted-foreground" />
+                      <CircleFilled size={20} className="text-muted-foreground" />
                     )}
                     <span className={task.completed ? 'line-through text-muted-foreground' : ''}>
                       {task.title}

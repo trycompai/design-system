@@ -9,6 +9,7 @@ import {
   PageHeader,
   PageHeaderActions,
   PageLayout,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -17,7 +18,7 @@ import {
   TableRow,
   Text,
 } from '@trycompai/design-system';
-import { ExternalLinkIcon, MoreHorizontalIcon, PlusIcon } from 'lucide-react';
+import { Add, Launch, OverflowMenuHorizontal } from '@carbon/icons-react';
 import { useRouter } from 'next/navigation';
 
 import { vendors } from './vendors.data';
@@ -32,7 +33,7 @@ export default function VendorsPage() {
     <PageLayout padding="none" container={false}>
       <PageHeader title="Vendors">
         <PageHeaderActions>
-          <Button iconLeft={<PlusIcon />}>New Vendor</Button>
+          <Button iconLeft={<Add size={16} />}>New Vendor</Button>
         </PageHeaderActions>
       </PageHeader>
 
@@ -40,7 +41,6 @@ export default function VendorsPage() {
         <TableHeader>
           <TableRow>
             <TableHead>Vendor</TableHead>
-            <TableHead>Category</TableHead>
             <TableHead>Risk</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Last assessment</TableHead>
@@ -69,19 +69,19 @@ export default function VendorsPage() {
             >
               <TableCell>
                 <HStack gap="3" align="center">
-                  <Avatar size="lg">
+                  <Avatar size="default">
                     <AvatarImage src={vendor.logo} />
                     <AvatarFallback>{vendor.name.slice(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
-                  <Text size="sm" weight="medium">
-                    {vendor.name}
-                  </Text>
+                  <Stack gap="none">
+                    <Text size="sm" weight="medium">
+                      {vendor.name}
+                    </Text>
+                    <Text size="xs" variant="muted">
+                      {vendor.category}
+                    </Text>
+                  </Stack>
                 </HStack>
-              </TableCell>
-              <TableCell>
-                <Text size="sm" variant="muted">
-                  {vendor.category}
-                </Text>
               </TableCell>
               <TableCell>{getRiskBadge(vendor.riskLevel)}</TableCell>
               <TableCell>{getStatusBadge(vendor.status)}</TableCell>
@@ -101,7 +101,7 @@ export default function VendorsPage() {
                         goToVendor(vendor.id);
                       }}
                     >
-                      <ExternalLinkIcon className="size-3" />
+                      <Launch size={12} />
                       View
                     </Button>
                     <Button
@@ -110,7 +110,7 @@ export default function VendorsPage() {
                       aria-label="More actions"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <MoreHorizontalIcon />
+                      <OverflowMenuHorizontal size={16} />
                     </Button>
                   </HStack>
                 </div>

@@ -11,7 +11,7 @@ import {
   TabsTrigger,
   Text,
 } from '@trycompai/design-system';
-import { CheckIcon } from 'lucide-react';
+import { Checkmark } from '@carbon/icons-react';
 
 export type Soc2StageValue = 'trust' | 'team' | 'evidence' | 'audit_ready';
 
@@ -72,7 +72,7 @@ function StageIndicator({
   return (
     <Avatar size="sm" aria-hidden>
       <AvatarFallback style={style}>
-        {state === 'complete' ? <CheckIcon size={14} /> : stepNumber}
+        {state === 'complete' ? <Checkmark size={14} /> : stepNumber}
       </AvatarFallback>
     </Avatar>
   );

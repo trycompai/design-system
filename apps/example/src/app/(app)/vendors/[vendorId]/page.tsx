@@ -22,7 +22,7 @@ import {
   TabsTrigger,
   Text,
 } from '@trycompai/design-system';
-import { ArrowLeftIcon } from 'lucide-react';
+import { ArrowLeft } from '@carbon/icons-react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
@@ -52,7 +52,7 @@ export default function VendorDetailPage() {
             <Button
               variant="link"
               size="sm"
-              iconLeft={<ArrowLeftIcon />}
+              iconLeft={<ArrowLeft size={16} />}
               render={<Link href="/vendors" />}
             >
               Vendors

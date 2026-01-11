@@ -14,7 +14,7 @@ import {
   TableRow,
   Text,
 } from '@trycompai/design-system';
-import { MoreHorizontalIcon, PlusIcon } from 'lucide-react';
+import { Add, OverflowMenuHorizontal } from '@carbon/icons-react';
 
 const policies = [
   {
@@ -85,7 +85,7 @@ export default function PoliciesPage() {
     <PageLayout padding="none" container={false}>
       <PageHeader title="Policies">
         <PageHeaderActions>
-          <Button iconLeft={<PlusIcon />}>New Policy</Button>
+          <Button iconLeft={<Add size={16} />}>New Policy</Button>
         </PageHeaderActions>
       </PageHeader>
 
@@ -126,7 +126,7 @@ export default function PoliciesPage() {
               </TableCell>
               <TableCell>
                 <Button variant="ghost" size="icon-sm">
-                  <MoreHorizontalIcon />
+                  <OverflowMenuHorizontal size={16} />
                 </Button>
               </TableCell>
             </TableRow>

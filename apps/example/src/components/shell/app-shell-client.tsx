@@ -38,14 +38,14 @@ import {
   ThemeToggle,
 } from '@trycompai/design-system';
 import {
-  BellIcon,
-  CheckIcon,
-  ChevronDownIcon,
-  LogOutIcon,
-  PlusIcon,
-  SettingsIcon,
-  UserIcon,
-} from 'lucide-react';
+  Add,
+  Checkmark,
+  ChevronDown,
+  Logout,
+  Notification,
+  Settings,
+  User,
+} from '@carbon/icons-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
@@ -74,7 +74,7 @@ function ProjectSelector() {
     <DropdownMenu>
       <DropdownMenuTrigger className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium hover:bg-background/50 transition-colors">
         {currentProject.name}
-        <ChevronDownIcon className="size-3 text-muted-foreground" />
+        <ChevronDown size={12} className="text-muted-foreground" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" style={{ minWidth: '220px' }}>
         <DropdownMenuGroup>
@@ -87,7 +87,7 @@ function ProjectSelector() {
               <div className={`size-2 rounded-full ${project.color}`} />
               <span className="flex-1">{project.name}</span>
               {currentProject.id === project.id && (
-                <CheckIcon className="size-4 text-primary" />
+                <Checkmark size={16} className="text-primary" />
               )}
               <span className="text-xs text-muted-foreground">{project.plan}</span>
             </DropdownMenuItem>
@@ -95,7 +95,7 @@ function ProjectSelector() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <PlusIcon className="size-4" />
+          <Add size={16} />
           Create new project
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -165,7 +165,7 @@ function NotificationsPopover() {
     <Popover>
       <PopoverTrigger className="inline-flex size-7 items-center justify-center rounded-md hover:bg-muted transition-colors cursor-pointer">
         <div className="relative">
-          <BellIcon className="size-4" />
+          <Notification size={16} />
           {unreadCount > 0 && (
             <span className="absolute -top-1.5 -right-1.5 size-3.5 rounded-full bg-destructive text-[9px] font-medium text-white flex items-center justify-center">
               {unreadCount}
@@ -261,13 +261,13 @@ function UserMenu() {
         <DropdownMenuGroup>
           <Link href="/settings">
             <DropdownMenuItem>
-              <UserIcon />
+              <User size={16} />
               Profile
             </DropdownMenuItem>
           </Link>
           <Link href="/settings">
             <DropdownMenuItem>
-              <SettingsIcon />
+              <Settings size={16} />
               Settings
             </DropdownMenuItem>
           </Link>
@@ -279,7 +279,7 @@ function UserMenu() {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <LogOutIcon />
+          <Logout size={16} />
           Log out
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -305,8 +305,8 @@ const searchGroups = [
     id: 'actions',
     label: 'Actions',
     items: [
-      { id: 'new-project', label: 'Create new project', icon: <PlusIcon className="size-4" /> },
-      { id: 'invite', label: 'Invite team member', icon: <UserIcon className="size-4" /> },
+      { id: 'new-project', label: 'Create new project', icon: <Add size={16} /> },
+      { id: 'invite', label: 'Invite team member', icon: <User size={16} /> },
     ],
   },
 ];

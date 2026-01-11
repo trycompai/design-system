@@ -13,7 +13,7 @@ import {
   Stack,
   Text,
 } from '@trycompai/design-system';
-import { AlertTriangleIcon, CheckCircleIcon, ShieldAlertIcon, ShieldCheckIcon } from 'lucide-react';
+import { CheckmarkFilled, Security, Warning, WarningAltFilled } from '@carbon/icons-react';
 
 const securityMetrics = [
   {
@@ -69,9 +69,9 @@ export default function CybersecurityPage() {
                   {metric.suffix && <Text variant="muted">{metric.suffix}</Text>}
                 </HStack>
                 <HStack gap="1" align="center">
-                  {metric.status === 'good' && <CheckCircleIcon className="size-3 text-green-600" />}
-                  {metric.status === 'warning' && <AlertTriangleIcon className="size-3 text-yellow-600" />}
-                  {metric.status === 'critical' && <ShieldAlertIcon className="size-3 text-red-600" />}
+                  {metric.status === 'good' && <CheckmarkFilled size={12} className="text-green-600" />}
+                  {metric.status === 'warning' && <Warning size={12} className="text-yellow-600" />}
+                  {metric.status === 'critical' && <WarningAltFilled size={12} className="text-red-600" />}
                   <Text size="xs" variant="muted">{metric.change} from last week</Text>
                 </HStack>
               </Stack>
@@ -97,7 +97,7 @@ export default function CybersecurityPage() {
                       threat.severity === 'high' ? 'bg-orange-100 text-orange-600' :
                       'bg-yellow-100 text-yellow-600'
                     }`}>
-                      <ShieldAlertIcon className="size-4" />
+                      <WarningAltFilled size={16} />
                     </div>
                     <Stack gap="none">
                       <Text size="sm" weight="medium">{threat.type}</Text>
@@ -162,28 +162,28 @@ export default function CybersecurityPage() {
               <Stack gap="3">
                 <HStack justify="between" align="center">
                   <HStack gap="2" align="center">
-                    <ShieldCheckIcon className="size-4 text-green-600" />
+                    <Security size={16} className="text-green-600" />
                     <Text size="sm">SOC 2 Type II</Text>
                   </HStack>
                   <Badge>Compliant</Badge>
                 </HStack>
                 <HStack justify="between" align="center">
                   <HStack gap="2" align="center">
-                    <ShieldCheckIcon className="size-4 text-green-600" />
+                    <Security size={16} className="text-green-600" />
                     <Text size="sm">ISO 27001</Text>
                   </HStack>
                   <Badge>Compliant</Badge>
                 </HStack>
                 <HStack justify="between" align="center">
                   <HStack gap="2" align="center">
-                    <AlertTriangleIcon className="size-4 text-yellow-600" />
+                    <Warning size={16} className="text-yellow-600" />
                     <Text size="sm">GDPR</Text>
                   </HStack>
                   <Badge variant="secondary">In Progress</Badge>
                 </HStack>
                 <HStack justify="between" align="center">
                   <HStack gap="2" align="center">
-                    <ShieldCheckIcon className="size-4 text-green-600" />
+                    <Security size={16} className="text-green-600" />
                     <Text size="sm">HIPAA</Text>
                   </HStack>
                   <Badge>Compliant</Badge>

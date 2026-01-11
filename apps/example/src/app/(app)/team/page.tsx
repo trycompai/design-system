@@ -12,7 +12,7 @@ import {
   Stack,
   Text,
 } from '@trycompai/design-system';
-import { MailIcon, PlusIcon } from 'lucide-react';
+import { Add, Email } from '@carbon/icons-react';
 
 const teamMembers = [
   {
@@ -97,10 +97,7 @@ export default function TeamPage() {
           <Heading level="1">Team</Heading>
           <Text variant="muted">Manage your team members and their roles.</Text>
         </Stack>
-        <Button>
-          <PlusIcon />
-          Invite Member
-        </Button>
+        <Button iconLeft={<Add size={16} />}>Invite Member</Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -130,7 +127,7 @@ export default function TeamPage() {
                     </Badge>
                   </div>
                   <div className="flex items-center gap-1 text-muted-foreground">
-                    <MailIcon className="size-3" />
+                    <Email size={12} />
                     <Text size="sm" variant="muted">
                       {member.email}
                     </Text>
