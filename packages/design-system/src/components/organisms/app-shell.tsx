@@ -684,7 +684,7 @@ function AppShellSidebarHeader({ icon, title, description, action, children, ...
       <div className="flex-1 min-w-0">
         <div
           className={[
-            'font-semibold truncate',
+            'truncate',
             isSimpleHeader ? 'text-base' : 'text-sm',
             'text-foreground',
             '[[data-variant=primary]_&]:text-primary-foreground',

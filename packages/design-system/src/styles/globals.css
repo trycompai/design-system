@@ -1,6 +1,79 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import '@fontsource-variable/plus-jakarta-sans';
+
+/* Ramp font: Lausanne */
+@font-face {
+  font-family: 'Lausanne';
+  src:
+    url('../fonts/TWKLausanne/TWKLausanne-300.woff2') format('woff2'),
+    url('../fonts/TWKLausanne/TWKLausanne-300.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lausanne';
+  src:
+    url('../fonts/TWKLausanne/TWKLausanne-300-Italic.woff2') format('woff2'),
+    url('../fonts/TWKLausanne/TWKLausanne-300-Italic.woff') format('woff');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lausanne';
+  src:
+    url('../fonts/TWKLausanne/TWKLausanne-350.woff2') format('woff2'),
+    url('../fonts/TWKLausanne/TWKLausanne-350.woff') format('woff');
+  font-weight: 350;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lausanne';
+  src:
+    url('../fonts/TWKLausanne/TWKLausanne-350-Italic.woff2') format('woff2'),
+    url('../fonts/TWKLausanne/TWKLausanne-350-Italic.woff') format('woff');
+  font-weight: 350;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lausanne';
+  src:
+    url('../fonts/TWKLausanne/TWKLausanne-400.woff2') format('woff2'),
+    url('../fonts/TWKLausanne/TWKLausanne-400.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lausanne';
+  src:
+    url('../fonts/TWKLausanne/TWKLausanne-400-Italic.woff2') format('woff2'),
+    url('../fonts/TWKLausanne/TWKLausanne-400-Italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lausanne';
+  src:
+    url('../fonts/TWKLausanne/TWKLausanne-700.woff2') format('woff2'),
+    url('../fonts/TWKLausanne/TWKLausanne-700.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Lausanne';
+  src:
+    url('../fonts/TWKLausanne/TWKLausanne-700-Italic.woff2') format('woff2'),
+    url('../fonts/TWKLausanne/TWKLausanne-700-Italic.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
 
 /* Include design system components in Tailwind's content scan */
 @source "../components/**/*.tsx";
@@ -9,6 +82,7 @@
 
 @layer base {
   :root {
+    --font-sans: 'Lausanne', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
@@ -84,7 +158,7 @@
 }
 
 @theme inline {
-  --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-sans: 'Lausanne', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -130,8 +204,26 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    font-family: var(--font-sans);
+  }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+  }
+}
+
+/* Lausanne-only weight mapping.
+   We DO NOT have 500/600 files, so make Tailwind's common semantic weights resolve to real faces. */
+@layer utilities {
+  .font-normal {
+    font-weight: 350;
+  }
+  .font-medium {
+    font-weight: 400;
+  }
+  .font-semibold {
+    font-weight: 700;
   }
 }
 

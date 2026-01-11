@@ -335,7 +335,6 @@ export default function OverviewPage() {
                           <Badge variant="secondary">Done</Badge>
                         ) : (
                           <Button
-                            size="sm"
                             variant={task.actionKind === 'link' ? 'outline' : 'default'}
                             iconRight={actionIcon}
                             onClick={() => {

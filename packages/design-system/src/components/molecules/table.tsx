@@ -12,7 +12,11 @@ function Table({
       data-variant={variant}
       className="relative w-full overflow-x-auto data-[variant=bordered]:border data-[variant=bordered]:rounded-lg"
     >
-      <table data-slot="table" className="w-full caption-bottom text-sm" {...props} />
+      <table
+        data-slot="table"
+        className="w-full caption-bottom text-sm [&_[data-slot=text][data-default-size=true]]:text-sm"
+        {...props}
+      />
     </div>
   );
 }

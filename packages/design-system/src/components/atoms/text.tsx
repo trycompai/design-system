@@ -47,10 +47,14 @@ interface TextProps
 }
 
 function Text({ as: Component = 'p', size, variant, weight, leading, font, ...props }: TextProps) {
+  const resolvedSize = size ?? 'base';
+  const isDefaultSize = size === undefined;
   return (
     <Component
       data-slot="text"
-      className={textVariants({ size, variant, weight, leading, font })}
+      data-size={resolvedSize}
+      data-default-size={isDefaultSize ? 'true' : undefined}
+      className={textVariants({ size: resolvedSize, variant, weight, leading, font })}
       {...props}
     />
   );

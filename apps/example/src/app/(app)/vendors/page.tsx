@@ -4,13 +4,11 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-  Badge,
   Button,
   HStack,
   PageHeader,
   PageHeaderActions,
   PageLayout,
-  Stack,
   Table,
   TableBody,
   TableCell,
@@ -19,97 +17,17 @@ import {
   TableRow,
   Text,
 } from '@trycompai/design-system';
-import { ExternalLinkIcon, MoreHorizontalIcon, PlusIcon, ShieldCheckIcon } from 'lucide-react';
+import { ExternalLinkIcon, MoreHorizontalIcon, PlusIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-const vendors = [
-  {
-    id: 1,
-    name: 'Amazon Web Services',
-    category: 'Cloud Infrastructure',
-    riskLevel: 'low',
-    status: 'approved',
-    lastAssessment: 'Dec 15, 2023',
-    logo: 'https://logo.clearbit.com/aws.amazon.com',
-  },
-  {
-    id: 2,
-    name: 'Google Cloud Platform',
-    category: 'Cloud Infrastructure',
-    riskLevel: 'low',
-    status: 'approved',
-    lastAssessment: 'Dec 10, 2023',
-    logo: 'https://logo.clearbit.com/cloud.google.com',
-  },
-  {
-    id: 3,
-    name: 'Slack',
-    category: 'Communication',
-    riskLevel: 'medium',
-    status: 'approved',
-    lastAssessment: 'Nov 28, 2023',
-    logo: 'https://logo.clearbit.com/slack.com',
-  },
-  {
-    id: 4,
-    name: 'Salesforce',
-    category: 'CRM',
-    riskLevel: 'medium',
-    status: 'pending',
-    lastAssessment: 'Nov 15, 2023',
-    logo: 'https://logo.clearbit.com/salesforce.com',
-  },
-  {
-    id: 5,
-    name: 'Datadog',
-    category: 'Monitoring',
-    riskLevel: 'low',
-    status: 'approved',
-    lastAssessment: 'Oct 30, 2023',
-    logo: 'https://logo.clearbit.com/datadoghq.com',
-  },
-  {
-    id: 6,
-    name: 'Stripe',
-    category: 'Payments',
-    riskLevel: 'high',
-    status: 'review',
-    lastAssessment: 'Oct 15, 2023',
-    logo: 'https://logo.clearbit.com/stripe.com',
-  },
-];
-
-function getRiskBadge(risk: string) {
-  switch (risk) {
-    case 'low':
-      return <Badge>Low Risk</Badge>;
-    case 'medium':
-      return <Badge variant="secondary">Medium Risk</Badge>;
-    case 'high':
-      return <Badge variant="destructive">High Risk</Badge>;
-    default:
-      return <Badge variant="outline">{risk}</Badge>;
-  }
-}
-
-function getStatusBadge(status: string) {
-  switch (status) {
-    case 'approved':
-      return (
-        <HStack gap="1" align="center">
-          <ShieldCheckIcon className="size-4 text-green-600" />
-          <Text size="sm">Approved</Text>
-        </HStack>
-      );
-    case 'pending':
-      return <Text size="sm" variant="muted">Pending Review</Text>;
-    case 'review':
-      return <Text size="sm" variant="muted">Under Review</Text>;
-    default:
-      return <Text size="sm" variant="muted">{status}</Text>;
-  }
-}
+import { vendors } from './vendors.data';
+import { getRiskBadge, getStatusBadge } from './vendors.ui';
 
 export default function VendorsPage() {
+  const router = useRouter();
+
+  const goToVendor = (id: number) => router.push(`/vendors/${id}`);
+
   return (
     <PageLayout padding="none" container={false}>
       <PageHeader title="Vendors">
@@ -118,7 +36,7 @@ export default function VendorsPage() {
         </PageHeaderActions>
       </PageHeader>
 
-      <Table>
+      <Table variant="bordered">
         <TableHeader>
           <TableRow>
             <TableHead>Vendor</TableHead>
@@ -135,14 +53,29 @@ export default function VendorsPage() {
         </TableHeader>
         <TableBody>
           {vendors.map((vendor) => (
-            <TableRow key={vendor.id}>
+            <TableRow
+              key={vendor.id}
+              role="link"
+              tabIndex={0}
+              aria-label={`View vendor: ${vendor.name}`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => goToVendor(vendor.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  goToVendor(vendor.id);
+                }
+              }}
+            >
               <TableCell>
                 <HStack gap="3" align="center">
                   <Avatar size="lg">
                     <AvatarImage src={vendor.logo} />
                     <AvatarFallback>{vendor.name.slice(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
-                  <Text weight="medium">{vendor.name}</Text>
+                  <Text size="sm" weight="medium">
+                    {vendor.name}
+                  </Text>
                 </HStack>
               </TableCell>
               <TableCell>
@@ -160,11 +93,23 @@ export default function VendorsPage() {
               <TableCell>
                 <div className="flex justify-end">
                   <HStack align="center" gap="2">
-                    <Button variant="ghost" size="sm">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        goToVendor(vendor.id);
+                      }}
+                    >
                       <ExternalLinkIcon className="size-3" />
                       View
                     </Button>
-                    <Button variant="ghost" size="icon-sm" aria-label="More actions">
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="More actions"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <MoreHorizontalIcon />
                     </Button>
                   </HStack>

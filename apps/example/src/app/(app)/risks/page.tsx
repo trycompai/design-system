@@ -88,7 +88,7 @@ export default function RisksPage() {
         </PageHeaderActions>
       </PageHeader>
 
-      <Table>
+      <Table variant="bordered">
         <TableHeader>
           <TableRow>
             <TableHead>Risk</TableHead>
@@ -109,7 +109,9 @@ export default function RisksPage() {
               <TableCell>
                 <HStack gap="2" align="center">
                   <AlertTriangleIcon className="size-4 text-muted-foreground" />
-                  <Text weight="medium">{risk.title}</Text>
+                  <Text size="sm" weight="medium">
+                    {risk.title}
+                  </Text>
                 </HStack>
               </TableCell>
               <TableCell>{getSeverityBadge(risk.severity)}</TableCell>

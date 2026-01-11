@@ -1,15 +1,15 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
-const headingVariants = cva('font-semibold', {
+const headingVariants = cva('font-medium', {
   variants: {
     level: {
-      '1': 'text-2xl tracking-tight',
+      '1': 'text-4xl tracking-tight',
       '2': 'text-xl',
-      '3': 'text-lg font-medium',
-      '4': 'text-base font-medium',
-      '5': 'text-sm font-medium',
-      '6': 'text-sm font-medium',
+      '3': 'text-lg ',
+      '4': 'text-base ',
+      '5': 'text-sm ',
+      '6': 'text-sm ',
     },
     variant: {
       default: 'text-foreground',

@@ -23,6 +23,7 @@
       "default": "./lib/utils.ts"
     },
     "./globals.css": "./src/styles/globals.css",
+    "./fonts/*": "./src/fonts/*",
     "./tailwind.config": {
       "types": "./tailwind.config.ts",
       "import": "./tailwind.config.ts",

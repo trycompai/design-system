@@ -89,7 +89,7 @@ export default function PoliciesPage() {
         </PageHeaderActions>
       </PageHeader>
 
-      <Table>
+      <Table variant="bordered">
         <TableHeader>
           <TableRow>
             <TableHead>Policy Name</TableHead>
@@ -104,17 +104,25 @@ export default function PoliciesPage() {
           {policies.map((policy) => (
             <TableRow key={policy.id}>
               <TableCell>
-                <Text weight="medium">{policy.name}</Text>
+                <Text size="sm" weight="medium">
+                  {policy.name}
+                </Text>
               </TableCell>
               <TableCell>{getStatusBadge(policy.status)}</TableCell>
               <TableCell>
-                <Text variant="muted">{policy.owner}</Text>
+                <Text size="sm" variant="muted">
+                  {policy.owner}
+                </Text>
               </TableCell>
               <TableCell>
-                <Text variant="muted">{policy.controls}</Text>
+                <Text size="sm" variant="muted">
+                  {policy.controls}
+                </Text>
               </TableCell>
               <TableCell>
-                <Text variant="muted">{policy.lastUpdated}</Text>
+                <Text size="sm" variant="muted">
+                  {policy.lastUpdated}
+                </Text>
               </TableCell>
               <TableCell>
                 <Button variant="ghost" size="icon-sm">

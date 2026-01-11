@@ -85,7 +85,7 @@ export default function ControlsPage() {
       <PageHeader title="Controls">
         <PageHeaderActions>
           <Button iconLeft={<PlusIcon />}>New Control</Button>
-          <Button variant="outline" iconLeft={<FilterIcon />}>Filter</Button>
+          <Button variant="secondary" iconLeft={<FilterIcon />}>Filter</Button>
         </PageHeaderActions>
       </PageHeader>
 
@@ -95,7 +95,7 @@ export default function ControlsPage() {
           <Badge variant="secondary">{Math.round((passedControls / totalControls) * 100)}% complete</Badge>
         </HStack>
 
-        <Table>
+        <Table variant="bordered">
           <TableHeader>
             <TableRow>
               <TableHead>Category</TableHead>
@@ -126,7 +126,9 @@ export default function ControlsPage() {
                 <TableRow key={category.id}>
                   <TableCell>
                     <Stack gap="none">
-                      <Text weight="medium">{category.name}</Text>
+                      <Text size="sm" weight="medium">
+                        {category.name}
+                      </Text>
                       <Text size="sm" variant="muted">
                         {category.description}
                       </Text>
