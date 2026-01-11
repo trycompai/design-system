@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { SearchIcon } from 'lucide-react';
+import { Search } from '@carbon/icons-react';
 import {
   Command,
   CommandDialog,
@@ -108,7 +108,7 @@ function CommandSearch({
           onClick={() => setOpen(true)}
           className={`${widthClasses[triggerWidth]} inline-flex items-center gap-2 rounded-lg border border-input/50 bg-background/50 px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-background hover:border-input focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring`}
         >
-          <SearchIcon className="size-4" />
+          <Search className="size-4" />
           <span className="flex-1 text-left">{placeholder}</span>
           <Kbd>⌘K</Kbd>
         </button>

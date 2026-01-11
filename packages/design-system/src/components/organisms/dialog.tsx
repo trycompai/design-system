@@ -3,7 +3,7 @@
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import * as React from 'react';
 
-import { XIcon } from 'lucide-react';
+import { Close } from '@carbon/icons-react';
 import { Button } from '../atoms/button';
 
 function Dialog({ ...props }: DialogPrimitive.Root.Props) {
@@ -54,7 +54,7 @@ function DialogContent({
             render={<Button variant="ghost" size="icon-sm" />}
             className="absolute top-2 right-2"
           >
-            <XIcon />
+            <Close />
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
         )}

@@ -7,7 +7,7 @@ import { useRender } from '@base-ui/react/use-render';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
-import { PanelLeftIcon } from 'lucide-react';
+import { SidePanelOpen } from '@carbon/icons-react';
 import { useIsMobile } from '../../../hooks/use-mobile';
 import { cn } from '../../../lib/utils';
 import { buttonVariants } from '../atoms/button';
@@ -262,7 +262,7 @@ function SidebarTrigger({ onClick, ...props }: Omit<ButtonPrimitive.Props, 'clas
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      <SidePanelOpen />
       <span className="sr-only">Toggle Sidebar</span>
     </ButtonPrimitive>
   );

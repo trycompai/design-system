@@ -1,7 +1,7 @@
 'use client';
 
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
-import { CheckIcon, ChevronDownIcon, XIcon } from 'lucide-react';
+import { Checkmark, ChevronDown, Close } from '@carbon/icons-react';
 import * as React from 'react';
 
 import { Button } from '../atoms/button';
@@ -24,7 +24,7 @@ function ComboboxTrigger({
       {...props}
     >
       {children}
-      <ChevronDownIcon className="text-muted-foreground size-4 pointer-events-none" />
+      <ChevronDown className="text-muted-foreground size-4 pointer-events-none" />
     </ComboboxPrimitive.Trigger>
   );
 }
@@ -36,7 +36,7 @@ function ComboboxClear({ ...props }: Omit<ComboboxPrimitive.Clear.Props, 'classN
       render={<InputGroupButton variant="ghost" size="icon-xs" />}
       {...props}
     >
-      <XIcon className="pointer-events-none" />
+      <Close className="pointer-events-none" />
     </ComboboxPrimitive.Clear>
   );
 }
@@ -127,7 +127,7 @@ function ComboboxItem({ children, ...props }: Omit<ComboboxPrimitive.Item.Props,
           <span className="pointer-events-none absolute right-2 flex size-4 items-center justify-center" />
         }
       >
-        <CheckIcon className="pointer-events-none" />
+        <Checkmark className="pointer-events-none" />
       </ComboboxPrimitive.ItemIndicator>
     </ComboboxPrimitive.Item>
   );
@@ -206,7 +206,7 @@ function ComboboxChip({
           className="-ml-1 opacity-50 hover:opacity-100"
           data-slot="combobox-chip-remove"
         >
-          <XIcon className="pointer-events-none" />
+          <Close className="pointer-events-none" />
         </ComboboxPrimitive.ChipRemove>
       )}
     </ComboboxPrimitive.Chip>

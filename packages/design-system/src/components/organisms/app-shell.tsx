@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import { ChevronRightIcon, PanelLeftIcon, SearchIcon } from 'lucide-react';
+import { Search, SidePanelClose, SidePanelOpen } from '@carbon/icons-react';
 import * as React from 'react';
 
 import { Kbd } from '../atoms/kbd';
@@ -296,7 +296,7 @@ function AppShellNavbar({
           className="inline-flex md:hidden size-8 items-center justify-center rounded-md hover:bg-background/50"
           aria-label="Toggle menu"
         >
-          <PanelLeftIcon className="size-4" />
+          <SidePanelOpen className="size-4" />
         </button>
         {/* Desktop toggle - only visible when prop is true */}
         {showSidebarToggle && (
@@ -306,7 +306,7 @@ function AppShellNavbar({
             className="hidden md:inline-flex size-8 items-center justify-center rounded-md hover:bg-background/50"
             aria-label="Toggle sidebar"
           >
-            <PanelLeftIcon className="size-4" />
+            <SidePanelOpen className="size-4" />
           </button>
         )}
         {startContent}
@@ -501,7 +501,11 @@ function AppShellRail({ showSidebarToggle = true, children, ...props }: AppShell
             className="flex size-10 items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-background/50 transition-colors"
             aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
           >
-            <PanelLeftIcon className={`size-5 transition-transform ${sidebarOpen ? '' : 'rotate-180'}`} />
+            {sidebarOpen ? (
+              <SidePanelClose className="size-5" />
+            ) : (
+              <SidePanelOpen className="size-5" />
+            )}
           </button>
         )}
       </div>
@@ -609,7 +613,7 @@ function AppShellSearch({
     <div className={appShellSearchVariants({ searchWidth })}>
       <InputGroup>
         <InputGroupAddon align="inline-start">
-          <SearchIcon />
+          <Search />
         </InputGroupAddon>
         <InputGroupInput placeholder={placeholder} {...props} />
         {showShortcut && (

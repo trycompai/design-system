@@ -1,7 +1,7 @@
 import { Radio as RadioPrimitive } from '@base-ui/react/radio';
 import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group';
 
-import { CircleIcon } from 'lucide-react';
+import { CircleFilled } from '@carbon/icons-react';
 
 function RadioGroup({ ...props }: Omit<RadioGroupPrimitive.Props, 'className'>) {
   return (
@@ -24,7 +24,7 @@ function RadioGroupItem({ ...props }: Omit<RadioPrimitive.Root.Props, 'className
         data-slot="radio-group-indicator"
         className="group-aria-invalid/radio-group-item:text-destructive text-primary flex size-4 items-center justify-center"
       >
-        <CircleIcon className="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 fill-current" />
+        <CircleFilled className="absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2" />
       </RadioPrimitive.Indicator>
     </RadioPrimitive.Root>
   );

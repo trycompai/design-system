@@ -1,5 +1,5 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import { AlertCircle, AlertTriangle, CheckCircle2, Info } from 'lucide-react';
+import { CheckmarkFilled, Information, Misuse, Warning } from '@carbon/icons-react';
 import * as React from 'react';
 
 const alertVariants = cva(
@@ -25,10 +25,10 @@ const alertVariants = cva(
 
 const variantIcons = {
   default: null,
-  info: Info,
-  success: CheckCircle2,
-  warning: AlertTriangle,
-  destructive: AlertCircle,
+  info: Information,
+  success: CheckmarkFilled,
+  warning: Warning,
+  destructive: Misuse,
 } as const;
 
 type AlertVariant = NonNullable<VariantProps<typeof alertVariants>['variant']>;

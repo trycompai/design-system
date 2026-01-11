@@ -1,6 +1,6 @@
 import { Button as ButtonPrimitive } from '@base-ui/react/button';
 
-import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react';
+import { ChevronLeft, ChevronRight, OverflowMenuHorizontal } from '@carbon/icons-react';
 import { buttonVariants } from '../atoms/button';
 
 function Pagination({ ...props }: Omit<React.ComponentProps<'nav'>, 'className'>) {
@@ -52,7 +52,7 @@ function PaginationPrevious({ ...props }: Omit<PaginationLinkProps, 'size'>) {
       className={`${buttonVariants({ variant: 'ghost', size: 'default' })} pl-2`}
       render={<a aria-label="Go to previous page" data-slot="pagination-link" {...props} />}
     >
-      <ChevronLeftIcon data-icon="inline-start" />
+      <ChevronLeft data-icon="inline-start" />
       <span className="hidden sm:block">Previous</span>
     </ButtonPrimitive>
   );
@@ -65,7 +65,7 @@ function PaginationNext({ ...props }: Omit<PaginationLinkProps, 'size'>) {
       render={<a aria-label="Go to next page" data-slot="pagination-link" {...props} />}
     >
       <span className="hidden sm:block">Next</span>
-      <ChevronRightIcon data-icon="inline-end" />
+      <ChevronRight data-icon="inline-end" />
     </ButtonPrimitive>
   );
 }
@@ -78,7 +78,7 @@ function PaginationEllipsis({ ...props }: Omit<React.ComponentProps<'span'>, 'cl
       className="size-9 items-center justify-center [&_svg:not([class*='size-'])]:size-4 flex items-center justify-center"
       {...props}
     >
-      <MoreHorizontalIcon />
+      <OverflowMenuHorizontal />
       <span className="sr-only">More pages</span>
     </span>
   );

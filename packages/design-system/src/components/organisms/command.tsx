@@ -5,7 +5,7 @@ import * as React from 'react';
 
 import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { CheckIcon, SearchIcon } from 'lucide-react';
+import { Checkmark, Search } from '@carbon/icons-react';
 
 const commandVariants = cva(
   'bg-popover text-popover-foreground rounded-xl p-1 flex size-full flex-col overflow-hidden',
@@ -95,7 +95,7 @@ function CommandInput({
           data-align="inline-end"
           className="text-muted-foreground flex h-auto cursor-text items-center justify-center gap-2 pr-2 text-sm font-medium select-none"
         >
-          <SearchIcon className="size-4 shrink-0 opacity-50" />
+          <Search className="size-4 shrink-0 opacity-50" />
         </div>
       </div>
     </div>
@@ -161,7 +161,7 @@ function CommandItem({
       {...props}
     >
       {children}
-      <CheckIcon className="ml-auto opacity-0 group-has-[[data-slot=command-shortcut]]/command-item:hidden group-data-[checked=true]/command-item:opacity-100" />
+      <Checkmark className="ml-auto opacity-0 group-has-[[data-slot=command-shortcut]]/command-item:hidden group-data-[checked=true]/command-item:opacity-100" />
     </CommandPrimitive.Item>
   );
 }

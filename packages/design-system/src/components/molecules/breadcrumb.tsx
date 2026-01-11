@@ -2,7 +2,7 @@ import { mergeProps } from '@base-ui/react/merge-props';
 import { useRender } from '@base-ui/react/use-render';
 import * as React from 'react';
 
-import { ArrowRightIcon, ChevronRightIcon, MoreHorizontalIcon, SlashIcon } from 'lucide-react';
+import { ArrowRight, ChevronRight, OverflowMenuHorizontal } from '@carbon/icons-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,9 +26,10 @@ interface BreadcrumbItemData {
 type BreadcrumbSeparatorType = 'chevron' | 'slash' | 'arrow';
 
 const separatorIcons: Record<BreadcrumbSeparatorType, React.ReactNode> = {
-  chevron: <ChevronRightIcon />,
-  slash: <SlashIcon />,
-  arrow: <ArrowRightIcon />,
+  chevron: <ChevronRight />,
+  // Carbon doesn't ship a slash glyph icon; render it as text.
+  slash: <span className="text-xs leading-none">/</span>,
+  arrow: <ArrowRight />,
 };
 
 interface BreadcrumbProps extends Omit<React.ComponentProps<'nav'>, 'children' | 'className'> {
@@ -201,7 +202,7 @@ function BreadcrumbSeparator({
       className="[&>svg]:size-3.5"
       {...props}
     >
-      {children ?? <ChevronRightIcon />}
+      {children ?? <ChevronRight />}
     </li>
   );
 }
@@ -215,7 +216,7 @@ function BreadcrumbEllipsis({ ...props }: Omit<React.ComponentProps<'span'>, 'cl
       className="size-5 [&>svg]:size-4 flex items-center justify-center"
       {...props}
     >
-      <MoreHorizontalIcon />
+      <OverflowMenuHorizontal />
       <span className="sr-only">More</span>
     </span>
   );
@@ -229,7 +230,7 @@ function BreadcrumbEllipsisMenu({ collapsedItems }: { collapsedItems?: Breadcrum
   return (
     <DropdownMenu>
       <DropdownMenuTrigger variant="ellipsis" aria-label="Show hidden breadcrumb items">
-        <MoreHorizontalIcon />
+        <OverflowMenuHorizontal />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         {collapsedItems.map((item, index) => (

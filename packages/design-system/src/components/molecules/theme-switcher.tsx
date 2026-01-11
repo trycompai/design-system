@@ -1,7 +1,7 @@
 'use client';
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { MonitorIcon, MoonIcon, SunIcon } from 'lucide-react';
+import { Moon, Screen, Sun } from '@carbon/icons-react';
 import * as React from 'react';
 
 const themeSwitcherVariants = cva(
@@ -73,10 +73,10 @@ function ThemeSwitcher({
   };
 
   const options: { value: Theme; icon: React.ReactNode; label: string }[] = [
-    { value: 'light', icon: <SunIcon />, label: 'Light mode' },
-    { value: 'dark', icon: <MoonIcon />, label: 'Dark mode' },
+    { value: 'light', icon: <Sun />, label: 'Light mode' },
+    { value: 'dark', icon: <Moon />, label: 'Dark mode' },
     ...(showSystem
-      ? [{ value: 'system' as Theme, icon: <MonitorIcon />, label: 'System theme' }]
+      ? [{ value: 'system' as Theme, icon: <Screen />, label: 'System theme' }]
       : []),
   ];
 
@@ -153,8 +153,8 @@ function ThemeToggle({
     >
       {/* Background icons */}
       <span className="absolute inset-0 flex items-center justify-between px-1.5">
-        <SunIcon className={`${iconSize} text-amber-500`} />
-        <MoonIcon className={`${iconSize} text-blue-400`} />
+        <Sun className={`${iconSize} text-amber-500`} />
+        <Moon className={`${iconSize} text-blue-400`} />
       </span>
       {/* Sliding thumb */}
       <span
@@ -163,9 +163,9 @@ function ThemeToggle({
         }`}
       >
         {isDark ? (
-          <MoonIcon className={`${iconSize} text-blue-500`} />
+          <Moon className={`${iconSize} text-blue-500`} />
         ) : (
-          <SunIcon className={`${iconSize} text-amber-500`} />
+          <Sun className={`${iconSize} text-amber-500`} />
         )}
       </span>
     </button>

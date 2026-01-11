@@ -1,7 +1,7 @@
 'use client';
 
 import { cva, type VariantProps } from 'class-variance-authority';
-import { MessageCircleIcon, SparklesIcon, XIcon } from 'lucide-react';
+import { Close, MagicWand, Send } from '@carbon/icons-react';
 import * as React from 'react';
 
 const aiChatTriggerVariants = cva(
@@ -108,14 +108,14 @@ function AIChat({
             isOpen ? 'scale-0 opacity-0 rotate-90' : 'scale-100 opacity-100 rotate-0'
           }`}
         >
-          {triggerIcon || <SparklesIcon className="size-6" />}
+          {triggerIcon || <MagicWand className="size-6" />}
         </span>
         <span
           className={`absolute transition-all duration-200 ${
             isOpen ? 'scale-100 opacity-100 rotate-0' : 'scale-0 opacity-0 -rotate-90'
           }`}
         >
-          <XIcon className="size-6" />
+          <Close className="size-6" />
         </span>
       </button>
     </>
@@ -130,7 +130,7 @@ function AIChatDefaultContent({ onClose }: { onClose: () => void }) {
       <div className="flex items-center justify-between px-4 py-3 border-b border-border/40">
         <div className="flex items-center gap-2">
           <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <SparklesIcon className="size-4" />
+            <MagicWand className="size-4" />
           </span>
           <div>
             <div className="font-semibold text-sm">AI Assistant</div>
@@ -142,7 +142,7 @@ function AIChatDefaultContent({ onClose }: { onClose: () => void }) {
           onClick={onClose}
           className="size-8 flex items-center justify-center rounded-md hover:bg-muted/50 text-muted-foreground hover:text-foreground transition-colors"
         >
-          <XIcon className="size-4" />
+          <Close className="size-4" />
         </button>
       </div>
 
@@ -152,7 +152,7 @@ function AIChatDefaultContent({ onClose }: { onClose: () => void }) {
           {/* AI Welcome Message */}
           <div className="flex gap-3">
             <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <SparklesIcon className="size-3.5" />
+              <MagicWand className="size-3.5" />
             </span>
             <div className="flex-1 rounded-2xl rounded-tl-sm bg-muted/50 dark:bg-muted px-3 py-2 text-sm">
               Hi! I'm your AI assistant. How can I help you today?
@@ -173,7 +173,7 @@ function AIChatDefaultContent({ onClose }: { onClose: () => void }) {
             type="button"
             className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
           >
-            <MessageCircleIcon className="size-4" />
+            <Send className="size-4" />
           </button>
         </div>
         <div className="mt-2 text-center text-xs text-muted-foreground">

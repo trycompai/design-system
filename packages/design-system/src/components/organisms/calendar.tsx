@@ -8,7 +8,7 @@ import {
   type DayPickerProps,
 } from 'react-day-picker';
 
-import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight } from '@carbon/icons-react';
 import { cn } from '../../../lib/utils';
 import { Button, buttonVariants } from '../atoms/button';
 
@@ -129,14 +129,14 @@ function Calendar({
         },
         Chevron: ({ orientation, ...componentProps }) => {
           if (orientation === 'left') {
-            return <ChevronLeftIcon className="size-4" {...componentProps} />;
+            return <ChevronLeft className="size-4" {...componentProps} />;
           }
 
           if (orientation === 'right') {
-            return <ChevronRightIcon className="size-4" {...componentProps} />;
+            return <ChevronRight className="size-4" {...componentProps} />;
           }
 
-          return <ChevronDownIcon className="size-4" {...componentProps} />;
+          return <ChevronDown className="size-4" {...componentProps} />;
         },
         DayButton: CalendarDayButton,
         WeekNumber: ({ children, ...componentProps }) => {

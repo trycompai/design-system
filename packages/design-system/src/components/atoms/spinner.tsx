@@ -1,8 +1,8 @@
-import { Loader2Icon } from 'lucide-react';
+import { Renew } from '@carbon/icons-react';
 
-function Spinner({ ...props }: Omit<React.ComponentProps<'svg'>, 'className'>) {
+function Spinner({ ...props }: Omit<React.ComponentProps<typeof Renew>, 'className'>) {
   return (
-    <Loader2Icon
+    <Renew
       role="status"
       aria-label="Loading"
       className="size-4 shrink-0 animate-spin"

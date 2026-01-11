@@ -1,10 +1,10 @@
 import {
-  CircleCheckIcon,
-  InfoIcon,
-  Loader2Icon,
-  OctagonXIcon,
-  TriangleAlertIcon,
-} from 'lucide-react';
+  CheckmarkFilled,
+  Information,
+  Misuse,
+  Renew,
+  Warning,
+} from '@carbon/icons-react';
 import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
 const Toaster = ({ theme = 'system', ...props }: ToasterProps) => {
@@ -13,11 +13,11 @@ const Toaster = ({ theme = 'system', ...props }: ToasterProps) => {
       theme={theme}
       className="toaster group"
       icons={{
-        success: <CircleCheckIcon className="size-4 text-success" />,
-        info: <InfoIcon className="size-4 text-info" />,
-        warning: <TriangleAlertIcon className="size-4 text-warning" />,
-        error: <OctagonXIcon className="size-4 text-destructive" />,
-        loading: <Loader2Icon className="size-4 animate-spin" />,
+        success: <CheckmarkFilled className="size-4 text-success" />,
+        info: <Information className="size-4 text-info" />,
+        warning: <Warning className="size-4 text-warning" />,
+        error: <Misuse className="size-4 text-destructive" />,
+        loading: <Renew className="size-4 animate-spin" />,
       }}
       style={
         {
