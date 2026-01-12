@@ -63,14 +63,24 @@ function AIChat({
 
   return (
     <>
-      {/* Chat Panel - persistent side panel, no backdrop */}
+      {/* Backdrop overlay */}
+      <div
+        data-slot="ai-chat-backdrop"
+        className={`fixed inset-0 z-20 bg-black/5 backdrop-blur-[2px] transition-opacity duration-300 ${
+          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+        onClick={handleClose}
+      />
+      {/* Chat Panel - floating module */}
       <div
         data-slot="ai-chat-panel"
-        className={`fixed top-14 right-0 bottom-0 z-30 w-full max-w-md flex flex-col bg-background border-l border-border transition-transform duration-300 ease-out ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed top-16 right-3 bottom-3 z-30 w-full max-w-md flex flex-col bg-background/95 backdrop-blur-xl border border-border/50 rounded-2xl overflow-hidden transition-all duration-300 ease-out ring-1 ring-black/[0.03] dark:ring-white/[0.05] ${
+          isOpen ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-2 opacity-0 scale-[0.98] pointer-events-none'
         }`}
         style={{
-          boxShadow: isOpen ? '-4px 0 24px -4px rgb(0 0 0 / 0.08)' : 'none',
+          boxShadow: isOpen
+            ? '0 24px 48px -12px rgb(0 0 0 / 0.15), 0 12px 24px -8px rgb(0 0 0 / 0.1), 0 0 0 1px rgb(0 0 0 / 0.03)'
+            : 'none',
         }}
       >
         {children || <AIChatDefaultContent onClose={handleClose} />}
