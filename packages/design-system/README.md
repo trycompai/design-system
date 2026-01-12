@@ -82,6 +82,7 @@ export function MyComponent() {
 | Export                                     | Description                        |
 | ------------------------------------------ | ---------------------------------- |
 | `@trycompai/design-system`                 | All components                     |
+| `@trycompai/design-system/icons`           | Carbon icons re-exported           |
 | `@trycompai/design-system/cn`              | `cn()` utility for merging classes |
 | `@trycompai/design-system/globals.css`     | Global CSS with theme variables    |
 | `@trycompai/design-system/tailwind.config` | Tailwind configuration             |
@@ -98,12 +99,110 @@ The design system includes:
 - **Navigation**: `Tabs`, `Breadcrumb`, `Pagination`, `NavigationMenu`, `DropdownMenu`
 - **Utility**: `Separator`, `Skeleton`, `Spinner`, `ScrollArea`, `Collapsible`
 
+## Theme Switching
+
+The design system uses CSS class-based theming. Dark mode is enabled by adding the `.dark` class to the `<html>` element.
+
+### Theme Components
+
+Two components are available for theme switching:
+
+```tsx
+import { ThemeSwitcher, ThemeToggle } from '@trycompai/design-system';
+
+// 3-option switcher: light, dark, system
+<ThemeSwitcher
+  value={theme}
+  onChange={(theme) => handleThemeChange(theme)}
+  showSystem={true}  // optional, defaults to true
+  size="default"     // 'sm' | 'default'
+/>
+
+// Simple light/dark toggle
+<ThemeToggle
+  isDark={isDark}
+  onChange={(isDark) => handleToggle(isDark)}
+  size="default"     // 'sm' | 'default'
+/>
+```
+
+### Manual Implementation
+
+To switch themes, toggle the `.dark` class on the document:
+
+```tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import { ThemeToggle } from '@trycompai/design-system';
+
+function MyThemeToggle() {
+  const [isDark, setIsDark] = useState(false);
+
+  // Sync with current theme on mount
+  useEffect(() => {
+    setIsDark(document.documentElement.classList.contains('dark'));
+  }, []);
+
+  const handleThemeChange = (dark: boolean) => {
+    setIsDark(dark);
+    if (dark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    // Optional: persist to localStorage
+    localStorage.setItem('theme', dark ? 'dark' : 'light');
+  };
+
+  return <ThemeToggle isDark={isDark} onChange={handleThemeChange} />;
+}
+```
+
+### With next-themes (Optional)
+
+For more features like system preference detection and SSR support, you can use `next-themes`:
+
+```bash
+npm install next-themes
+```
+
+```tsx
+// app/layout.tsx
+import { ThemeProvider } from 'next-themes';
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+```tsx
+// components/theme-toggle.tsx
+'use client';
+
+import { useTheme } from 'next-themes';
+import { ThemeSwitcher } from '@trycompai/design-system';
+
+export function MyThemeSwitcher() {
+  const { theme, setTheme } = useTheme();
+  return <ThemeSwitcher value={theme} onChange={setTheme} />;
+}
+```
+
 ## Design Principles
 
 - **No className prop**: Components use variants and props, not className overrides
 - **Semantic tokens**: Uses CSS variables for consistent theming
-- **Dark mode**: Full dark mode support via `next-themes`
-- **Accessible**: Built on Radix UI primitives
+- **Dark mode**: Full dark mode support via `.dark` class
+- **Accessible**: Built on Base UI primitives
 
 ## License
 

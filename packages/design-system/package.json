@@ -1,6 +1,6 @@
 {
   "name": "@trycompai/design-system",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Design system for Comp AI - shadcn-style components with Tailwind CSS",
   "type": "module",
   "main": "./src/index.ts",
@@ -29,7 +29,12 @@
       "import": "./tailwind.config.ts",
       "default": "./tailwind.config.ts"
     },
-    "./postcss.config": "./postcss.config.mjs"
+    "./postcss.config": "./postcss.config.mjs",
+    "./icons": {
+      "types": "./src/icons.ts",
+      "import": "./src/icons.ts",
+      "default": "./src/icons.ts"
+    }
   },
   "files": [
     "src",
