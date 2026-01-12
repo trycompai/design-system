@@ -125,7 +125,7 @@ export default function PoliciesPage() {
                 </Text>
               </TableCell>
               <TableCell>
-                <Button variant="ghost" size="icon-sm">
+                <Button variant="outline" size="icon-sm">
                   <OverflowMenuHorizontal size={16} />
                 </Button>
               </TableCell>

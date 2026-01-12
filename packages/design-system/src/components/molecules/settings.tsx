@@ -155,7 +155,7 @@ function SettingsCard({ title, description, hint, action, children, ...props }: 
       </div>
       <div className="px-6 pb-6">{children}</div>
       {hasFooter && (
-        <div className="border-t bg-muted/30 px-6 py-4">
+        <div className="border-t bg-muted px-6 py-4">
           <div className="flex items-center justify-between gap-4">
             <div className="text-muted-foreground text-sm">{hint}</div>
             <div className="flex shrink-0 items-center gap-2">{action}</div>

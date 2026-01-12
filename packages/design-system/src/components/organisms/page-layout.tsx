@@ -4,7 +4,7 @@ import * as React from 'react';
 import { cn } from '../../../lib/utils';
 import { Stack } from '../atoms/stack';
 
-const pageLayoutVariants = cva('min-h-dvh bg-background text-foreground', {
+const pageLayoutVariants = cva('min-h-full bg-background text-foreground', {
   variants: {
     variant: {
       default: 'flex flex-col',

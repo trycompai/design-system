@@ -128,7 +128,7 @@ export default function RisksPage() {
               </TableCell>
               <TableCell>
                 <div className="flex justify-end">
-                  <Button variant="ghost" size="icon-sm" aria-label="More actions">
+                  <Button variant="outline" size="icon-sm" aria-label="More actions">
                     <OverflowMenuHorizontal size={16} />
                   </Button>
                 </div>

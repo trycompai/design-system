@@ -178,7 +178,7 @@ export default function ControlsPage() {
                   </TableCell>
                   <TableCell>
                     <div className="flex justify-end">
-                      <Button variant="ghost" size="sm">
+                      <Button variant="outline" size="sm">
                         View
                       </Button>
                     </div>

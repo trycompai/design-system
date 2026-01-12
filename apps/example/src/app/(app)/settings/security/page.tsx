@@ -77,7 +77,7 @@ export default function SettingsSecurityPage() {
         </CardHeader>
         <CardContent>
           <Stack gap="4">
-            <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-lg">
+            <div className="flex items-center gap-4 p-4 bg-muted rounded-lg">
               <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
                 <Mobile size={20} className="text-primary" />
               </div>
@@ -96,7 +96,7 @@ export default function SettingsSecurityPage() {
                 </Button>
               </div>
             </div>
-            <div className="flex items-center gap-4 p-4 bg-muted/30 rounded-lg">
+            <div className="flex items-center gap-4 p-4 bg-muted rounded-lg">
               <div className="flex size-10 items-center justify-center rounded-lg bg-muted">
                 <Password size={20} className="text-muted-foreground" />
               </div>

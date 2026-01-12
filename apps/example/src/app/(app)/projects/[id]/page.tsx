@@ -138,7 +138,7 @@ export default function ProjectDetailPage({
                 {tasks.map((task) => (
                   <div
                     key={task.id}
-                    className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50"
+                    className="flex items-center gap-3 p-2 rounded-md hover:bg-muted"
                   >
                     {task.completed ? (
                       <CheckmarkFilled size={20} className="text-green-600" />

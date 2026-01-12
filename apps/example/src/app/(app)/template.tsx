@@ -19,6 +19,7 @@ export default function Template({ children }: TemplateProps) {
 
   return (
     <div
+      className="h-full"
       style={{
         opacity,
         transition: 'opacity 400ms ease-in-out',
