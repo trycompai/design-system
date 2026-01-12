@@ -89,6 +89,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       iconRight,
       disabled,
       children,
+      render,
       ...props
     },
     ref,
@@ -102,6 +103,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         data-loading={loading || undefined}
         disabled={isDisabled}
         className={buttonVariants({ variant, width, size })}
+        render={render}
+        nativeButton={!render}
         {...props}
       >
         {loading ? (

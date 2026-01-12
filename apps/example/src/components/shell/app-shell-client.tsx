@@ -2,6 +2,7 @@
 
 import {
   AppShell,
+  AppShellAIChatTrigger,
   AppShellBody,
   AppShellContent,
   AppShellMain,
@@ -10,6 +11,8 @@ import {
   AppShellNavFooter,
   AppShellNavGroup,
   AppShellNavItem,
+  AppShellNavItemCollapsible,
+  AppShellNavSubItem,
   AppShellRail,
   AppShellRailItem,
   AppShellSidebar,
@@ -53,8 +56,10 @@ import * as React from 'react';
 import {
   getActiveRailItem,
   getSidebarConfig,
+  isNavItemActive,
   railItems,
   type NavItem,
+  type NavItemWithChildren,
 } from './nav-config';
 
 // =============================================================================
@@ -330,6 +335,51 @@ function SidebarNavItem({ item, isActive }: SidebarNavItemProps) {
   );
 }
 
+// Sidebar nav item that may have children
+interface SidebarNavItemWithChildrenProps {
+  item: NavItemWithChildren;
+  pathname: string;
+}
+
+function SidebarNavItemWithChildren({ item, pathname }: SidebarNavItemWithChildrenProps) {
+  const itemActive = isNavItemActive(item, pathname);
+
+  // If item has children, render collapsible
+  if (item.children && item.children.length > 0) {
+    return (
+      <AppShellNavItemCollapsible
+        icon={item.icon}
+        label={item.label}
+        isActive={itemActive}
+      >
+        {item.children.map((child) => {
+          const childActive = child.href === '/' ? pathname === '/' : pathname === child.href || pathname.startsWith(child.href + '/');
+          return (
+            <Link key={child.id} href={child.href}>
+              <AppShellNavSubItem isActive={childActive}>
+                {child.label}
+              </AppShellNavSubItem>
+            </Link>
+          );
+        })}
+      </AppShellNavItemCollapsible>
+    );
+  }
+
+  // Regular item with direct href
+  if (item.href) {
+    return (
+      <Link href={item.href}>
+        <AppShellNavItem icon={item.icon} isActive={itemActive}>
+          {item.label}
+        </AppShellNavItem>
+      </Link>
+    );
+  }
+
+  return null;
+}
+
 // =============================================================================
 // Main App Shell Client Component
 // =============================================================================
@@ -343,8 +393,8 @@ export function AppShellClient({ children }: AppShellClientProps) {
   const activeRailId = getActiveRailItem(pathname);
   const sidebarConfig = getSidebarConfig(pathname);
 
-  // Check if a nav item is active
-  const isNavItemActive = (href: string) => {
+  // Check if a simple nav item is active
+  const checkNavItemActive = (href: string) => {
     if (href === '/') return pathname === '/';
     return pathname === href || pathname.startsWith(href + '/');
   };
@@ -356,6 +406,7 @@ export function AppShellClient({ children }: AppShellClientProps) {
         centerContent={<CommandSearch groups={searchGroups} placeholder="Search..." />}
         endContent={
           <AppShellUserMenu>
+            <AppShellAIChatTrigger />
             <NotificationsPopover />
             <UserMenu />
           </AppShellUserMenu>
@@ -379,16 +430,12 @@ export function AppShellClient({ children }: AppShellClientProps) {
               title={sidebarConfig.title}
             />
             <AppShellNav>
-              {sidebarConfig.groups.map((group) => (
-                <AppShellNavGroup key={group.id} label={group.label}>
-                  {group.items.map((item) => (
-                    <SidebarNavItem
-                      key={item.id}
-                      item={item}
-                      isActive={isNavItemActive(item.href)}
-                    />
-                  ))}
-                </AppShellNavGroup>
+              {sidebarConfig.items.map((item) => (
+                <SidebarNavItemWithChildren
+                  key={item.id}
+                  item={item}
+                  pathname={pathname}
+                />
               ))}
             </AppShellNav>
             {sidebarConfig.footer && (
@@ -397,7 +444,7 @@ export function AppShellClient({ children }: AppShellClientProps) {
                   <SidebarNavItem
                     key={item.id}
                     item={item}
-                    isActive={isNavItemActive(item.href)}
+                    isActive={checkNavItemActive(item.href)}
                   />
                 ))}
               </AppShellNavFooter>

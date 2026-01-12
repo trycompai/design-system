@@ -21,13 +21,15 @@ export interface NavItem {
   id: string;
   label: string;
   href: string;
-  icon: ReactNode;
+  icon?: ReactNode;
 }
 
-export interface NavGroup {
+export interface NavItemWithChildren {
   id: string;
-  label?: string;
-  items: NavItem[];
+  label: string;
+  icon?: ReactNode;
+  href?: string;
+  children?: NavItem[];
 }
 
 export interface RailItem {
@@ -42,7 +44,7 @@ export interface RailItem {
 export interface SidebarConfig {
   title: string;
   icon: ReactNode;
-  groups: NavGroup[];
+  items: NavItemWithChildren[];
   footer?: NavItem[];
 }
 
@@ -83,25 +85,45 @@ export const sidebarConfigs: Record<string, SidebarConfig> = {
   compliance: {
     title: 'Compliance',
     icon: <Security />,
-    groups: [
+    items: [
       {
-        id: 'getting-started',
-        label: 'Getting started',
-        items: [
-          { id: 'overview', label: 'Overview', href: '/', icon: <Home /> },
-          { id: 'quickstart', label: 'Quickstart', href: '#', icon: <Book /> },
+        id: 'home',
+        label: 'Home',
+        icon: <Home />,
+        children: [
+          { id: 'overview', label: 'Overview', href: '/' },
+          { id: 'quickstart', label: 'Quickstart', href: '#' },
         ],
       },
       {
-        id: 'compliance',
-        label: 'Compliance',
-        items: [
-          { id: 'policies', label: 'Policies', href: '/policies', icon: <Document /> },
-          { id: 'controls', label: 'Controls', href: '/controls', icon: <TaskComplete /> },
-          { id: 'risks', label: 'Risks', href: '/risks', icon: <Warning /> },
-          { id: 'vendors', label: 'Vendors', href: '/vendors', icon: <Building /> },
-          { id: 'integrations', label: 'Integrations', href: '#', icon: <Plug /> },
-        ],
+        id: 'policies',
+        label: 'Policies',
+        icon: <Document />,
+        href: '/policies',
+      },
+      {
+        id: 'controls',
+        label: 'Controls',
+        icon: <TaskComplete />,
+        href: '/controls',
+      },
+      {
+        id: 'risks',
+        label: 'Risks',
+        icon: <Warning />,
+        href: '/risks',
+      },
+      {
+        id: 'vendors',
+        label: 'Vendors',
+        icon: <Building />,
+        href: '/vendors',
+      },
+      {
+        id: 'integrations',
+        label: 'Integrations',
+        icon: <Plug />,
+        href: '#',
       },
     ],
     footer: [
@@ -111,16 +133,10 @@ export const sidebarConfigs: Record<string, SidebarConfig> = {
   cybersecurity: {
     title: 'Cybersecurity',
     icon: <Password />,
-    groups: [
-      {
-        id: 'security',
-        label: 'Security',
-        items: [
-          { id: 'dashboard', label: 'Dashboard', href: '/cybersecurity', icon: <Dashboard /> },
-          { id: 'vulnerabilities', label: 'Vulnerabilities', href: '#', icon: <Warning /> },
-          { id: 'assets', label: 'Assets', href: '#', icon: <Building /> },
-        ],
-      },
+    items: [
+      { id: 'dashboard', label: 'Dashboard', href: '/cybersecurity', icon: <Dashboard /> },
+      { id: 'vulnerabilities', label: 'Vulnerabilities', href: '#', icon: <Warning /> },
+      { id: 'assets', label: 'Assets', href: '#', icon: <Building /> },
     ],
     footer: [
       { id: 'help', label: 'Help', href: '#', icon: <Help /> },
@@ -129,16 +145,10 @@ export const sidebarConfigs: Record<string, SidebarConfig> = {
   analytics: {
     title: 'Analytics',
     icon: <ChartPie />,
-    groups: [
-      {
-        id: 'reports',
-        label: 'Reports',
-        items: [
-          { id: 'dashboard', label: 'Dashboard', href: '/analytics', icon: <Dashboard /> },
-          { id: 'compliance-reports', label: 'Compliance Reports', href: '#', icon: <Document /> },
-          { id: 'audit-logs', label: 'Audit Logs', href: '#', icon: <TaskComplete /> },
-        ],
-      },
+    items: [
+      { id: 'dashboard', label: 'Dashboard', href: '/analytics', icon: <Dashboard /> },
+      { id: 'compliance-reports', label: 'Compliance Reports', href: '#', icon: <Document /> },
+      { id: 'audit-logs', label: 'Audit Logs', href: '#', icon: <TaskComplete /> },
     ],
     footer: [
       { id: 'help', label: 'Help', href: '#', icon: <Help /> },
@@ -147,22 +157,24 @@ export const sidebarConfigs: Record<string, SidebarConfig> = {
   settings: {
     title: 'Settings',
     icon: <Settings />,
-    groups: [
+    items: [
       {
         id: 'organization',
         label: 'Organization',
-        items: [
-          { id: 'general', label: 'General', href: '/settings', icon: <Settings /> },
-          { id: 'team', label: 'Team', href: '#', icon: <UserMultiple /> },
-          { id: 'billing', label: 'Billing', href: '#', icon: <Wallet /> },
+        icon: <Building />,
+        children: [
+          { id: 'general', label: 'General', href: '/settings' },
+          { id: 'team', label: 'Team', href: '#' },
+          { id: 'billing', label: 'Billing', href: '#' },
         ],
       },
       {
         id: 'account',
         label: 'Account',
-        items: [
-          { id: 'profile', label: 'Profile', href: '#', icon: <UserMultiple /> },
-          { id: 'security', label: 'Security', href: '/settings/security', icon: <Password /> },
+        icon: <UserMultiple />,
+        children: [
+          { id: 'profile', label: 'Profile', href: '#' },
+          { id: 'security', label: 'Security', href: '/settings/security' },
         ],
       },
     ],
@@ -188,4 +200,19 @@ export function getActiveRailItem(pathname: string): string {
 export function getSidebarConfig(pathname: string): SidebarConfig {
   const activeRail = getActiveRailItem(pathname);
   return sidebarConfigs[activeRail] || sidebarConfigs.compliance;
+}
+
+// Helper to check if a nav item or any of its children is active
+export function isNavItemActive(item: NavItemWithChildren, pathname: string): boolean {
+  if (item.href) {
+    if (item.href === '/') return pathname === '/';
+    return pathname === item.href || pathname.startsWith(item.href + '/');
+  }
+  if (item.children) {
+    return item.children.some(child => {
+      if (child.href === '/') return pathname === '/';
+      return pathname === child.href || pathname.startsWith(child.href + '/');
+    });
+  }
+  return false;
 }

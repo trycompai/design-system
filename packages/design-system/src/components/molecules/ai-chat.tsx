@@ -1,146 +1,150 @@
 'use client';
 
-import { cva, type VariantProps } from 'class-variance-authority';
-import { Close, MagicWand, Send } from '@carbon/icons-react';
+import { Close, MagicWand, Send, Keyboard } from '@carbon/icons-react';
 import * as React from 'react';
 
-const aiChatTriggerVariants = cva(
-  'fixed bottom-6 right-6 z-50 flex items-center justify-center rounded-full transition-all duration-200 cursor-pointer',
-  {
-    variants: {
-      size: {
-        default: 'size-14',
-        sm: 'size-12',
-        lg: 'size-16',
-      },
-      variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95',
-        secondary: 'bg-foreground text-background hover:bg-foreground/90 active:scale-95',
-      },
-    },
-    defaultVariants: {
-      size: 'default',
-      variant: 'default',
-    },
-  },
-);
+import { Kbd } from '../atoms/kbd';
+import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
 
-const aiChatPanelVariants = cva(
-  'fixed bottom-24 right-6 z-50 flex flex-col bg-background border border-border rounded-2xl overflow-hidden transition-all duration-200 origin-bottom-right',
-  {
-    variants: {
-      size: {
-        default: 'w-96 h-[500px]',
-        sm: 'w-80 h-[400px]',
-        lg: 'w-[450px] h-[600px]',
-      },
-    },
-    defaultVariants: {
-      size: 'default',
-    },
-  },
-);
-
-interface AIChatProps extends VariantProps<typeof aiChatTriggerVariants> {
+interface AIChatProps {
   /** Whether the chat panel is open */
   open?: boolean;
   /** Default open state (uncontrolled) */
   defaultOpen?: boolean;
   /** Callback when open state changes */
   onOpenChange?: (open: boolean) => void;
-  /** Custom trigger icon */
-  triggerIcon?: React.ReactNode;
-  /** Panel size */
-  panelSize?: 'sm' | 'default' | 'lg';
   /** Content to render inside the chat panel */
   children?: React.ReactNode;
+  /** Keyboard shortcut to toggle (default: Cmd+J) */
+  shortcut?: string;
 }
 
 function AIChat({
   open: openProp,
   defaultOpen = false,
   onOpenChange,
-  triggerIcon,
-  size = 'default',
-  variant = 'default',
-  panelSize = 'default',
   children,
+  shortcut = 'j',
 }: AIChatProps) {
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
   const isOpen = openProp ?? internalOpen;
 
-  const handleToggle = () => {
+  const handleToggle = React.useCallback(() => {
     const newValue = !isOpen;
     if (openProp === undefined) {
       setInternalOpen(newValue);
     }
     onOpenChange?.(newValue);
-  };
+  }, [isOpen, openProp, onOpenChange]);
+
+  const handleClose = React.useCallback(() => {
+    if (openProp === undefined) {
+      setInternalOpen(false);
+    }
+    onOpenChange?.(false);
+  }, [openProp, onOpenChange]);
+
+  // Keyboard shortcut listener
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() === shortcut && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        handleToggle();
+      }
+      // Close on Escape when open
+      if (e.key === 'Escape' && isOpen) {
+        handleClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [shortcut, handleToggle, handleClose, isOpen]);
 
   return (
     <>
-      {/* Chat Panel */}
+      {/* Chat Panel - persistent side panel, no backdrop */}
       <div
         data-slot="ai-chat-panel"
-        className={`${aiChatPanelVariants({ size: panelSize })} ${
-          isOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-0 pointer-events-none'
+        className={`fixed top-14 right-0 bottom-0 z-30 w-full max-w-md flex flex-col bg-background border-l border-border transition-transform duration-300 ease-out ${
+          isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         style={{
-          boxShadow: '0 8px 32px -4px rgb(0 0 0 / 0.12), 0 4px 16px -2px rgb(0 0 0 / 0.08)',
+          boxShadow: isOpen ? '-4px 0 24px -4px rgb(0 0 0 / 0.08)' : 'none',
         }}
       >
-        {children || <AIChatDefaultContent onClose={handleToggle} />}
+        {children || <AIChatDefaultContent onClose={handleClose} />}
       </div>
-
-      {/* Floating Trigger Button */}
-      <button
-        type="button"
-        data-slot="ai-chat-trigger"
-        onClick={handleToggle}
-        className={aiChatTriggerVariants({ size, variant })}
-        style={{
-          boxShadow: '0 4px 16px -2px rgb(0 0 0 / 0.15), 0 2px 8px -2px rgb(0 0 0 / 0.1)',
-        }}
-        aria-label={isOpen ? 'Close chat' : 'Open chat'}
-      >
-        <span
-          className={`absolute transition-all duration-200 ${
-            isOpen ? 'scale-0 opacity-0 rotate-90' : 'scale-100 opacity-100 rotate-0'
-          }`}
-        >
-          {triggerIcon || <MagicWand className="size-6" />}
-        </span>
-        <span
-          className={`absolute transition-all duration-200 ${
-            isOpen ? 'scale-100 opacity-100 rotate-0' : 'scale-0 opacity-0 -rotate-90'
-          }`}
-        >
-          <Close className="size-6" />
-        </span>
-      </button>
     </>
+  );
+}
+
+// Navbar trigger button for AI chat
+interface AIChatTriggerProps {
+  onClick?: () => void;
+  isOpen?: boolean;
+  shortcut?: string;
+}
+
+function AIChatTrigger({ onClick, isOpen, shortcut = 'J' }: AIChatTriggerProps) {
+  return (
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <button
+            type="button"
+            onClick={onClick}
+            className={`inline-flex items-center gap-2 h-8 px-3 rounded-lg text-sm font-medium transition-all cursor-pointer ${
+              isOpen
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-muted hover:bg-accent text-foreground'
+            }`}
+            aria-label={isOpen ? 'Close AI Chat' : 'Open AI Chat'}
+          >
+            <MagicWand className="size-4" />
+            <span className="hidden sm:inline">Ask AI</span>
+            <span className="hidden sm:inline-flex ml-1 opacity-60 text-xs bg-foreground/10 px-1.5 py-0.5 rounded">
+              {navigator?.platform?.includes('Mac') ? '⌘' : 'Ctrl+'}
+              {shortcut}
+            </span>
+          </button>
+        }
+      />
+      <TooltipContent side="bottom">
+        {isOpen ? 'Close AI Chat' : 'Open AI Chat'}
+      </TooltipContent>
+    </Tooltip>
   );
 }
 
 // Default content when no children provided
 function AIChatDefaultContent({ onClose }: { onClose: () => void }) {
+  const [message, setMessage] = React.useState('');
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
+  // Focus input when panel opens
+  React.useEffect(() => {
+    const timer = setTimeout(() => inputRef.current?.focus(), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-        <div className="flex items-center gap-2">
-          <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
-            <MagicWand className="size-4" />
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0">
+        <div className="flex items-center gap-3">
+          <span className="flex size-9 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <MagicWand className="size-5" />
           </span>
           <div>
             <div className="font-semibold text-sm">AI Assistant</div>
-            <div className="text-xs text-muted-foreground">Ask me anything</div>
+            <div className="text-xs text-muted-foreground">Ask me anything about your compliance</div>
           </div>
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="size-8 flex items-center justify-center rounded-md hover:bg-muted/50 text-muted-foreground hover:text-foreground transition-colors"
+          className="size-8 flex items-center justify-center rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
         >
           <Close className="size-4" />
         </button>
@@ -151,33 +155,50 @@ function AIChatDefaultContent({ onClose }: { onClose: () => void }) {
         <div className="flex flex-col gap-4">
           {/* AI Welcome Message */}
           <div className="flex gap-3">
-            <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <MagicWand className="size-3.5" />
+            <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <MagicWand className="size-4" />
             </span>
-            <div className="flex-1 rounded-2xl rounded-tl-sm bg-muted/50 dark:bg-muted px-3 py-2 text-sm">
-              Hi! I'm your AI assistant. How can I help you today?
+            <div className="flex-1 rounded-2xl rounded-tl-md bg-muted px-4 py-3 text-sm">
+              <p className="mb-2">Hi! I can help you with:</p>
+              <ul className="space-y-1 text-muted-foreground">
+                <li>Understanding compliance requirements</li>
+                <li>Reviewing and creating policies</li>
+                <li>Analyzing evidence and controls</li>
+                <li>Answering questions about SOC 2, ISO 27001, and more</li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
 
       {/* Input Area */}
-      <div className="p-3 border-t border-border">
-        <div className="flex items-center gap-2 rounded-xl bg-muted/50 dark:bg-muted px-3 py-2">
+      <div className="p-4 border-t border-border shrink-0">
+        <div className="flex items-center gap-2 rounded-xl bg-muted px-4 py-2.5">
           <input
+            ref={inputRef}
             type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             placeholder="Ask a question..."
             className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && message.trim()) {
+                // Handle send
+                setMessage('');
+              }
+            }}
           />
           <button
             type="button"
-            className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+            disabled={!message.trim()}
+            className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Send className="size-4" />
           </button>
         </div>
-        <div className="mt-2 text-center text-xs text-muted-foreground">
-          Powered by AI
+        <div className="mt-3 flex items-center justify-center gap-2 text-xs text-muted-foreground">
+          <Keyboard className="size-3" />
+          <span>Press <Kbd>Esc</Kbd> to close</span>
         </div>
       </div>
     </>
@@ -189,7 +210,7 @@ function AIChatHeader({ children, ...props }: Omit<React.ComponentProps<'div'>, 
   return (
     <div
       data-slot="ai-chat-header"
-      className="flex items-center justify-between px-4 py-3 border-b border-border"
+      className="flex items-center justify-between px-4 py-3 border-b border-border shrink-0"
       {...props}
     >
       {children}
@@ -207,11 +228,11 @@ function AIChatBody({ children, ...props }: Omit<React.ComponentProps<'div'>, 'c
 
 function AIChatFooter({ children, ...props }: Omit<React.ComponentProps<'div'>, 'className'>) {
   return (
-    <div data-slot="ai-chat-footer" className="p-3 border-t border-border" {...props}>
+    <div data-slot="ai-chat-footer" className="p-4 border-t border-border shrink-0" {...props}>
       {children}
     </div>
   );
 }
 
-export { AIChat, AIChatHeader, AIChatBody, AIChatFooter, aiChatTriggerVariants, aiChatPanelVariants };
-export type { AIChatProps };
+export { AIChat, AIChatBody, AIChatFooter, AIChatHeader, AIChatTrigger };
+export type { AIChatProps, AIChatTriggerProps };

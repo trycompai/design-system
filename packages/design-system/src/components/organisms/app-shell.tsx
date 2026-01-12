@@ -1,11 +1,12 @@
 import { cva, type VariantProps } from 'class-variance-authority';
-import { Search, SidePanelClose, SidePanelOpen } from '@carbon/icons-react';
+import { ChevronDown, Search, SidePanelClose, SidePanelOpen } from '@carbon/icons-react';
 import * as React from 'react';
 
 import { Kbd } from '../atoms/kbd';
 import { Stack } from '../atoms/stack';
-import { AIChat } from '../molecules/ai-chat';
+import { AIChat, AIChatTrigger } from '../molecules/ai-chat';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '../molecules/input-group';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../molecules/tooltip';
 
 // ============ CONTEXT ============
 
@@ -27,6 +28,10 @@ type AppShellContextProps = {
   /** Sidebar variant for mobile drawer styling */
   sidebarVariant: 'default' | 'muted' | 'primary';
   setSidebarVariant: (variant: 'default' | 'muted' | 'primary') => void;
+  /** AI Chat state */
+  aiChatOpen: boolean;
+  setAIChatOpen: (open: boolean) => void;
+  toggleAIChat: () => void;
 };
 
 const AppShellContext = React.createContext<AppShellContextProps | null>(null);
@@ -69,9 +74,9 @@ const appShellSidebarVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-background border-r border-border',
-        muted: 'bg-muted border-r border-border',
-        primary: 'bg-primary border-r border-primary-foreground/10',
+        default: 'bg-background',
+        muted: 'bg-muted',
+        primary: 'bg-primary',
       },
     },
     defaultVariants: {
@@ -80,7 +85,7 @@ const appShellSidebarVariants = cva(
   },
 );
 
-const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background min-h-0', {
+const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background min-h-0 border-l border-border', {
   variants: {
     padding: {
       none: '',
@@ -117,7 +122,7 @@ interface AppShellProps extends Omit<React.ComponentProps<'div'>, 'className'> {
   sidebarOpen?: boolean;
   /** Callback when sidebar state changes */
   onSidebarOpenChange?: (open: boolean) => void;
-  /** Show the floating AI chat button */
+  /** Enable AI chat feature */
   showAIChat?: boolean;
   /** Custom content for the AI chat panel */
   aiChatContent?: React.ReactNode;
@@ -198,6 +203,9 @@ function AppShell({
   // Mobile drawer state (always starts closed)
   const [mobileDrawerOpen, setMobileDrawerOpen] = React.useState(false);
 
+  // AI Chat state
+  const [aiChatOpen, setAIChatOpen] = React.useState(false);
+
   // Content for mobile drawer (populated by Rail and Sidebar components)
   const [railContent, setRailContent] = React.useState<React.ReactNode>(null);
   const [sidebarContent, setSidebarContent] = React.useState<React.ReactNode>(null);
@@ -221,6 +229,10 @@ function AppShell({
   const toggleMobileDrawer = React.useCallback(() => {
     setMobileDrawerOpen(!mobileDrawerOpen);
   }, [mobileDrawerOpen]);
+
+  const toggleAIChat = React.useCallback(() => {
+    setAIChatOpen(!aiChatOpen);
+  }, [aiChatOpen]);
 
   // Listen for Cmd+\ to toggle sidebar (desktop) or mobile drawer
   React.useEffect(() => {
@@ -255,8 +267,11 @@ function AppShell({
       setSidebarContent,
       sidebarVariant,
       setSidebarVariant,
+      aiChatOpen,
+      setAIChatOpen,
+      toggleAIChat,
     }),
-    [sidebarOpen, setSidebarOpen, toggleSidebar, mobileDrawerOpen, toggleMobileDrawer, railContent, sidebarContent, sidebarVariant],
+    [sidebarOpen, setSidebarOpen, toggleSidebar, mobileDrawerOpen, toggleMobileDrawer, railContent, sidebarContent, sidebarVariant, aiChatOpen, toggleAIChat],
   );
 
   return (
@@ -268,7 +283,11 @@ function AppShell({
         {...props}
       >
         {children}
-        {showAIChat && <AIChat>{aiChatContent}</AIChat>}
+        {showAIChat && (
+          <AIChat open={aiChatOpen} onOpenChange={setAIChatOpen}>
+            {aiChatContent}
+          </AIChat>
+        )}
       </div>
     </AppShellContext.Provider>
   );
@@ -332,7 +351,7 @@ function AppShellBody({ children, ...props }: AppShellBodyProps) {
   const { mobileDrawerOpen, setMobileDrawerOpen, railContent, sidebarContent, sidebarVariant } = useAppShell();
 
   return (
-    <div data-slot="app-shell-body" className="flex flex-1 overflow-hidden bg-background/50 min-h-0 gap-0" {...props}>
+    <div data-slot="app-shell-body" className=" flex flex-1 overflow-hidden bg-background/50 min-h-0 gap-0" {...props}>
       {/* Mobile drawer - shows both rail and sidebar */}
       <div className="md:hidden">
         {/* Backdrop */}
@@ -376,7 +395,7 @@ function AppShellMain({ children, ...props }: Omit<React.ComponentProps<'div'>, 
   return (
     <div
       data-slot="app-shell-main"
-      className="flex flex-1 min-h-0 ml-2 mr-2 mb-2 rounded-xl overflow-hidden bg-background"
+      className="flex flex-1 min-h-0 ml-2 mr-2 mb-2 rounded-xl overflow-hidden bg-background border-border border"
       {...props}
     >
       {children}
@@ -531,23 +550,35 @@ function AppShellRailItem({ isActive, icon, label, ...props }: AppShellRailItemP
     }
   }, [isActive, context, itemId]);
 
-  return (
+  const button = (
     <button
       ref={buttonRef}
       data-slot="app-shell-rail-item"
       data-active={isActive}
-      className={`flex size-10 items-center justify-center rounded-md transition-all duration-200 cursor-pointer ${
+      className={`flex size-10 items-center justify-center rounded-lg transition-all duration-200 cursor-pointer ${
         isActive
-          ? 'bg-primary/10 text-primary'
-          : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
+          ? 'bg-primary text-primary-foreground shadow-md'
+          : 'text-muted-foreground hover:text-foreground hover:bg-accent dark:hover:bg-muted hover:shadow active:scale-95'
       }`}
-      title={label}
       aria-label={label}
       {...props}
     >
       <span className="size-5 [&>svg]:size-5">{icon}</span>
     </button>
   );
+
+  if (label) {
+    return (
+      <Tooltip>
+        <TooltipTrigger render={button} />
+        <TooltipContent side="right" sideOffset={8}>
+          {label}
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
+  return button;
 }
 
 function AppShellSidebar({
@@ -782,6 +813,103 @@ function AppShellNavItem({ isActive, icon, children, ...props }: AppShellNavItem
   );
 }
 
+interface AppShellNavItemCollapsibleProps extends Omit<React.ComponentProps<'div'>, 'className'> {
+  /** Whether any child is currently active */
+  isActive?: boolean;
+  /** Whether the collapsible is expanded */
+  defaultOpen?: boolean;
+  icon?: React.ReactNode;
+  label: string;
+}
+
+function AppShellNavItemCollapsible({
+  isActive,
+  defaultOpen,
+  icon,
+  label,
+  children,
+  ...props
+}: AppShellNavItemCollapsibleProps) {
+  const [isOpen, setIsOpen] = React.useState(defaultOpen ?? isActive ?? false);
+
+  // Auto-expand when a child becomes active
+  React.useEffect(() => {
+    if (isActive) {
+      setIsOpen(true);
+    }
+  }, [isActive]);
+
+  return (
+    <div data-slot="app-shell-nav-item-collapsible" {...props}>
+      {/* Parent trigger */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className={[
+          'flex w-full items-center gap-3 rounded-lg px-2 py-1.5 text-sm cursor-pointer',
+          'transition-all duration-150 ease-out',
+          'active:scale-[0.98]',
+          isActive || isOpen
+            ? 'text-foreground font-medium'
+            : 'text-muted-foreground hover:text-foreground [[data-variant=default]_&]:hover:bg-muted/30 [[data-variant=default]_&]:dark:hover:bg-muted/60 [[data-variant=muted]_&]:hover:bg-background/60',
+        ].join(' ')}
+      >
+        {icon && <span className="size-4 shrink-0 [&>svg]:size-4">{icon}</span>}
+        <span className="flex-1 text-left">{label}</span>
+        <ChevronDown
+          className={`size-4 text-muted-foreground transition-transform duration-200 ${
+            isOpen ? 'rotate-180' : ''
+          }`}
+        />
+      </button>
+
+      {/* Children - collapsible card area */}
+      <div
+        className={`overflow-hidden transition-all duration-200 ease-out ${
+          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="mt-1 rounded-lg bg-muted/50 dark:bg-muted/30 p-1 space-y-0.5">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Sub-item for collapsible nav (no icon, smaller padding)
+interface AppShellNavSubItemProps extends Omit<React.ComponentProps<'button'>, 'className'> {
+  isActive?: boolean;
+}
+
+function AppShellNavSubItem({ isActive, children, ...props }: AppShellNavSubItemProps) {
+  return (
+    <button
+      data-slot="app-shell-nav-sub-item"
+      data-active={isActive}
+      className={[
+        'flex w-full items-center rounded-md px-2 py-1.5 text-sm cursor-pointer',
+        'transition-all duration-150 ease-out',
+        'active:scale-[0.98]',
+        isActive
+          ? [
+              '[[data-variant=default]_&]:bg-muted/50 [[data-variant=default]_&]:dark:bg-muted [[data-variant=default]_&]:text-foreground',
+              '[[data-variant=muted]_&]:bg-background [[data-variant=muted]_&]:text-foreground [[data-variant=muted]_&]:shadow-sm',
+              'font-medium',
+            ].join(' ')
+          : [
+              'text-muted-foreground hover:text-foreground',
+              '[[data-variant=default]_&]:hover:bg-muted/30 [[data-variant=default]_&]:dark:hover:bg-muted/60',
+              '[[data-variant=muted]_&]:hover:bg-background/60',
+            ].join(' '),
+      ].join(' ')}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+
 function AppShellNavFooter({ children, ...props }: AppShellNavFooterProps) {
   return (
     <div
@@ -798,8 +926,15 @@ function AppShellNavFooter({ children, ...props }: AppShellNavFooterProps) {
   );
 }
 
+// AI Chat trigger for navbar - uses context to control AI chat panel
+function AppShellAIChatTrigger() {
+  const { aiChatOpen, toggleAIChat } = useAppShell();
+  return <AIChatTrigger onClick={toggleAIChat} isOpen={aiChatOpen} />;
+}
+
 export {
   AppShell,
+  AppShellAIChatTrigger,
   AppShellBody,
   AppShellContent,
   AppShellMain,
@@ -808,6 +943,8 @@ export {
   AppShellNavFooter,
   AppShellNavGroup,
   AppShellNavItem,
+  AppShellNavItemCollapsible,
+  AppShellNavSubItem,
   AppShellRail,
   AppShellRailItem,
   AppShellSearch,
