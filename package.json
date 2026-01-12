@@ -8,7 +8,11 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
-    "storybook": "turbo run dev --filter=@comp/storybook"
+    "storybook": "turbo run dev --filter=@comp/storybook",
+    "version:patch": "pnpm --filter @trycompai/design-system exec npm version patch",
+    "version:minor": "pnpm --filter @trycompai/design-system exec npm version minor",
+    "version:major": "pnpm --filter @trycompai/design-system exec npm version major",
+    "release": "pnpm typecheck && pnpm --filter @trycompai/design-system publish --no-git-checks"
   },
   "devDependencies": {
     "prettier": "^3.7.4",
