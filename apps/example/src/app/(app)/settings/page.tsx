@@ -2,68 +2,90 @@
 
 import {
   Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
   Input,
   Label,
   PageHeader,
   PageLayout,
-  SettingsCard,
   Stack,
+  Text,
 } from '@trycompai/design-system';
 
 export default function SettingsGeneralPage() {
   return (
-    <PageLayout padding="none" container={false}>
-      <PageHeader title="General Settings" />
+    <PageLayout>
+      <PageHeader title="General" />
 
       <Stack gap="6">
-        <SettingsCard
-          title="Organization Name"
-          description="This is your organization's display name."
-          hint="Please use 32 characters at maximum."
-          action={<Button>Save</Button>}
-        >
-          <Input defaultValue="Acme Corp" />
-        </SettingsCard>
+        <Card>
+          <CardHeader>
+            <CardTitle>Organization Name</CardTitle>
+            <CardDescription>This is your organization's display name.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Input defaultValue="Acme Corp" />
+          </CardContent>
+          <CardFooter>
+            <Text size="sm" variant="muted">Please use 32 characters at maximum.</Text>
+            <Button>Save</Button>
+          </CardFooter>
+        </Card>
 
-        <SettingsCard
-          title="Organization URL"
-          description="Your organization's unique URL on the platform."
-          hint="Only lowercase letters, numbers, and hyphens allowed."
-          action={<Button>Save</Button>}
-        >
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground text-sm">comp.ai/</span>
-            <Input defaultValue="acme-corp" />
-          </div>
-        </SettingsCard>
+        <Card>
+          <CardHeader>
+            <CardTitle>Organization URL</CardTitle>
+            <CardDescription>Your organization's unique URL on the platform.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground text-sm">comp.ai/</span>
+              <Input defaultValue="acme-corp" />
+            </div>
+          </CardContent>
+          <CardFooter>
+            <Text size="sm" variant="muted">Only lowercase letters, numbers, and hyphens allowed.</Text>
+            <Button>Save</Button>
+          </CardFooter>
+        </Card>
 
-        <SettingsCard
-          title="Support Email"
-          description="Where should we send important notifications?"
-          action={<Button>Save</Button>}
-        >
-          <Stack gap="4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Support Email</CardTitle>
+            <CardDescription>Where should we send important notifications?</CardDescription>
+          </CardHeader>
+          <CardContent>
             <Stack gap="2">
               <Label htmlFor="supportEmail">Email Address</Label>
               <Input id="supportEmail" type="email" defaultValue="support@acme.com" />
             </Stack>
-          </Stack>
-        </SettingsCard>
+          </CardContent>
+          <CardFooter>
+            <Button>Save</Button>
+          </CardFooter>
+        </Card>
 
-        <SettingsCard
-          title="Danger Zone"
-          description="Irreversible and destructive actions."
-        >
-          <div className="flex items-center justify-between py-2">
-            <Stack gap="1">
-              <span className="text-sm font-medium">Delete Organization</span>
-              <span className="text-sm text-muted-foreground">
-                Permanently delete your organization and all its data.
-              </span>
-            </Stack>
-            <Button variant="destructive">Delete Organization</Button>
-          </div>
-        </SettingsCard>
+        <Card>
+          <CardHeader>
+            <CardTitle>Danger Zone</CardTitle>
+            <CardDescription>Irreversible and destructive actions.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <Stack gap="1">
+                <Text weight="medium">Delete Organization</Text>
+                <Text size="sm" variant="muted">
+                  Permanently delete your organization and all its data.
+                </Text>
+              </Stack>
+              <Button variant="destructive">Delete</Button>
+            </div>
+          </CardContent>
+        </Card>
       </Stack>
     </PageLayout>
   );

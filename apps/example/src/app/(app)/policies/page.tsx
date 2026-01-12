@@ -3,6 +3,7 @@
 import {
   Badge,
   Button,
+  HStack,
   PageHeader,
   PageHeaderActions,
   PageLayout,
@@ -14,7 +15,8 @@ import {
   TableRow,
   Text,
 } from '@trycompai/design-system';
-import { Add, OverflowMenuHorizontal } from '@carbon/icons-react';
+import { Add, Launch, OverflowMenuHorizontal } from '@carbon/icons-react';
+import { useRouter } from 'next/navigation';
 
 const policies = [
   {
@@ -81,8 +83,12 @@ function getStatusBadge(status: string) {
 }
 
 export default function PoliciesPage() {
+  const router = useRouter();
+
+  const goToPolicy = (id: number) => router.push(`/policies/${id}`);
+
   return (
-    <PageLayout padding="none" container={false}>
+    <PageLayout>
       <PageHeader title="Policies">
         <PageHeaderActions>
           <Button iconLeft={<Add size={16} />}>New Policy</Button>
@@ -97,12 +103,29 @@ export default function PoliciesPage() {
             <TableHead>Owner</TableHead>
             <TableHead>Controls</TableHead>
             <TableHead>Last Updated</TableHead>
-            <TableHead />
+            <TableHead>
+              <div className="text-right">
+                <span className="sr-only">Actions</span>
+              </div>
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {policies.map((policy) => (
-            <TableRow key={policy.id}>
+            <TableRow
+              key={policy.id}
+              role="link"
+              tabIndex={0}
+              aria-label={`View policy: ${policy.name}`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => goToPolicy(policy.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  goToPolicy(policy.id);
+                }
+              }}
+            >
               <TableCell>
                 <Text size="sm" weight="medium">
                   {policy.name}
@@ -125,9 +148,29 @@ export default function PoliciesPage() {
                 </Text>
               </TableCell>
               <TableCell>
-                <Button variant="outline" size="icon-sm">
-                  <OverflowMenuHorizontal size={16} />
-                </Button>
+                <div className="flex justify-end">
+                  <HStack align="center" gap="2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        goToPolicy(policy.id);
+                      }}
+                    >
+                      <Launch size={12} />
+                      View
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="More actions"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <OverflowMenuHorizontal size={16} />
+                    </Button>
+                  </HStack>
+                </div>
               </TableCell>
             </TableRow>
           ))}

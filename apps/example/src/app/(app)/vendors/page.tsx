@@ -30,7 +30,7 @@ export default function VendorsPage() {
   const goToVendor = (id: number) => router.push(`/vendors/${id}`);
 
   return (
-    <PageLayout padding="none" container={false}>
+    <PageLayout>
       <PageHeader title="Vendors">
         <PageHeaderActions>
           <Button iconLeft={<Add size={16} />}>New Vendor</Button>

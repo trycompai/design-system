@@ -12,9 +12,9 @@ const pageLayoutVariants = cva('min-h-full bg-background text-foreground', {
     },
     padding: {
       none: '',
-      sm: 'px-4 py-6',
-      default: 'px-4 py-10 sm:px-6 lg:px-8',
-      lg: 'px-6 py-12 sm:px-8 lg:px-12',
+      sm: 'px-4',
+      default: 'px-4 sm:px-6 lg:px-8',
+      lg: 'px-6 sm:px-8 lg:px-12',
     },
   },
   defaultVariants: {

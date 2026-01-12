@@ -1,21 +1,25 @@
+import { ArrowLeft } from '@carbon/icons-react';
 import * as React from 'react';
 
 import { Heading } from '../atoms/heading';
-import { Text } from '../atoms/text';
-import { Stack } from '../atoms/stack';
+import { Breadcrumb, type BreadcrumbItemData } from './breadcrumb';
 
 interface PageHeaderProps extends Omit<React.ComponentProps<'div'>, 'className'> {
   title: string;
-  description?: string;
-  /** Additional descriptive text below description */
-  meta?: string;
   actions?: React.ReactNode;
+  /** Breadcrumb items to display above the title */
+  breadcrumbs?: BreadcrumbItemData[];
+  /** Back button href - displays a back arrow link above the title */
+  backHref?: string;
+  /** Back button label (default: "Back") */
+  backLabel?: string;
+  /** Tabs to display below the header (typically TabsList) */
+  tabs?: React.ReactNode;
 }
 
-function PageHeader({ title, description, meta, actions, children, ...props }: PageHeaderProps) {
+function PageHeader({ title, actions, breadcrumbs, backHref, backLabel = 'Back', tabs, children, ...props }: PageHeaderProps) {
   const childArray = React.Children.toArray(children);
   const extractedActionChildren: React.ReactNode[] = [];
-  const nonActionChildren: React.ReactNode[] = [];
 
   childArray.forEach((child) => {
     if (
@@ -25,9 +29,7 @@ function PageHeader({ title, description, meta, actions, children, ...props }: P
           (child.type as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot === 'actions'))
     ) {
       extractedActionChildren.push((child.props as { children?: React.ReactNode }).children);
-      return;
     }
-    nonActionChildren.push(child);
   });
 
   const resolvedActions =
@@ -35,46 +37,55 @@ function PageHeader({ title, description, meta, actions, children, ...props }: P
     (extractedActionChildren.length > 0 ? extractedActionChildren : undefined);
 
   return (
-    <div data-slot="page-header" className="flex items-start justify-between gap-4" {...props}>
-      <Stack gap="1">
-        <Heading level="1">{title}</Heading>
-        {description && (
-          <Text size="sm" variant="muted">
-            {description}
-          </Text>
+    <div data-slot="page-header" className="flex flex-col gap-1" {...props}>
+      {/* Navigation: breadcrumbs or back button */}
+      {breadcrumbs && breadcrumbs.length > 0 ? (
+        <div className="overflow-hidden">
+          <Breadcrumb items={breadcrumbs} separator="chevron" />
+        </div>
+      ) : backHref ? (
+        <a
+          href={backHref}
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground hover:underline underline-offset-2 transition-colors w-fit"
+        >
+          <ArrowLeft className="size-4" />
+          <span>{backLabel}</span>
+        </a>
+      ) : null}
+
+      {/* Main header row */}
+      <div className="flex items-center justify-between gap-4 min-w-0">
+        <div className="min-w-0 flex-1 truncate">
+          <Heading level="1">{title}</Heading>
+        </div>
+        {resolvedActions && (
+          <div className="shrink-0">
+            {React.isValidElement(resolvedActions) && resolvedActions.type === PageHeaderActions ? (
+              resolvedActions
+            ) : (
+              <PageHeaderActions>{resolvedActions}</PageHeaderActions>
+            )}
+          </div>
         )}
-        {meta && (
-          <Text size="xs" variant="muted">
-            {meta}
-          </Text>
-        )}
-        {nonActionChildren}
-      </Stack>
-      {resolvedActions &&
-        (React.isValidElement(resolvedActions) && resolvedActions.type === PageHeaderActions ? (
-          resolvedActions
-        ) : (
-          <PageHeaderActions>{resolvedActions}</PageHeaderActions>
-        ))}
+      </div>
+
+      {/* Tabs section */}
+      {tabs && (
+        <div className="mt-2 -mb-px">
+          {tabs}
+        </div>
+      )}
     </div>
   );
 }
 
-function PageHeaderTitle({ ...props }: Omit<React.ComponentProps<typeof Heading>, 'className'>) {
-  return <Heading data-slot="page-header-title" level="1" {...props} />;
-}
-
-function PageHeaderDescription({ ...props }: Omit<React.ComponentProps<typeof Text>, 'className'>) {
-  return <Text data-slot="page-header-description" size="sm" variant="muted" {...props} />;
-}
-
 function PageHeaderActions({ ...props }: Omit<React.ComponentProps<'div'>, 'className'>) {
   return (
-    <div data-slot="page-header-actions" className="flex shrink-0 items-center gap-3" {...props} />
+    <div data-slot="page-header-actions" className="flex shrink-0 items-center gap-2" {...props} />
   );
 }
 
 // Mark compound slots so PageHeader can detect them even if module instances differ.
 (PageHeaderActions as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot = 'actions';
 
-export { PageHeader, PageHeaderActions, PageHeaderDescription, PageHeaderTitle };
+export { PageHeader, PageHeaderActions };

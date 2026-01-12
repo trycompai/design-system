@@ -8,9 +8,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  Heading,
   Input,
   Label,
+  PageHeader,
+  PageLayout,
   Stack,
   Text,
 } from '@trycompai/design-system';
@@ -18,13 +19,11 @@ import { Mobile, Password, Security } from '@carbon/icons-react';
 
 export default function SettingsSecurityPage() {
   return (
-    <Stack gap="6">
-      <Stack gap="1">
-        <Heading level="1">Security</Heading>
-        <Text variant="muted">Manage your security settings and preferences.</Text>
-      </Stack>
+    <PageLayout>
+      <PageHeader title="Security" />
 
-      <Card>
+      <Stack gap="6">
+        <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
             <Security size={20} className="text-green-600" />
@@ -115,6 +114,7 @@ export default function SettingsSecurityPage() {
           </Stack>
         </CardContent>
       </Card>
-    </Stack>
+      </Stack>
+    </PageLayout>
   );
 }

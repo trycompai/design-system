@@ -63,7 +63,7 @@ function TableCell({ ...props }: Omit<React.ComponentProps<'td'>, 'className'>) 
   return (
     <td
       data-slot="table-cell"
-      className="px-3 py-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [[data-variant=bordered]_&]:border-r [[data-variant=bordered]_&]:last:border-r-0"
+      className="px-3 py-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [[data-variant=bordered]_&]:border-r [[data-variant=bordered]_&]:last:border-r-0 [&_[data-slot=button]]:relative [&_[data-slot=button]]:z-10"
       {...props}
     />
   );

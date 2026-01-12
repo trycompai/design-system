@@ -81,11 +81,11 @@ export default function ControlsPage() {
   const passedControls = controlCategories.reduce((sum, c) => sum + c.passed, 0);
 
   return (
-    <PageLayout padding="none" container={false}>
+    <PageLayout>
       <PageHeader title="Controls">
         <PageHeaderActions>
           <Button iconLeft={<Add size={16} />}>New Control</Button>
-          <Button variant="secondary" iconLeft={<Filter size={16} />}>Filter</Button>
+          <Button variant="outline" iconLeft={<Filter size={16} />}>Filter</Button>
         </PageHeaderActions>
       </PageHeader>
 

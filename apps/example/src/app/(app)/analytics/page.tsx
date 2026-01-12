@@ -6,7 +6,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  Heading,
+  PageHeader,
+  PageLayout,
   Stack,
   Text,
 } from '@trycompai/design-system';
@@ -29,11 +30,8 @@ const topPages = [
 
 export default function AnalyticsPage() {
   return (
-    <Stack gap="6">
-      <Stack gap="1">
-        <Heading level="1">Analytics</Heading>
-        <Text variant="muted">Track your application performance and user engagement.</Text>
-      </Stack>
+    <PageLayout>
+      <PageHeader title="Analytics" />
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {metrics.map((metric) => (
@@ -106,6 +104,6 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
       </div>
-    </Stack>
+    </PageLayout>
   );
 }

@@ -81,7 +81,7 @@ function getStatusBadge(status: string) {
 
 export default function RisksPage() {
   return (
-    <PageLayout padding="none" container={false}>
+    <PageLayout>
       <PageHeader title="Risks">
         <PageHeaderActions>
           <Button iconLeft={<Add size={16} />}>New Risk</Button>

@@ -5,15 +5,12 @@ import {
   AvatarFallback,
   AvatarImage,
   Badge,
-  Breadcrumb,
-  Button,
-  BreadcrumbItem,
-  BreadcrumbList,
   Card,
   CardContent,
   CardHeader,
   Heading,
   HStack,
+  PageHeader,
   PageLayout,
   Stack,
   Tabs,
@@ -22,8 +19,6 @@ import {
   TabsTrigger,
   Text,
 } from '@trycompai/design-system';
-import { ArrowLeft } from '@carbon/icons-react';
-import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
 import { getVendorById } from '../vendors.data';
@@ -44,43 +39,36 @@ export default function VendorDetailPage() {
   const vendor = vendorId == null ? undefined : getVendorById(vendorId);
 
   return (
-    <PageLayout padding="none" container={false} gap="4">
-      {/* Breadcrumb is intentionally rendered with a Button(link) so the back icon + link are one click target. */}
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <Button
-              variant="link"
-              size="sm"
-              iconLeft={<ArrowLeft size={16} />}
-              render={<Link href="/vendors" />}
-            >
-              Vendors
-            </Button>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <Tabs defaultValue="overview">
+      <PageLayout>
+        <PageHeader
+          title={vendor?.name ?? 'Vendor'}
+          backHref="/vendors"
+          backLabel="Vendors"
+          tabs={
+            vendor ? (
+              <TabsList variant="underline">
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="assessments">Assessments</TabsTrigger>
+                <TabsTrigger value="documents">Documents</TabsTrigger>
+              </TabsList>
+            ) : undefined
+          }
+        />
 
-      <Heading level="1">{vendor?.name ?? 'Vendor'}</Heading>
-
-      {!vendor ? (
-        <Card>
-          <CardHeader>
-            <Heading level="3">Vendor not found</Heading>
-          </CardHeader>
-          <CardContent>
-            <Text size="sm" variant="muted">
-              That vendor doesn’t exist (or the URL is wrong).
-            </Text>
-          </CardContent>
-        </Card>
-      ) : (
-        <Tabs defaultValue="overview">
-          <TabsList variant="underline">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="example-1">Example tab</TabsTrigger>
-            <TabsTrigger value="example-2">Example tab</TabsTrigger>
-          </TabsList>
+        {!vendor ? (
+          <Card>
+            <CardHeader>
+              <Heading level="3">Vendor not found</Heading>
+            </CardHeader>
+            <CardContent>
+              <Text size="sm" variant="muted">
+                That vendor doesn't exist (or the URL is wrong).
+              </Text>
+            </CardContent>
+          </Card>
+        ) : (
+          <>
 
           <TabsContent value="overview">
             <div className="pt-4">
@@ -139,38 +127,35 @@ export default function VendorDetailPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="example-1">
-            <div className="mt-4">
+          <TabsContent value="assessments">
               <Card>
                 <CardHeader>
-                  <Heading level="4">Example tab</Heading>
+                  <Heading level="4">Assessments</Heading>
                 </CardHeader>
                 <CardContent>
                   <Text size="sm" variant="muted">
-                    Placeholder.
+                    Vendor assessments coming soon...
                   </Text>
                 </CardContent>
               </Card>
-            </div>
           </TabsContent>
 
-          <TabsContent value="example-2">
-            <div className="mt-4">
+          <TabsContent value="documents">
               <Card>
                 <CardHeader>
-                  <Heading level="4">Example tab</Heading>
+                  <Heading level="4">Documents</Heading>
                 </CardHeader>
                 <CardContent>
                   <Text size="sm" variant="muted">
-                    Placeholder.
+                    Vendor documents coming soon...
                   </Text>
                 </CardContent>
               </Card>
-            </div>
           </TabsContent>
-        </Tabs>
-      )}
-    </PageLayout>
+          </>
+        )}
+      </PageLayout>
+    </Tabs>
   );
 }
 

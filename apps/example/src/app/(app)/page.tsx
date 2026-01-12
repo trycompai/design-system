@@ -18,9 +18,14 @@ import {
   ItemMedia,
   ItemTitle,
   PageHeader,
+  PageHeaderActions,
   PageLayout,
   Progress,
   Stack,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   Text,
 } from '@trycompai/design-system';
 import * as React from 'react';
@@ -214,11 +219,22 @@ export default function OverviewPage() {
   };
 
   return (
-    <PageLayout padding="none" container={false}>
-          <PageHeader title="Overview" />
+    <Tabs defaultValue="roadmap">
+      <PageLayout>
+        <PageHeader
+          title="Overview"
+          tabs={
+            <TabsList variant="underline">
+              <TabsTrigger value="roadmap">Roadmap</TabsTrigger>
+              <TabsTrigger value="activity">Activity</TabsTrigger>
+              <TabsTrigger value="insights">Insights</TabsTrigger>
+            </TabsList>
+          }
+        />
 
-      {/* Roadmap Summary + Phases */}
-      <Stack gap="lg">
+        <TabsContent value="roadmap">
+          {/* Roadmap Summary + Phases */}
+          <Stack gap="lg">
         <Card>
           <CardHeader>
             <Stack gap="md">
@@ -353,7 +369,31 @@ export default function OverviewPage() {
             </CardContent>
           </Card>
         </Stack>
-      </Stack>
-    </PageLayout>
+          </Stack>
+        </TabsContent>
+
+        <TabsContent value="activity">
+          <Card>
+            <CardHeader>
+              <Heading level="3">Recent Activity</Heading>
+            </CardHeader>
+            <CardContent>
+              <Text variant="muted">Activity feed coming soon...</Text>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="insights">
+          <Card>
+            <CardHeader>
+              <Heading level="3">Compliance Insights</Heading>
+            </CardHeader>
+            <CardContent>
+              <Text variant="muted">Insights and analytics coming soon...</Text>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </PageLayout>
+    </Tabs>
   );
 }
