@@ -178,46 +178,43 @@ function NotificationsPopover() {
           )}
         </div>
       </PopoverTrigger>
-      <PopoverContent align="end" style={{ width: '320px', padding: 0 }}>
-        <div className="px-3 py-2 border-b border-border">
-          <HStack justify="between" align="center">
-            <Text weight="semibold">Notifications</Text>
-            {unreadCount > 0 && (
-              <Badge variant="secondary">{unreadCount} new</Badge>
-            )}
-          </HStack>
+      <PopoverContent align="end" style={{ width: '340px', padding: 0 }}>
+        <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+          <Text weight="semibold" size="sm">Notifications</Text>
+          {unreadCount > 0 && (
+            <Badge variant="secondary">{unreadCount} new</Badge>
+          )}
         </div>
-        <div className="max-h-80 overflow-auto">
+        <div className="max-h-80 overflow-auto divide-y divide-border">
           {notifications.map((notification) => (
             <div
               key={notification.id}
-              className={`px-3 py-2.5 border-b border-border last:border-0 hover:bg-muted/50 cursor-pointer ${
+              className={`flex items-start gap-3 px-4 py-3 hover:bg-muted/50 cursor-pointer transition-colors ${
                 notification.unread ? 'bg-primary/5' : ''
               }`}
             >
-              <HStack justify="between" align="start">
-                <Stack gap="none">
-                  <Text size="sm" weight="medium">
-                    {notification.title}
-                  </Text>
-                  <Text size="sm" variant="muted">
-                    {notification.description}
-                  </Text>
-                  <Text size="xs" variant="muted">
-                    {notification.time}
-                  </Text>
-                </Stack>
-                {notification.unread && (
-                  <div className="size-2 rounded-full bg-primary mt-1" />
-                )}
-              </HStack>
+              <div className="flex-1 min-w-0 space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <Text size="sm" weight="medium">{notification.title}</Text>
+                  {notification.unread && (
+                    <div className="size-1.5 rounded-full bg-primary shrink-0" />
+                  )}
+                </div>
+                <div className="truncate">
+                  <Text size="sm" variant="muted">{notification.description}</Text>
+                </div>
+                <Text size="xs" variant="muted">{notification.time}</Text>
+              </div>
             </div>
           ))}
         </div>
-        <div className="px-2 py-1.5 border-t border-border">
-          <Button variant="ghost" size="sm">
+        <div className="border-t border-border">
+          <button
+            type="button"
+            className="w-full px-4 py-2.5 text-sm text-center text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+          >
             View all notifications
-          </Button>
+          </button>
         </div>
       </PopoverContent>
     </Popover>

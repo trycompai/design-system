@@ -88,7 +88,7 @@ export default function PoliciesPage() {
   const goToPolicy = (id: number) => router.push(`/policies/${id}`);
 
   return (
-    <PageLayout>
+    <PageLayout >
       <PageHeader title="Policies">
         <PageHeaderActions>
           <Button iconLeft={<Add size={16} />}>New Policy</Button>

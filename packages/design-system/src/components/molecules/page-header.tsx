@@ -20,6 +20,7 @@ interface PageHeaderProps extends Omit<React.ComponentProps<'div'>, 'className'>
 function PageHeader({ title, actions, breadcrumbs, backHref, backLabel = 'Back', tabs, children, ...props }: PageHeaderProps) {
   const childArray = React.Children.toArray(children);
   const extractedActionChildren: React.ReactNode[] = [];
+  const extractedDescriptionChildren: React.ReactNode[] = [];
 
   childArray.forEach((child) => {
     if (
@@ -29,6 +30,14 @@ function PageHeader({ title, actions, breadcrumbs, backHref, backLabel = 'Back',
           (child.type as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot === 'actions'))
     ) {
       extractedActionChildren.push((child.props as { children?: React.ReactNode }).children);
+    }
+    if (
+      React.isValidElement(child) &&
+      (child.type === PageHeaderDescription ||
+        (typeof child.type === 'function' &&
+          (child.type as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot === 'description'))
+    ) {
+      extractedDescriptionChildren.push(child);
     }
   });
 
@@ -69,6 +78,9 @@ function PageHeader({ title, actions, breadcrumbs, backHref, backLabel = 'Back',
         )}
       </div>
 
+      {/* Description section */}
+      {extractedDescriptionChildren.length > 0 && extractedDescriptionChildren}
+
       {/* Tabs section */}
       {tabs && (
         <div className="mt-2 -mb-px">
@@ -85,7 +97,14 @@ function PageHeaderActions({ ...props }: Omit<React.ComponentProps<'div'>, 'clas
   );
 }
 
+function PageHeaderDescription({ ...props }: Omit<React.ComponentProps<'p'>, 'className'>) {
+  return (
+    <p data-slot="page-header-description" className="text-sm text-muted-foreground" {...props} />
+  );
+}
+
 // Mark compound slots so PageHeader can detect them even if module instances differ.
 (PageHeaderActions as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot = 'actions';
+(PageHeaderDescription as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot = 'description';
 
-export { PageHeader, PageHeaderActions };
+export { PageHeader, PageHeaderActions, PageHeaderDescription };

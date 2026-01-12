@@ -34,7 +34,7 @@ const containerVariants = cva('mx-auto w-full', {
     },
   },
   defaultVariants: {
-    maxWidth: 'xl',
+    maxWidth: '2xl',
   },
 });
 
@@ -60,7 +60,7 @@ function PageLayout({
   ...props
 }: PageLayoutProps) {
   // For center variant, default to smaller max-width (sm) for auth-style pages
-  const resolvedMaxWidth = maxWidth ?? (variant === 'center' ? 'sm' : 'lg');
+  const resolvedMaxWidth = maxWidth ?? (variant === 'center' ? 'sm' : 'xl');
 
   const content = (
     <Stack gap={gap}>
