@@ -156,7 +156,7 @@ function CardFooter({ ...props }: Omit<React.ComponentProps<'div'>, 'className'>
   return (
     <div
       data-slot="card-footer"
-      className="bg-muted rounded-b-md border-t p-4 group-data-[size=sm]/card:p-3 flex items-center"
+      className="bg-muted rounded-b-md border-t p-4 group-data-[size=sm]/card:p-3 flex items-center justify-between gap-4"
       {...props}
     />
   );

@@ -6,7 +6,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  Heading,
+  PageHeader,
+  PageLayout,
   Stack,
   Switch,
   Text,
@@ -14,11 +15,8 @@ import {
 
 export default function SettingsNotificationsPage() {
   return (
-    <Stack gap="6">
-      <Stack gap="1">
-        <Heading level="1">Notifications</Heading>
-        <Text variant="muted">Manage your notification preferences.</Text>
-      </Stack>
+    <PageLayout>
+      <PageHeader title="Notifications" />
 
       <Card>
         <CardHeader>
@@ -95,6 +93,6 @@ export default function SettingsNotificationsPage() {
           </Stack>
         </CardContent>
       </Card>
-    </Stack>
+    </PageLayout>
   );
 }

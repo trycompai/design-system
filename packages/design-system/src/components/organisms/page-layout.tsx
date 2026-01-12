@@ -12,14 +12,14 @@ const pageLayoutVariants = cva('min-h-full bg-background text-foreground', {
     },
     padding: {
       none: '',
-      sm: 'px-4',
-      default: 'px-4 sm:px-6 lg:px-8',
-      lg: 'px-6 sm:px-8 lg:px-12',
+      sm: 'px-1.5 sm:px-2',
+      default: 'px-1.5 sm:px-2 md:px-3 lg:px-4',
+      lg: 'px-2 sm:px-3 md:px-4 lg:px-6',
     },
   },
   defaultVariants: {
     variant: 'default',
-    padding: 'default',
+    padding: 'none',
   },
 });
 

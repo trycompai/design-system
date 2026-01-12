@@ -8,7 +8,9 @@ import {
   Button,
   Card,
   CardContent,
-  Heading,
+  PageHeader,
+  PageHeaderActions,
+  PageLayout,
   Stack,
   Text,
 } from '@trycompai/design-system';
@@ -91,14 +93,12 @@ function getRoleBadgeVariant(role: string) {
 
 export default function TeamPage() {
   return (
-    <Stack gap="6">
-      <div className="flex items-center justify-between">
-        <Stack gap="1">
-          <Heading level="1">Team</Heading>
-          <Text variant="muted">Manage your team members and their roles.</Text>
-        </Stack>
-        <Button iconLeft={<Add size={16} />}>Invite Member</Button>
-      </div>
+    <PageLayout>
+      <PageHeader title="Team">
+        <PageHeaderActions>
+          <Button iconLeft={<Add size={16} />}>Invite Member</Button>
+        </PageHeaderActions>
+      </PageHeader>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {teamMembers.map((member) => (
@@ -138,6 +138,6 @@ export default function TeamPage() {
           </Card>
         ))}
       </div>
-    </Stack>
+    </PageLayout>
   );
 }

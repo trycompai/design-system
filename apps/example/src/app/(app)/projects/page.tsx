@@ -8,7 +8,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-  Heading,
+  PageHeader,
+  PageHeaderActions,
+  PageLayout,
   Stack,
   Text,
 } from '@trycompai/design-system';
@@ -74,14 +76,12 @@ const projects = [
 
 export default function ProjectsPage() {
   return (
-    <Stack gap="6">
-      <div className="flex items-center justify-between">
-        <Stack gap="1">
-          <Heading level="1">Projects</Heading>
-          <Text variant="muted">Manage and track all your projects in one place.</Text>
-        </Stack>
-        <Button iconLeft={<Add size={16} />}>New Project</Button>
-      </div>
+    <PageLayout>
+      <PageHeader title="Projects">
+        <PageHeaderActions>
+          <Button iconLeft={<Add size={16} />}>New Project</Button>
+        </PageHeaderActions>
+      </PageHeader>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => (
@@ -117,6 +117,6 @@ export default function ProjectsPage() {
           </Link>
         ))}
       </div>
-    </Stack>
+    </PageLayout>
   );
 }

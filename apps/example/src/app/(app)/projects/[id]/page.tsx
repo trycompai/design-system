@@ -2,14 +2,14 @@
 
 import {
   Badge,
-  Button,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-  Heading,
   HStack,
+  PageHeader,
+  PageLayout,
   Stack,
   Tabs,
   TabsContent,
@@ -17,8 +17,7 @@ import {
   TabsTrigger,
   Text,
 } from '@trycompai/design-system';
-import { ArrowLeft, Calendar, CheckmarkFilled, CircleFilled, UserMultiple } from '@carbon/icons-react';
-import Link from 'next/link';
+import { Calendar, CheckmarkFilled, CircleFilled, UserMultiple } from '@carbon/icons-react';
 import { use } from 'react';
 
 const projectData = {
@@ -48,27 +47,23 @@ export default function ProjectDetailPage({
   const project = projectData[id as keyof typeof projectData] || projectData['1'];
 
   return (
-    <Stack gap="6">
+    <PageLayout>
+      <PageHeader
+        title={project.name}
+        backHref="/projects"
+        backLabel="Projects"
+      />
+
       <HStack gap="4" align="center">
-        <Link href="/projects">
-          <Button variant="ghost" size="icon-sm">
-            <ArrowLeft size={16} />
-          </Button>
-        </Link>
-        <Stack gap="1">
-          <Heading level="1">{project.name}</Heading>
-          <HStack gap="4">
-            <Badge>{project.status}</Badge>
-            <HStack gap="1" align="center">
-              <UserMultiple size={16} className="text-muted-foreground" />
-              <Text variant="muted" size="sm">{project.members} members</Text>
-            </HStack>
-            <HStack gap="1" align="center">
-              <Calendar size={16} className="text-muted-foreground" />
-              <Text variant="muted" size="sm">Due {project.dueDate}</Text>
-            </HStack>
-          </HStack>
-        </Stack>
+        <Badge>{project.status}</Badge>
+        <HStack gap="1" align="center">
+          <UserMultiple size={16} className="text-muted-foreground" />
+          <Text variant="muted" size="sm">{project.members} members</Text>
+        </HStack>
+        <HStack gap="1" align="center">
+          <Calendar size={16} className="text-muted-foreground" />
+          <Text variant="muted" size="sm">Due {project.dueDate}</Text>
+        </HStack>
       </HStack>
 
       <Tabs defaultValue="overview">
@@ -177,6 +172,6 @@ export default function ProjectDetailPage({
           </Card>
         </TabsContent>
       </Tabs>
-    </Stack>
+    </PageLayout>
   );
 }
