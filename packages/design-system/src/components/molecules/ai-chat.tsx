@@ -231,7 +231,7 @@ function AIChatDefaultContent({ onClose }: { onClose: () => void }) {
         </div>
         <div className="mt-3 flex items-center justify-center gap-2 text-xs text-muted-foreground/70">
           <Keyboard className="size-3" />
-          <span>Press <Kbd size="xs">Esc</Kbd> to close</span>
+          <span>Press <Kbd>Esc</Kbd> to close</span>
         </div>
       </div>
     </>
