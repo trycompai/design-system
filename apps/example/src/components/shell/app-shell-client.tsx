@@ -327,7 +327,7 @@ interface SidebarNavItemProps {
 
 function SidebarNavItem({ item, isActive }: SidebarNavItemProps) {
   return (
-    <Link href={item.href}>
+    <Link href={item.href} className="block">
       <AppShellNavItem icon={item.icon} isActive={isActive}>
         {item.label}
       </AppShellNavItem>
@@ -355,7 +355,7 @@ function SidebarNavItemWithChildren({ item, pathname }: SidebarNavItemWithChildr
         {item.children.map((child) => {
           const childActive = child.href === '/' ? pathname === '/' : pathname === child.href || pathname.startsWith(child.href + '/');
           return (
-            <Link key={child.id} href={child.href}>
+            <Link key={child.id} href={child.href} className="block">
               <AppShellNavSubItem isActive={childActive}>
                 {child.label}
               </AppShellNavSubItem>
@@ -369,7 +369,7 @@ function SidebarNavItemWithChildren({ item, pathname }: SidebarNavItemWithChildr
   // Regular item with direct href
   if (item.href) {
     return (
-      <Link href={item.href}>
+      <Link href={item.href} className="block">
         <AppShellNavItem icon={item.icon} isActive={itemActive}>
           {item.label}
         </AppShellNavItem>

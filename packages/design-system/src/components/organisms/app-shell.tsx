@@ -747,7 +747,7 @@ function AppShellSidebarHeader({ icon, title, description, action, children, ...
 
 function AppShellNav({ children, ...props }: AppShellNavProps) {
   return (
-    <nav data-slot="app-shell-nav" className="flex-1 space-y-4 py-2" {...props}>
+    <nav data-slot="app-shell-nav" className="flex-1 space-y-1 py-2" {...props}>
       {children}
     </nav>
   );
@@ -769,7 +769,7 @@ function AppShellNavGroup({ label, children, ...props }: AppShellNavGroupProps) 
           {label}
         </div>
       )}
-      <Stack gap="1">{children}</Stack>
+      <div className="space-y-0.5">{children}</div>
     </div>
   );
 }
@@ -780,34 +780,15 @@ function AppShellNavItem({ isActive, icon, children, ...props }: AppShellNavItem
       data-slot="app-shell-nav-item"
       data-active={isActive}
       className={[
-        'flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-sm cursor-pointer',
-        // Smooth transitions for premium feel
+        'flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm cursor-pointer',
         'transition-all duration-150 ease-out',
-        // Subtle scale on hover for premium touch
-        'active:scale-[0.98]',
-        // Base styles for default/muted sidebar variants
         isActive
-          ? [
-              // Active state - default variant: softer in light, stronger in dark
-              '[[data-variant=default]_&]:bg-muted/50 [[data-variant=default]_&]:dark:bg-muted [[data-variant=default]_&]:text-foreground',
-              // Active state - muted variant (gray bg sidebar): use white bg
-              '[[data-variant=muted]_&]:bg-background [[data-variant=muted]_&]:text-foreground [[data-variant=muted]_&]:shadow-sm',
-              // Active state - primary variant: use white/10 overlay
-              '[[data-variant=primary]_&]:bg-primary-foreground/15 [[data-variant=primary]_&]:text-primary-foreground',
-              'font-medium',
-            ].join(' ')
-          : [
-              // Inactive - default/muted variants
-              'text-muted-foreground hover:text-foreground',
-              '[[data-variant=default]_&]:hover:bg-muted/30 [[data-variant=default]_&]:dark:hover:bg-muted/60',
-              '[[data-variant=muted]_&]:hover:bg-background/60',
-              // Inactive - primary variant
-              '[[data-variant=primary]_&]:text-primary-foreground/70 [[data-variant=primary]_&]:hover:text-primary-foreground [[data-variant=primary]_&]:hover:bg-primary-foreground/10',
-            ].join(' '),
+          ? 'bg-muted text-foreground font-medium'
+          : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',
       ].join(' ')}
       {...props}
     >
-      {icon && <span className="size-4 shrink-0 [&>svg]:size-4 transition-transform duration-150 group-hover:scale-110">{icon}</span>}
+      {icon && <span className="size-4 shrink-0 [&>svg]:size-4">{icon}</span>}
       {children}
     </button>
   );
@@ -846,12 +827,11 @@ function AppShellNavItemCollapsible({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={[
-          'flex w-full items-center gap-3 rounded-lg px-2 py-1.5 text-sm cursor-pointer',
+          'flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm cursor-pointer',
           'transition-all duration-150 ease-out',
-          'active:scale-[0.98]',
           isActive || isOpen
-            ? 'text-foreground font-medium'
-            : 'text-muted-foreground hover:text-foreground [[data-variant=default]_&]:hover:bg-muted/30 [[data-variant=default]_&]:dark:hover:bg-muted/60 [[data-variant=muted]_&]:hover:bg-background/60',
+            ? 'text-foreground font-semibold'
+            : 'text-muted-foreground hover:text-foreground hover:bg-muted/50',
         ].join(' ')}
       >
         {icon && <span className="size-4 shrink-0 [&>svg]:size-4">{icon}</span>}
@@ -869,7 +849,7 @@ function AppShellNavItemCollapsible({
           isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="mt-1 rounded-lg bg-muted/50 dark:bg-muted/30 p-1 space-y-0.5">
+        <div className="mt-1 ml-2 rounded-xl bg-muted/40 dark:bg-muted/20 p-1.5 space-y-0.5">
           {children}
         </div>
       </div>
@@ -888,20 +868,11 @@ function AppShellNavSubItem({ isActive, children, ...props }: AppShellNavSubItem
       data-slot="app-shell-nav-sub-item"
       data-active={isActive}
       className={[
-        'flex w-full items-center rounded-md px-2 py-1.5 text-sm cursor-pointer',
+        'flex w-full items-center rounded-lg px-3 py-2 text-sm cursor-pointer',
         'transition-all duration-150 ease-out',
-        'active:scale-[0.98]',
         isActive
-          ? [
-              '[[data-variant=default]_&]:bg-muted/50 [[data-variant=default]_&]:dark:bg-muted [[data-variant=default]_&]:text-foreground',
-              '[[data-variant=muted]_&]:bg-background [[data-variant=muted]_&]:text-foreground [[data-variant=muted]_&]:shadow-sm',
-              'font-medium',
-            ].join(' ')
-          : [
-              'text-muted-foreground hover:text-foreground',
-              '[[data-variant=default]_&]:hover:bg-muted/30 [[data-variant=default]_&]:dark:hover:bg-muted/60',
-              '[[data-variant=muted]_&]:hover:bg-background/60',
-            ].join(' '),
+          ? 'bg-background text-foreground font-medium shadow-sm'
+          : 'text-muted-foreground hover:text-foreground hover:bg-background/50',
       ].join(' ')}
       {...props}
     >
