@@ -22,7 +22,7 @@ function Table({
 }
 
 function TableHeader({ ...props }: Omit<React.ComponentProps<'thead'>, 'className'>) {
-  return <thead data-slot="table-header" className="[&_tr]:border-b" {...props} />;
+  return <thead data-slot="table-header" className="bg-muted/50 [&_tr]:border-b" {...props} />;
 }
 
 function TableBody({ ...props }: Omit<React.ComponentProps<'tbody'>, 'className'>) {
@@ -43,7 +43,7 @@ function TableRow({ ...props }: Omit<React.ComponentProps<'tr'>, 'className'>) {
   return (
     <tr
       data-slot="table-row"
-      className="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors"
+      className="hover:bg-accent/50 data-[state=selected]:bg-muted border-b transition-colors"
       {...props}
     />
   );
@@ -53,7 +53,7 @@ function TableHead({ ...props }: Omit<React.ComponentProps<'th'>, 'className'>) 
   return (
     <th
       data-slot="table-head"
-      className="text-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0"
+      className="text-foreground h-10 px-3 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [[data-variant=bordered]_&]:border-r [[data-variant=bordered]_&]:last:border-r-0"
       {...props}
     />
   );
@@ -63,7 +63,7 @@ function TableCell({ ...props }: Omit<React.ComponentProps<'td'>, 'className'>) 
   return (
     <td
       data-slot="table-cell"
-      className="p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0"
+      className="px-3 py-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [[data-variant=bordered]_&]:border-r [[data-variant=bordered]_&]:last:border-r-0"
       {...props}
     />
   );

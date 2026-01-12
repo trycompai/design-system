@@ -69,8 +69,8 @@ const appShellSidebarVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-background border-r border-border/40',
-        muted: 'bg-muted border-r border-border/40',
+        default: 'bg-background border-r border-border',
+        muted: 'bg-muted border-r border-border',
         primary: 'bg-primary border-r border-primary-foreground/10',
       },
     },
@@ -351,7 +351,7 @@ function AppShellBody({ children, ...props }: AppShellBodyProps) {
         >
           {/* Rail section - only show if there are rail items */}
           {railContent && (
-            <div className="flex flex-col items-center w-16 shrink-0 py-3 gap-1 bg-muted border-r border-border/40">
+            <div className="flex flex-col items-center w-16 shrink-0 py-3 gap-1 bg-muted border-r border-border">
               {railContent}
             </div>
           )}
@@ -668,7 +668,7 @@ function AppShellSidebarHeader({ icon, title, description, action, children, ...
       className={[
         'flex items-center px-2 mb-2 border-b',
         isSimpleHeader ? 'py-3' : 'gap-3 py-2',
-        'border-border/40',
+        'border-border',
         '[[data-variant=primary]_&]:border-primary-foreground/20',
       ].join(' ')}
       {...props}
@@ -788,7 +788,7 @@ function AppShellNavFooter({ children, ...props }: AppShellNavFooterProps) {
       data-slot="app-shell-nav-footer"
       className={[
         'mt-auto border-t pt-2 space-y-1',
-        'border-border/40',
+        'border-border',
         '[[data-variant=primary]_&]:border-primary-foreground/20',
       ].join(' ')}
       {...props}

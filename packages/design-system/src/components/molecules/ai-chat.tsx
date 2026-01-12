@@ -26,7 +26,7 @@ const aiChatTriggerVariants = cva(
 );
 
 const aiChatPanelVariants = cva(
-  'fixed bottom-24 right-6 z-50 flex flex-col bg-background border border-border/40 rounded-2xl overflow-hidden transition-all duration-200 origin-bottom-right',
+  'fixed bottom-24 right-6 z-50 flex flex-col bg-background border border-border rounded-2xl overflow-hidden transition-all duration-200 origin-bottom-right',
   {
     variants: {
       size: {
@@ -127,7 +127,7 @@ function AIChatDefaultContent({ onClose }: { onClose: () => void }) {
   return (
     <>
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border/40">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <div className="flex items-center gap-2">
           <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary">
             <MagicWand className="size-4" />
@@ -162,7 +162,7 @@ function AIChatDefaultContent({ onClose }: { onClose: () => void }) {
       </div>
 
       {/* Input Area */}
-      <div className="p-3 border-t border-border/40">
+      <div className="p-3 border-t border-border">
         <div className="flex items-center gap-2 rounded-xl bg-muted/50 dark:bg-muted px-3 py-2">
           <input
             type="text"
@@ -189,7 +189,7 @@ function AIChatHeader({ children, ...props }: Omit<React.ComponentProps<'div'>, 
   return (
     <div
       data-slot="ai-chat-header"
-      className="flex items-center justify-between px-4 py-3 border-b border-border/40"
+      className="flex items-center justify-between px-4 py-3 border-b border-border"
       {...props}
     >
       {children}
@@ -207,7 +207,7 @@ function AIChatBody({ children, ...props }: Omit<React.ComponentProps<'div'>, 'c
 
 function AIChatFooter({ children, ...props }: Omit<React.ComponentProps<'div'>, 'className'>) {
   return (
-    <div data-slot="ai-chat-footer" className="p-3 border-t border-border/40" {...props}>
+    <div data-slot="ai-chat-footer" className="p-3 border-t border-border" {...props}>
       {children}
     </div>
   );

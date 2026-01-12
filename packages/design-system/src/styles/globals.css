@@ -101,7 +101,7 @@
     --success: oklch(0.6 0.16 145);
     --warning: oklch(0.75 0.15 85);
     --info: oklch(0.6 0.15 250);
-    --border: oklch(0.85 0 0);
+    --border: oklch(0.94 0 0);
     --input: oklch(0.922 0 0);
     --ring: oklch(0.708 0 0);
     --chart-1: oklch(0.845 0.143 164.978);
@@ -116,7 +116,7 @@
     --sidebar-primary-foreground: oklch(0.979 0.021 166.113);
     --sidebar-accent: oklch(0.91 0 0);
     --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
+    --sidebar-border: oklch(0.95 0 0);
     --sidebar-ring: oklch(0.708 0 0);
   }
   .dark {
@@ -138,7 +138,7 @@
     --success: oklch(0.7 0.16 145);
     --warning: oklch(0.8 0.15 85);
     --info: oklch(0.7 0.15 250);
-    --border: oklch(1 0 0 / 10%);
+    --border: oklch(0.2 0 0);
     --input: oklch(1 0 0 / 15%);
     --ring: oklch(0.556 0 0);
     --chart-1: oklch(0.845 0.143 164.978);
@@ -152,7 +152,7 @@
     --sidebar-primary-foreground: oklch(0.262 0.051 172.552);
     --sidebar-accent: oklch(0.269 0 0);
     --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-border: oklch(0.2 0 0);
     --sidebar-ring: oklch(0.556 0 0);
   }
 }
@@ -223,6 +223,9 @@
     font-weight: 400;
   }
   .font-semibold {
+    font-weight: 400;
+  }
+  .font-bold {
     font-weight: 700;
   }
 }
