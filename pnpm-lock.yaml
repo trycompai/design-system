@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  esbuild: 0.25.12
-
 importers:
 
   .:
@@ -1536,7 +1533,7 @@ packages:
   '@storybook/csf-plugin@10.1.11':
     resolution: {integrity: sha512-Ant0NhgqHKzQsseeVTSetZCuDHHs0W2HRkHt51Kg/sUl0T/sDtfVA+fWZT8nGzGZqYSFkxqYPWjauPmIhPtaRw==}
     peerDependencies:
-      esbuild: 0.25.12
+      esbuild: '*'
       rollup: '*'
       storybook: ^10.1.11
       vite: '*'
