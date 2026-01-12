@@ -2,7 +2,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 const cardVariants = cva(
-  'bg-card text-card-foreground border border-border/40 shadow-[0_1px_3px_0_rgb(0_0_0/0.06)] overflow-hidden rounded-xl py-4 text-sm has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl group/card flex flex-col',
+  'bg-card text-card-foreground border border-border/40 shadow-[0_1px_3px_0_rgb(0_0_0/0.06)] overflow-hidden rounded-md py-4 text-sm has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:py-3 data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-md *:[img:last-child]:rounded-b-md group/card flex flex-col',
   {
     variants: {
       width: {
@@ -116,7 +116,7 @@ function CardHeader({ ...props }: Omit<React.ComponentProps<'div'>, 'className'>
   return (
     <div
       data-slot="card-header"
-      className="gap-1 rounded-t-xl px-4 group-data-[size=sm]/card:px-3 [.border-b]:pb-4 group-data-[size=sm]/card:[.border-b]:pb-3 group/card-header @container/card-header grid auto-rows-min items-start has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto]"
+      className="gap-1 rounded-t-md px-4 group-data-[size=sm]/card:px-3 [.border-b]:pb-4 group-data-[size=sm]/card:[.border-b]:pb-3 group/card-header @container/card-header grid auto-rows-min items-start has-data-[slot=card-action]:grid-cols-[1fr_auto] has-data-[slot=card-description]:grid-rows-[auto_auto]"
       {...props}
     />
   );
@@ -156,7 +156,7 @@ function CardFooter({ ...props }: Omit<React.ComponentProps<'div'>, 'className'>
   return (
     <div
       data-slot="card-footer"
-      className="bg-muted/50 rounded-b-xl border-t p-4 group-data-[size=sm]/card:p-3 flex items-center"
+      className="bg-muted/50 rounded-b-md border-t p-4 group-data-[size=sm]/card:p-3 flex items-center"
       {...props}
     />
   );
