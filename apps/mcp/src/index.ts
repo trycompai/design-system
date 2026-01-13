@@ -463,7 +463,7 @@ async function main() {
     return {
       tools: [
         {
-          name: "design_system_list_components",
+          name: "list_components",
           description:
             "List all design system component source files (atoms/molecules/organisms).",
           inputSchema: {
@@ -478,7 +478,7 @@ async function main() {
           },
         },
         {
-          name: "design_system_get_component_source",
+          name: "get_component_source",
           description:
             "Fetch the source for a design system component by id (e.g. 'molecules/card').",
           inputSchema: {
@@ -490,7 +490,7 @@ async function main() {
           },
         },
         {
-          name: "design_system_search",
+          name: "search",
           description:
             "Search component ids (and optionally component source) for a query string.",
           inputSchema: {
@@ -507,12 +507,12 @@ async function main() {
           },
         },
         {
-          name: "design_system_list_stories",
+          name: "list_stories",
           description: "List Storybook story files in apps/storybook/stories.",
           inputSchema: { type: "object", properties: {} },
         },
         {
-          name: "design_system_get_story_source",
+          name: "get_story_source",
           description:
             "Fetch a Storybook story source by story name (e.g. 'Card' for Card.stories.tsx).",
           inputSchema: {
@@ -522,7 +522,7 @@ async function main() {
           },
         },
         {
-          name: "design_system_suggest_story_for_component",
+          name: "suggest_story_for_component",
           description:
             "Best-guess the Storybook story name for a component id (e.g. molecules/card -> Card).",
           inputSchema: {
@@ -532,19 +532,19 @@ async function main() {
           },
         },
         {
-          name: "design_system_get_theme",
+          name: "get_theme",
           description:
             "Get the design system theme including CSS variables, color tokens, and design tokens for light/dark mode. Returns parsed tokens from globals.css.",
           inputSchema: { type: "object", properties: {} },
         },
         {
-          name: "design_system_get_usage_guidelines",
+          name: "get_usage_guidelines",
           description:
             "Get the usage guidelines and rules for the design system. IMPORTANT: Components do NOT accept className - use variants and props only. This returns the agents.md file with all usage patterns.",
           inputSchema: { type: "object", properties: {} },
         },
         {
-          name: "design_system_installation",
+          name: "installation",
           description:
             "Get installation and setup instructions for using the design system in a project.",
           inputSchema: {
@@ -559,7 +559,7 @@ async function main() {
           },
         },
         {
-          name: "design_system_get_component_docs",
+          name: "get_component_docs",
           description:
             "Get comprehensive documentation for a component including props, variants, and usage examples. THIS IS THE RECOMMENDED TOOL for understanding how to use a component. CRITICAL: Components do NOT accept className - use variants only.",
           inputSchema: {
@@ -567,7 +567,7 @@ async function main() {
             properties: {
               id: {
                 type: "string",
-                description: "Component id (e.g., 'atoms/button', 'molecules/card'). Use design_system_list_components to see all available ids.",
+                description: "Component id (e.g., 'atoms/button', 'molecules/card'). Use list_components to see all available ids.",
               },
             },
             required: ["id"],
@@ -582,7 +582,7 @@ async function main() {
       const name = request.params.name;
       const args = request.params.arguments ?? {};
 
-      if (name === "design_system_list_components") {
+      if (name === "list_components") {
         const { category } = zListComponentsArgs.parse(args);
         const components = await listDesignSystemComponents(repoPaths);
         const filtered = category
@@ -592,7 +592,7 @@ async function main() {
         return { content: jsonText({ repoPaths, components: filtered }) };
       }
 
-      if (name === "design_system_get_component_source") {
+      if (name === "get_component_source") {
         const { id } = zGetComponentSourceArgs.parse(args);
         const components = await listDesignSystemComponents(repoPaths);
         const comp = components.find((c) => c.id.toLowerCase() === id.toLowerCase());
@@ -600,7 +600,7 @@ async function main() {
           return {
             content: jsonText({
               error: `Component not found: ${id}`,
-              hint: "Use design_system_list_components to see valid ids.",
+              hint: "Use list_components to see valid ids.",
             }),
           };
         }
@@ -609,7 +609,7 @@ async function main() {
         return { content: jsonText({ component: comp, source }) };
       }
 
-      if (name === "design_system_search") {
+      if (name === "search") {
         const { query, limit, includeSource } = zSearchArgs.parse(args);
         const q = query.toLowerCase();
 
@@ -652,20 +652,20 @@ async function main() {
         return { content: jsonText({ query, limit, hits }) };
       }
 
-      if (name === "design_system_list_stories") {
+      if (name === "list_stories") {
         zListStoriesArgs.parse(args);
         const stories = await listStorybookStories(repoPaths);
         return { content: jsonText({ repoPaths, stories }) };
       }
 
-      if (name === "design_system_get_story_source") {
+      if (name === "get_story_source") {
         const { name: storyName } = zGetStorySourceArgs.parse(args);
         const story = await findStoryByName(repoPaths, storyName);
         if (!story) {
           return {
             content: jsonText({
               error: `Story not found: ${storyName}`,
-              hint: "Use design_system_list_stories to see valid names.",
+              hint: "Use list_stories to see valid names.",
             }),
           };
         }
@@ -673,7 +673,7 @@ async function main() {
         return { content: jsonText({ story, source }) };
       }
 
-      if (name === "design_system_suggest_story_for_component") {
+      if (name === "suggest_story_for_component") {
         const { componentId } = zSuggestStoryForComponentArgs.parse(args);
         const components = await listDesignSystemComponents(repoPaths);
         const comp = components.find(
@@ -683,7 +683,7 @@ async function main() {
           return {
             content: jsonText({
               error: `Component not found: ${componentId}`,
-              hint: "Use design_system_list_components to see valid ids.",
+              hint: "Use list_components to see valid ids.",
             }),
           };
         }
@@ -701,7 +701,7 @@ async function main() {
         };
       }
 
-      if (name === "design_system_get_theme") {
+      if (name === "get_theme") {
         const cssSource = await readTextFile(repoPaths.globalsStylesPath);
         const tokens = parseDesignTokens(cssSource);
         return {
@@ -726,7 +726,7 @@ Dark mode is handled automatically via .dark class selector.`,
         };
       }
 
-      if (name === "design_system_get_usage_guidelines") {
+      if (name === "get_usage_guidelines") {
         const agentsMd = await readTextFile(repoPaths.agentsMdPath);
         return {
           content: [
@@ -743,13 +743,13 @@ Below are the complete usage guidelines:`,
         };
       }
 
-      if (name === "design_system_installation") {
+      if (name === "installation") {
         const framework = (args as { framework?: string }).framework || "general";
         const instructions = getInstallationInstructions(framework);
         return { content: jsonText(instructions) };
       }
 
-      if (name === "design_system_get_component_docs") {
+      if (name === "get_component_docs") {
         const { id } = zGetComponentSourceArgs.parse(args);
         const components = await listDesignSystemComponents(repoPaths);
         const comp = components.find((c) => c.id.toLowerCase() === id.toLowerCase());
@@ -758,7 +758,7 @@ Below are the complete usage guidelines:`,
           return {
             content: jsonText({
               error: `Component not found: ${id}`,
-              hint: "Use design_system_list_components to see valid ids.",
+              hint: "Use list_components to see valid ids.",
               availableComponents: components.map(c => c.id),
             }),
           };

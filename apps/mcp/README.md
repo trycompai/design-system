@@ -39,31 +39,31 @@ DS_REPO_ROOT=/path/to/design-system npx @trycompai/design-system-mcp
 
 | Tool | Description |
 |------|-------------|
-| `design_system_get_component_docs` | **RECOMMENDED** - Get comprehensive docs for a component including props, variants, and usage examples |
-| `design_system_list_components` | List all component source files (atoms/molecules/organisms) |
-| `design_system_get_component_source` | Fetch raw component source by id (e.g., `molecules/card`) |
-| `design_system_search` | Search component ids and optionally source content |
+| `get_component_docs` | **RECOMMENDED** - Get comprehensive docs for a component including props, variants, and usage examples |
+| `list_components` | List all component source files (atoms/molecules/organisms) |
+| `get_component_source` | Fetch raw component source by id (e.g., `molecules/card`) |
+| `search` | Search component ids and optionally source content |
 
 ### Usage Guidelines
 
 | Tool | Description |
 |------|-------------|
-| `design_system_get_usage_guidelines` | Get usage rules - **IMPORTANT: Components do NOT accept className** |
-| `design_system_installation` | Get framework-specific installation instructions |
+| `get_usage_guidelines` | Get usage rules - **IMPORTANT: Components do NOT accept className** |
+| `installation` | Get framework-specific installation instructions |
 
 ### Design Tokens
 
 | Tool | Description |
 |------|-------------|
-| `design_system_get_theme` | Get CSS variables and design tokens for light/dark mode |
+| `get_theme` | Get CSS variables and design tokens for light/dark mode |
 
 ### Storybook Stories
 
 | Tool | Description |
 |------|-------------|
-| `design_system_list_stories` | List all Storybook story files |
-| `design_system_get_story_source` | Fetch story source by name (e.g., `Card`) |
-| `design_system_suggest_story_for_component` | Best-guess story name for a component id |
+| `list_stories` | List all Storybook story files |
+| `get_story_source` | Fetch story source by name (e.g., `Card`) |
+| `suggest_story_for_component` | Best-guess story name for a component id |
 
 ## Critical Usage Note
 

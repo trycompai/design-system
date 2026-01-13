@@ -25,66 +25,66 @@ async function main() {
   console.log("tools:", toolNames);
 
   const listResult = await client.callTool({
-    name: "design_system_list_components",
+    name: "list_components",
     arguments: {},
   });
   console.log(
-    "design_system_list_components:",
+    "list_components:",
     (listResult as any).content?.[0]?.type,
   );
 
   const sourceResult = await client.callTool({
-    name: "design_system_get_component_source",
+    name: "get_component_source",
     arguments: { id: "molecules/card" },
   });
   console.log(
-    "design_system_get_component_source:",
+    "get_component_source:",
     (sourceResult as any).content?.[0]?.type,
   );
 
   // Test new tools
   const themeResult = await client.callTool({
-    name: "design_system_get_theme",
+    name: "get_theme",
     arguments: {},
   });
   const themeContent = (themeResult as any).content?.[1]?.text;
   const themeTokens = themeContent ? JSON.parse(themeContent) : {};
   console.log(
-    "design_system_get_theme:",
+    "get_theme:",
     `light=${Object.keys(themeTokens.light || {}).length} tokens, dark=${Object.keys(themeTokens.dark || {}).length} tokens`,
   );
 
   const guidelinesResult = await client.callTool({
-    name: "design_system_get_usage_guidelines",
+    name: "get_usage_guidelines",
     arguments: {},
   });
   const guidelinesText = (guidelinesResult as any).content?.[1]?.text || "";
   console.log(
-    "design_system_get_usage_guidelines:",
+    "get_usage_guidelines:",
     `${guidelinesText.length} chars, includes className rule: ${guidelinesText.includes("className")}`,
   );
 
   const installResult = await client.callTool({
-    name: "design_system_installation",
+    name: "installation",
     arguments: { framework: "next-app" },
   });
   const installContent = (installResult as any).content?.[0]?.text;
   const installData = installContent ? JSON.parse(installContent) : {};
   console.log(
-    "design_system_installation:",
+    "installation:",
     `framework=${installData.framework}, steps=${installData.steps?.length || 0}`,
   );
 
   // Test the new comprehensive docs tool
   const docsResult = await client.callTool({
-    name: "design_system_get_component_docs",
+    name: "get_component_docs",
     arguments: { id: "atoms/button" },
   });
   const docsText = (docsResult as any).content?.[0]?.text || "";
   const docsJson = (docsResult as any).content?.[1]?.text;
   const docsData = docsJson ? JSON.parse(docsJson) : {};
   console.log(
-    "design_system_get_component_docs:",
+    "get_component_docs:",
     `exports=${docsData.exports?.length || 0}, variants=${docsData.variants?.length || 0}, hasStory=${docsData.hasStory}`,
   );
   console.log("  -> includes className warning:", docsText.includes("className"));
