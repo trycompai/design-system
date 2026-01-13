@@ -23,6 +23,7 @@ export * from './scroll-area';
 export * from './section';
 export * from './select';
 export * from './settings';
+export * from './split-button';
 export * from './table';
 export * from './tabs';
 export * from './theme-switcher';

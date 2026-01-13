@@ -15,6 +15,8 @@ const textVariants = cva('', {
       primary: 'text-primary',
       destructive: 'text-destructive',
       success: 'text-green-600 dark:text-green-400',
+      warning: 'text-warning',
+      info: 'text-info',
     },
     weight: {
       normal: 'font-normal',
