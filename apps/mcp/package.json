@@ -1,0 +1,50 @@
+{
+  "name": "@trycompai/design-system-mcp",
+  "version": "0.3.0",
+  "description": "MCP server for @trycompai/design-system - provides AI assistants with component documentation, design tokens, and usage guidelines",
+  "type": "module",
+  "bin": "./dist/index.js",
+  "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "design-system",
+    "ai",
+    "claude",
+    "cursor",
+    "react",
+    "components"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/trycompai/design-system.git",
+    "directory": "apps/mcp"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "pnpm build && node dist/index.js",
+    "start": "node dist/index.js",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "smoke": "pnpm build && node dist/smoke.js",
+    "lint": "prettier --check .",
+    "format": "prettier --write .",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.25.2",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^22.18.0",
+    "prettier": "^3.7.4",
+    "typescript": "5.9.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

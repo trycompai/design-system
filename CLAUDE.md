@@ -58,28 +58,108 @@ Components in `packages/design-system/src/components/` follow atomic design:
 
 ## Critical: Component Styling Rules
 
-**Components do NOT accept `className`. Use variants and props only.**
+**Components do NOT accept `className` or `style` props. Use variants and props only.**
 
-Components use `class-variance-authority` (CVA) for strict variant-based styling. The `className` prop is intentionally removed to prevent style overrides.
+Components use `class-variance-authority` (CVA) for strict variant-based styling. The `className` and `style` props are intentionally omitted to prevent style overrides and maintain design consistency.
+
+### Prohibited Patterns
 
 ```tsx
-// Will NOT compile - className is not a valid prop
+// WRONG - className is not a valid prop
 <Button className="bg-red-500">Delete</Button>
 
+// WRONG - style prop is not allowed
+<Button style={{ backgroundColor: 'red' }}>Delete</Button>
+
+// WRONG - inline styles via wrapper for component styling
+<div style={{ color: 'red' }}><Text>Hello</Text></div>
+```
+
+### Correct Patterns
+
+```tsx
 // Correct - use variants
 <Button variant="destructive">Delete</Button>
 <Button variant="outline" size="lg">Large Outline</Button>
-```
+<Text variant="muted" size="sm">Subtitle</Text>
 
-For layout concerns (width, margins, grid positioning), wrap with a plain `<div>`:
-
-```tsx
+// Correct - wrapper div for LAYOUT only (width, margins, grid)
 <div className="w-full">
   <Button>Full Width</Button>
 </div>
+
+// Correct - wrapper div for positioning
+<div className="mt-4 flex gap-2">
+  <Button>Save</Button>
+  <Button variant="outline">Cancel</Button>
+</div>
 ```
 
-If a variant doesn't exist, add it to the component's CVA definition rather than using a wrapper div for styling.
+### When to Add New Variants
+
+If a variant doesn't exist, add it to the component's CVA definition rather than using workarounds:
+
+```tsx
+// In the component file, add to CVA variants:
+const buttonVariants = cva('...', {
+  variants: {
+    variant: {
+      // ... existing variants
+      warning: 'bg-yellow-500 text-white',  // Add new variant
+    },
+  },
+});
+```
+
+## Component Patterns
+
+### Organization/Project Selectors
+
+Use `OrganizationSelector` for workspace/org switching. Never create custom dropdowns with `className` overrides:
+
+```tsx
+// Correct
+<OrganizationSelector
+  organizations={orgs}
+  value={selectedOrg}
+  onValueChange={setSelectedOrg}
+  size="sm"
+/>
+
+// Wrong - custom dropdown with className
+<DropdownMenu>
+  <DropdownMenuTrigger className="custom-styles">...</DropdownMenuTrigger>
+</DropdownMenu>
+```
+
+### Data Tables
+
+Tables should include a search/filter header. Use the `DataTableHeader` pattern:
+
+```tsx
+<DataTableHeader>
+  <DataTableSearch placeholder="Search..." />
+  <DataTableFilters>
+    {/* Filter buttons/dropdowns */}
+  </DataTableFilters>
+</DataTableHeader>
+<DataTable columns={columns} data={data} />
+```
+
+### Compound Components
+
+When building complex components, use the compound component pattern with internal subcomponents marked with `__slot` properties:
+
+```tsx
+function MyComponent({ children }) {
+  // Extract slot children
+  const slots = extractSlots(children, [MyComponentHeader, MyComponentBody]);
+  // ...
+}
+
+// Mark slots for detection
+(MyComponentHeader as any).__slot = 'header';
+```
 
 ## Adding Components
 

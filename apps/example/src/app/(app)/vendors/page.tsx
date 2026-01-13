@@ -5,10 +5,18 @@ import {
   AvatarFallback,
   AvatarImage,
   Button,
+  DataTableFilters,
+  DataTableHeader,
+  DataTableSearch,
   HStack,
   PageHeader,
   PageHeaderActions,
   PageLayout,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Stack,
   Table,
   TableBody,
@@ -20,14 +28,27 @@ import {
 } from '@trycompai/design-system';
 import { Add, Launch, OverflowMenuHorizontal } from '@carbon/icons-react';
 import { useRouter } from 'next/navigation';
+import * as React from 'react';
 
-import { vendors } from './vendors.data';
+import { vendors as allVendors } from './vendors.data';
 import { getRiskBadge, getStatusBadge } from './vendors.ui';
 
 export default function VendorsPage() {
   const router = useRouter();
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   const goToVendor = (id: number) => router.push(`/vendors/${id}`);
+
+  // Filter vendors based on search query
+  const vendors = React.useMemo(() => {
+    if (!searchQuery.trim()) return allVendors;
+    const query = searchQuery.toLowerCase();
+    return allVendors.filter(
+      (vendor) =>
+        vendor.name.toLowerCase().includes(query) ||
+        vendor.category.toLowerCase().includes(query)
+    );
+  }, [searchQuery]);
 
   return (
     <PageLayout>
@@ -37,7 +58,40 @@ export default function VendorsPage() {
         </PageHeaderActions>
       </PageHeader>
 
-      <Table variant="bordered">
+      <Stack gap="sm">
+        <DataTableHeader>
+          <DataTableSearch
+            placeholder="Search vendors..."
+            value={searchQuery}
+            onChange={setSearchQuery}
+          />
+          <DataTableFilters>
+            <Select>
+              <SelectTrigger size="sm">
+                <SelectValue placeholder="Risk level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All risks</SelectItem>
+                <SelectItem value="high">High risk</SelectItem>
+                <SelectItem value="medium">Medium risk</SelectItem>
+                <SelectItem value="low">Low risk</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select>
+              <SelectTrigger size="sm">
+                <SelectValue placeholder="Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All statuses</SelectItem>
+                <SelectItem value="approved">Approved</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+                <SelectItem value="review">Under review</SelectItem>
+              </SelectContent>
+            </Select>
+          </DataTableFilters>
+        </DataTableHeader>
+
+        <Table variant="bordered">
         <TableHeader>
           <TableRow>
             <TableHead>Vendor</TableHead>
@@ -119,6 +173,7 @@ export default function VendorsPage() {
           ))}
         </TableBody>
       </Table>
+      </Stack>
     </PageLayout>
   );
 }

@@ -3,11 +3,13 @@
 import {
   Badge,
   Button,
+  DataTableFilters,
+  DataTableHeader,
+  DataTableSearch,
   HStack,
   PageHeader,
   PageHeaderActions,
   PageLayout,
-  Stack,
   Table,
   TableBody,
   TableCell,
@@ -16,9 +18,10 @@ import {
   TableRow,
   Text,
 } from '@trycompai/design-system';
-import { Add, OverflowMenuHorizontal, Warning } from '@carbon/icons-react';
+import { Add, Filter, OverflowMenuHorizontal, Warning } from '@carbon/icons-react';
+import * as React from 'react';
 
-const risks = [
+const allRisks = [
   {
     id: 1,
     title: 'Missing vendor SOC 2 report',
@@ -80,6 +83,19 @@ function getStatusBadge(status: string) {
 }
 
 export default function RisksPage() {
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  // Filter risks based on search query
+  const risks = React.useMemo(() => {
+    if (!searchQuery.trim()) return allRisks;
+    const query = searchQuery.toLowerCase();
+    return allRisks.filter(
+      (risk) =>
+        risk.title.toLowerCase().includes(query) ||
+        risk.owner.toLowerCase().includes(query)
+    );
+  }, [searchQuery]);
+
   return (
     <PageLayout>
       <PageHeader title="Risks">
@@ -87,6 +103,19 @@ export default function RisksPage() {
           <Button iconLeft={<Add size={16} />}>New Risk</Button>
         </PageHeaderActions>
       </PageHeader>
+
+      <DataTableHeader>
+        <DataTableSearch
+          placeholder="Search risks..."
+          value={searchQuery}
+          onChange={setSearchQuery}
+        />
+        <DataTableFilters>
+          <Button variant="outline" size="sm" iconLeft={<Filter size={16} />}>
+            Filter
+          </Button>
+        </DataTableFilters>
+      </DataTableHeader>
 
       <Table variant="bordered">
         <TableHeader>

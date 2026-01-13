@@ -12,6 +12,7 @@ export * from './drawer';
 export * from './dropdown-menu';
 export * from './menubar';
 export * from './navigation-menu';
+export * from './organization-selector';
 export * from './page-layout';
 export * from './sheet';
 export * from './sidebar';
