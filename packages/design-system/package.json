@@ -1,6 +1,6 @@
 {
   "name": "@trycompai/design-system",
-  "version": "1.0.15",
+  "version": "1.0.18",
   "description": "Design system for Comp AI - shadcn-style components with Tailwind CSS",
   "type": "module",
   "main": "./src/index.ts",
@@ -97,7 +97,6 @@
     "tailwindcss": "^4.0.0"
   },
   "devDependencies": {
-    "@repo/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4.1.10",
     "@types/node": "^22.18.0",
     "@types/react": "^19.2.7",

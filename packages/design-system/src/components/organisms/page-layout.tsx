@@ -58,16 +58,16 @@ function PageLayoutSkeleton() {
     <Stack gap="lg">
       {/* Header skeleton */}
       <div className="space-y-2">
-        <Skeleton variant="text" width="30%" />
-        <Skeleton variant="text" width="50%" />
+        <Skeleton style={{ width: '30%', height: 24 }} />
+        <Skeleton style={{ width: '50%', height: 16 }} />
       </div>
       {/* Content skeleton */}
       <div className="space-y-4">
-        <Skeleton variant="rectangular" height={200} />
+        <Skeleton style={{ width: '100%', height: 200 }} />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Skeleton variant="rectangular" height={120} />
-          <Skeleton variant="rectangular" height={120} />
-          <Skeleton variant="rectangular" height={120} />
+          <Skeleton style={{ width: '100%', height: 120 }} />
+          <Skeleton style={{ width: '100%', height: 120 }} />
+          <Skeleton style={{ width: '100%', height: 120 }} />
         </div>
       </div>
     </Stack>

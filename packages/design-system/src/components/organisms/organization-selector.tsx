@@ -135,7 +135,7 @@ function OrganizationSelector({
 
   // Keyboard shortcut to open (Cmd/Ctrl + hotkey)
   React.useEffect(() => {
-    if (!hotkey || disabled) return;
+    if (!hotkey || disabled || loading) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key.toLowerCase() === hotkey.toLowerCase() && (event.metaKey || event.ctrlKey)) {
@@ -150,7 +150,7 @@ function OrganizationSelector({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [hotkey, disabled, modal]);
+  }, [hotkey, disabled, loading, modal]);
 
   // Filter organizations by ID or name (case-insensitive)
   const filteredOrganizations = React.useMemo(() => {
