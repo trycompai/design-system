@@ -9,6 +9,9 @@ export type RepoPaths = {
   repoRoot: string;
   designSystemSrcComponentsDir: string;
   storybookStoriesDir: string;
+  globalsStylesPath: string;
+  agentsMdPath: string;
+  claudeMdPath: string;
 };
 
 export function getRepoPaths(appDir: string): RepoPaths {
@@ -24,6 +27,16 @@ export function getRepoPaths(appDir: string): RepoPaths {
       "components",
     ),
     storybookStoriesDir: path.join(repoRoot, "apps", "storybook", "stories"),
+    globalsStylesPath: path.join(
+      repoRoot,
+      "packages",
+      "design-system",
+      "src",
+      "styles",
+      "globals.css",
+    ),
+    agentsMdPath: path.join(repoRoot, "packages", "design-system", "agents.md"),
+    claudeMdPath: path.join(repoRoot, "CLAUDE.md"),
   };
 }
 

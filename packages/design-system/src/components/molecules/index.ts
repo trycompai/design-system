@@ -6,6 +6,7 @@ export * from './button-group';
 export * from './card';
 export * from './collapsible';
 export * from './command-search';
+export * from './data-table-header';
 export * from './empty';
 export * from './field';
 export * from './grid';

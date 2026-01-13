@@ -3,6 +3,9 @@
 import {
   Badge,
   Button,
+  DataTableFilters,
+  DataTableHeader,
+  DataTableSearch,
   HStack,
   PageHeader,
   PageHeaderActions,
@@ -18,8 +21,9 @@ import {
   Text,
 } from '@trycompai/design-system';
 import { Add, CheckmarkFilled, CircleFilled, Filter } from '@carbon/icons-react';
+import * as React from 'react';
 
-const controlCategories = [
+const allControlCategories = [
   {
     id: 'access-control',
     name: 'Access Control',
@@ -77,6 +81,19 @@ const controlCategories = [
 ];
 
 export default function ControlsPage() {
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  // Filter controls based on search query
+  const controlCategories = React.useMemo(() => {
+    if (!searchQuery.trim()) return allControlCategories;
+    const query = searchQuery.toLowerCase();
+    return allControlCategories.filter(
+      (category) =>
+        category.name.toLowerCase().includes(query) ||
+        category.description.toLowerCase().includes(query)
+    );
+  }, [searchQuery]);
+
   const totalControls = controlCategories.reduce((sum, c) => sum + c.total, 0);
   const passedControls = controlCategories.reduce((sum, c) => sum + c.passed, 0);
 
@@ -85,15 +102,27 @@ export default function ControlsPage() {
       <PageHeader title="Controls">
         <PageHeaderActions>
           <Button iconLeft={<Add size={16} />}>New Control</Button>
-          <Button variant="outline" iconLeft={<Filter size={16} />}>Filter</Button>
         </PageHeaderActions>
       </PageHeader>
 
       <Stack gap="4">
         <HStack gap="4">
           <Badge>{passedControls} of {totalControls} controls passing</Badge>
-          <Badge variant="secondary">{Math.round((passedControls / totalControls) * 100)}% complete</Badge>
+          <Badge variant="secondary">{totalControls > 0 ? Math.round((passedControls / totalControls) * 100) : 0}% complete</Badge>
         </HStack>
+
+        <DataTableHeader>
+          <DataTableSearch
+            placeholder="Search controls..."
+            value={searchQuery}
+            onChange={setSearchQuery}
+          />
+          <DataTableFilters>
+            <Button variant="outline" size="sm" iconLeft={<Filter size={16} />}>
+              Filter
+            </Button>
+          </DataTableFilters>
+        </DataTableHeader>
 
         <Table variant="bordered">
           <TableHeader>

@@ -3,6 +3,9 @@
 import {
   Badge,
   Button,
+  DataTableFilters,
+  DataTableHeader,
+  DataTableSearch,
   HStack,
   PageHeader,
   PageHeaderActions,
@@ -15,10 +18,11 @@ import {
   TableRow,
   Text,
 } from '@trycompai/design-system';
-import { Add, Launch, OverflowMenuHorizontal } from '@carbon/icons-react';
+import { Add, Filter, Launch, OverflowMenuHorizontal } from '@carbon/icons-react';
 import { useRouter } from 'next/navigation';
+import * as React from 'react';
 
-const policies = [
+const allPolicies = [
   {
     id: 1,
     name: 'Access Control Policy',
@@ -84,16 +88,41 @@ function getStatusBadge(status: string) {
 
 export default function PoliciesPage() {
   const router = useRouter();
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   const goToPolicy = (id: number) => router.push(`/policies/${id}`);
 
+  // Filter policies based on search query
+  const policies = React.useMemo(() => {
+    if (!searchQuery.trim()) return allPolicies;
+    const query = searchQuery.toLowerCase();
+    return allPolicies.filter(
+      (policy) =>
+        policy.name.toLowerCase().includes(query) ||
+        policy.owner.toLowerCase().includes(query)
+    );
+  }, [searchQuery]);
+
   return (
-    <PageLayout >
+    <PageLayout>
       <PageHeader title="Policies">
         <PageHeaderActions>
           <Button iconLeft={<Add size={16} />}>New Policy</Button>
         </PageHeaderActions>
       </PageHeader>
+
+      <DataTableHeader>
+        <DataTableSearch
+          placeholder="Search policies..."
+          value={searchQuery}
+          onChange={setSearchQuery}
+        />
+        <DataTableFilters>
+          <Button variant="outline" size="sm" iconLeft={<Filter size={16} />}>
+            Filter
+          </Button>
+        </DataTableFilters>
+      </DataTableHeader>
 
       <Table variant="bordered">
         <TableHeader>

@@ -22,17 +22,17 @@ import {
   AvatarFallback,
   AvatarImage,
   Badge,
-  Button,
   CommandSearch,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   HStack,
   Logo,
+  OrganizationSelector,
+  type Organization,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -42,8 +42,6 @@ import {
 } from '@trycompai/design-system';
 import {
   Add,
-  Checkmark,
-  ChevronDown,
   Logout,
   Notification,
   Settings,
@@ -63,50 +61,14 @@ import {
 } from './nav-config';
 
 // =============================================================================
-// Project Selector
+// Organizations
 // =============================================================================
 
-const projects = [
-  { id: 'example', name: 'Example App', color: 'bg-primary', plan: 'Pro' },
-  { id: 'side', name: 'Side Project', color: 'bg-blue-500', plan: 'Free' },
-  { id: 'personal', name: 'Personal', color: 'bg-purple-500', plan: 'Free' },
+const organizations: Organization[] = [
+  { id: 'org_acme123', name: 'Acme Corp', color: '#10b981' },
+  { id: 'org_beta456', name: 'Beta Inc', color: '#3b82f6' },
+  { id: 'org_gamma789', name: 'Gamma LLC', color: '#8b5cf6' },
 ];
-
-function ProjectSelector() {
-  const [currentProject, setCurrentProject] = React.useState(projects[0]);
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium hover:bg-background/50 transition-colors">
-        {currentProject.name}
-        <ChevronDown size={12} className="text-muted-foreground" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" style={{ minWidth: '220px' }}>
-        <DropdownMenuGroup>
-          <DropdownMenuLabel>Projects</DropdownMenuLabel>
-          {projects.map((project) => (
-            <DropdownMenuItem
-              key={project.id}
-              onClick={() => setCurrentProject(project)}
-            >
-              <div className={`size-2 rounded-full ${project.color}`} />
-              <span className="flex-1">{project.name}</span>
-              {currentProject.id === project.id && (
-                <Checkmark size={16} className="text-primary" />
-              )}
-              <span className="text-xs text-muted-foreground">{project.plan}</span>
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Add size={16} />
-          Create new project
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
 
 // =============================================================================
 // Navbar Logo
@@ -114,6 +76,7 @@ function ProjectSelector() {
 
 function NavbarLogo() {
   const [isDark, setIsDark] = React.useState(false);
+  const [selectedOrg, setSelectedOrg] = React.useState('org_acme123');
 
   React.useEffect(() => {
     setIsDark(document.documentElement.classList.contains('dark'));
@@ -125,12 +88,19 @@ function NavbarLogo() {
   }, []);
 
   return (
-    <HStack gap="xs" align="center">
+    <HStack gap="sm" align="center">
       <Link href="/">
         <Logo style={{ height: 22, width: 'auto' }} variant={isDark ? 'light' : 'dark'} />
       </Link>
-      <span className="pl-3 pr-1 text-muted-foreground">/</span>
-      <ProjectSelector />
+      <span className="text-muted-foreground">/</span>
+      <div className="w-44">
+        <OrganizationSelector
+          organizations={organizations}
+          value={selectedOrg}
+          onValueChange={setSelectedOrg}
+          size="sm"
+        />
+      </div>
     </HStack>
   );
 }
