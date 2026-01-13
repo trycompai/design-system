@@ -136,6 +136,16 @@ function SelectSeparator({ ...props }: Omit<SelectPrimitive.Separator.Props, 'cl
   );
 }
 
+function SelectEmpty({ ...props }: Omit<React.ComponentProps<'div'>, 'className'>) {
+  return (
+    <div
+      data-slot="select-empty"
+      className="text-muted-foreground py-6 text-center text-sm"
+      {...props}
+    />
+  );
+}
+
 function SelectScrollUpButton({
   ...props
 }: Omit<React.ComponentProps<typeof SelectPrimitive.ScrollUpArrow>, 'className'>) {
@@ -167,6 +177,7 @@ function SelectScrollDownButton({
 export {
   Select,
   SelectContent,
+  SelectEmpty,
   SelectGroup,
   SelectItem,
   SelectLabel,

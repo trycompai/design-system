@@ -3,15 +3,12 @@
 import {
   Badge,
   Button,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+  HStack,
   Input,
   Label,
   PageHeader,
   PageLayout,
+  Section,
   Stack,
   Text,
 } from '@trycompai/design-system';
@@ -23,32 +20,25 @@ export default function SettingsSecurityPage() {
       <PageHeader title="Security" />
 
       <Stack gap="6">
-        <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
+        <Section
+          title="Security Status"
+          description="Your account security is strong."
+        >
+          <HStack gap="md" align="center">
             <Security size={20} className="text-green-600" />
-            <CardTitle>Security Status</CardTitle>
-          </div>
-          <CardDescription>Your account security is strong.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-4">
             <div className="flex-1">
               <div className="h-3 bg-muted rounded-full overflow-hidden">
                 <div className="h-full bg-green-500 rounded-full" style={{ width: '85%' }} />
               </div>
             </div>
             <Badge variant="default">85%</Badge>
-          </div>
-        </CardContent>
-      </Card>
+          </HStack>
+        </Section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Change Password</CardTitle>
-          <CardDescription>Update your password to keep your account secure.</CardDescription>
-        </CardHeader>
-        <CardContent>
+        <Section
+          title="Change Password"
+          description="Update your password to keep your account secure."
+        >
           <Stack gap="4">
             <Stack gap="2">
               <Label htmlFor="currentPassword">Current Password</Label>
@@ -62,29 +52,26 @@ export default function SettingsSecurityPage() {
               <Label htmlFor="confirmPassword">Confirm New Password</Label>
               <Input id="confirmPassword" type="password" />
             </Stack>
-            <div className="flex justify-end">
+            <HStack justify="end">
               <Button>Update Password</Button>
-            </div>
+            </HStack>
           </Stack>
-        </CardContent>
-      </Card>
+        </Section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Two-Factor Authentication</CardTitle>
-          <CardDescription>Add an extra layer of security to your account.</CardDescription>
-        </CardHeader>
-        <CardContent>
+        <Section
+          title="Two-Factor Authentication"
+          description="Add an extra layer of security to your account."
+        >
           <Stack gap="4">
             <div className="flex items-center gap-4 p-4 bg-muted rounded-lg">
               <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10">
                 <Mobile size={20} className="text-primary" />
               </div>
               <Stack gap="1">
-                <div className="flex items-center gap-2">
+                <HStack gap="sm" align="center">
                   <Text weight="medium">Authenticator App</Text>
                   <Badge variant="default">Enabled</Badge>
-                </div>
+                </HStack>
                 <Text variant="muted" size="sm">
                   Use an authenticator app to generate codes.
                 </Text>
@@ -112,8 +99,7 @@ export default function SettingsSecurityPage() {
               </div>
             </div>
           </Stack>
-        </CardContent>
-      </Card>
+        </Section>
       </Stack>
     </PageLayout>
   );

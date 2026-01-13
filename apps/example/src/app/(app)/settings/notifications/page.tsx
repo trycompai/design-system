@@ -1,13 +1,10 @@
 'use client';
 
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+  HStack,
   PageHeader,
   PageLayout,
+  Section,
   Stack,
   Switch,
   Text,
@@ -18,14 +15,13 @@ export default function SettingsNotificationsPage() {
     <PageLayout>
       <PageHeader title="Notifications" />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Email Notifications</CardTitle>
-          <CardDescription>Choose which emails you want to receive.</CardDescription>
-        </CardHeader>
-        <CardContent>
+      <Stack gap="6">
+        <Section
+          title="Email Notifications"
+          description="Choose which emails you want to receive."
+        >
           <Stack gap="6">
-            <div className="flex items-center justify-between">
+            <HStack justify="between" align="center">
               <Stack gap="1">
                 <Text weight="medium">Marketing emails</Text>
                 <Text variant="muted" size="sm">
@@ -33,8 +29,8 @@ export default function SettingsNotificationsPage() {
                 </Text>
               </Stack>
               <Switch />
-            </div>
-            <div className="flex items-center justify-between">
+            </HStack>
+            <HStack justify="between" align="center">
               <Stack gap="1">
                 <Text weight="medium">Security alerts</Text>
                 <Text variant="muted" size="sm">
@@ -42,8 +38,8 @@ export default function SettingsNotificationsPage() {
                 </Text>
               </Stack>
               <Switch defaultChecked />
-            </div>
-            <div className="flex items-center justify-between">
+            </HStack>
+            <HStack justify="between" align="center">
               <Stack gap="1">
                 <Text weight="medium">Product updates</Text>
                 <Text variant="muted" size="sm">
@@ -51,8 +47,8 @@ export default function SettingsNotificationsPage() {
                 </Text>
               </Stack>
               <Switch defaultChecked />
-            </div>
-            <div className="flex items-center justify-between">
+            </HStack>
+            <HStack justify="between" align="center">
               <Stack gap="1">
                 <Text weight="medium">Weekly digest</Text>
                 <Text variant="muted" size="sm">
@@ -60,19 +56,16 @@ export default function SettingsNotificationsPage() {
                 </Text>
               </Stack>
               <Switch />
-            </div>
+            </HStack>
           </Stack>
-        </CardContent>
-      </Card>
+        </Section>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Push Notifications</CardTitle>
-          <CardDescription>Configure push notification settings.</CardDescription>
-        </CardHeader>
-        <CardContent>
+        <Section
+          title="Push Notifications"
+          description="Configure push notification settings."
+        >
           <Stack gap="6">
-            <div className="flex items-center justify-between">
+            <HStack justify="between" align="center">
               <Stack gap="1">
                 <Text weight="medium">Desktop notifications</Text>
                 <Text variant="muted" size="sm">
@@ -80,8 +73,8 @@ export default function SettingsNotificationsPage() {
                 </Text>
               </Stack>
               <Switch defaultChecked />
-            </div>
-            <div className="flex items-center justify-between">
+            </HStack>
+            <HStack justify="between" align="center">
               <Stack gap="1">
                 <Text weight="medium">Mobile notifications</Text>
                 <Text variant="muted" size="sm">
@@ -89,10 +82,10 @@ export default function SettingsNotificationsPage() {
                 </Text>
               </Stack>
               <Switch defaultChecked />
-            </div>
+            </HStack>
           </Stack>
-        </CardContent>
-      </Card>
+        </Section>
+      </Stack>
     </PageLayout>
   );
 }

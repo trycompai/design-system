@@ -18,13 +18,13 @@ function Tabs({
 }
 
 const tabsListVariants = cva(
-  'rounded-lg p-[3px] group-data-horizontal/tabs:h-8 data-[variant=line]:rounded-none data-[variant=underline]:rounded-none group/tabs-list text-muted-foreground inline-flex w-fit items-center justify-center group-data-[orientation=vertical]/tabs:h-fit group-data-[orientation=vertical]/tabs:flex-col',
+  'rounded-lg p-[3px] group-data-horizontal/tabs:h-8 data-[variant=line]:rounded-none data-[variant=underline]:rounded-none group/tabs-list text-muted-foreground inline-flex w-fit items-center justify-center group-data-[orientation=vertical]/tabs:h-fit group-data-[orientation=vertical]/tabs:flex-col overflow-x-auto scrollbar-none',
   {
     variants: {
       variant: {
         default: 'bg-muted',
         line: 'gap-1 bg-transparent',
-        underline: 'p-0 pb-px bg-transparent w-full justify-start items-stretch shadow-[inset_0_-1px_0_0_var(--color-border)]',
+        underline: 'p-0 pb-px bg-transparent w-full max-w-full justify-start items-stretch shadow-[inset_0_-1px_0_0_var(--color-border)]',
       },
     },
     defaultVariants: {

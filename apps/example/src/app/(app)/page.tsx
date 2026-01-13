@@ -21,6 +21,7 @@ import {
   PageHeaderActions,
   PageLayout,
   Progress,
+  Section,
   Stack,
   Tabs,
   TabsContent,
@@ -292,106 +293,90 @@ export default function OverviewPage() {
             />
           )}
 
-          <Card spacing="relaxed" disabled={isLocked}>
-            <CardHeader>
-              <Stack gap="sm">
-                <HStack justify="between" align="center">
-                  <Stack gap="xs">
-                    <Heading level="3">{stageMeta.title}</Heading>
-                  </Stack>
-                </HStack>
-                <Text size="sm" variant="muted">
-                  {stageMeta.summary}
-                </Text>
-              </Stack>
-            </CardHeader>
-
-            <CardContent>
-              <Stack gap="sm" aria-disabled={isLocked}>
-                {tasks.map((task, idx) => {
-                  const checked = taskState[stage]?.[idx] ?? false;
-                  const actionIcon =
-                    task.actionKind === 'video' ? (
-                      <PlayIcon />
-                    ) : task.actionKind === 'link' ? (
-                      <ExternalLinkIcon />
-                    ) : (
-                      <ArrowRightIcon />
-                    );
-
-                  return (
-                    <Item key={task.title} size="default" variant="outline">
-                      <ItemMedia>
-                        <Avatar size="sm" aria-hidden>
-                          <AvatarFallback
-                            style={
-                              checked
-                                ? { backgroundColor: 'var(--color-success)', color: 'white' }
-                                : {
-                                    backgroundColor: 'var(--color-muted)',
-                                    color: 'var(--color-muted-foreground)',
-                                  }
-                            }
-                          >
-                            {checked ? <CheckIcon size={14} /> : idx + 1}
-                          </AvatarFallback>
-                        </Avatar>
-                      </ItemMedia>
-                      <ItemContent>
-                        <ItemTitle>
-                          <HStack align="center" gap="sm">
-                            <span>{task.title}</span>
-                            <Badge variant="outline">{task.estimate}</Badge>
-                          </HStack>
-                        </ItemTitle>
-                        <ItemDescription>{task.description}</ItemDescription>
-                      </ItemContent>
-                      <ItemActions>
-                        {checked ? (
-                          <Badge variant="secondary">Done</Badge>
-                        ) : (
-                          <Button
-                            variant={task.actionKind === 'link' ? 'outline' : 'default'}
-                            iconRight={actionIcon}
-                            onClick={() => {
-                              if (task.actionHref) window.open(task.actionHref, '_blank', 'noopener,noreferrer');
-                              completeTask(idx);
-                            }}
-                          >
-                            {task.actionLabel}
-                          </Button>
-                        )}
-                      </ItemActions>
-                    </Item>
+          <Section
+            title={stageMeta.title}
+            description={stageMeta.summary}
+          >
+            <Stack gap="sm" aria-disabled={isLocked || undefined}>
+              {tasks.map((task, idx) => {
+                const checked = taskState[stage]?.[idx] ?? false;
+                const actionIcon =
+                  task.actionKind === 'video' ? (
+                    <PlayIcon />
+                  ) : task.actionKind === 'link' ? (
+                    <ExternalLinkIcon />
+                  ) : (
+                    <ArrowRightIcon />
                   );
-                })}
-              </Stack>
-            </CardContent>
-          </Card>
+
+                return (
+                  <Item key={task.title} size="default" variant="outline">
+                    <ItemMedia>
+                      <Avatar size="sm" aria-hidden>
+                        <AvatarFallback
+                          style={
+                            checked
+                              ? { backgroundColor: 'var(--color-success)', color: 'white' }
+                              : {
+                                  backgroundColor: 'var(--color-muted)',
+                                  color: 'var(--color-muted-foreground)',
+                                }
+                          }
+                        >
+                          {checked ? <CheckIcon size={14} /> : idx + 1}
+                        </AvatarFallback>
+                      </Avatar>
+                    </ItemMedia>
+                    <ItemContent>
+                      <ItemTitle>
+                        <HStack align="center" gap="sm">
+                          <span>{task.title}</span>
+                          <Badge variant="outline">{task.estimate}</Badge>
+                        </HStack>
+                      </ItemTitle>
+                      <ItemDescription>{task.description}</ItemDescription>
+                    </ItemContent>
+                    <ItemActions>
+                      {checked ? (
+                        <Badge variant="secondary">Done</Badge>
+                      ) : (
+                        <Button
+                          variant={task.actionKind === 'link' ? 'outline' : 'default'}
+                          iconRight={actionIcon}
+                          onClick={() => {
+                            if (task.actionHref) window.open(task.actionHref, '_blank', 'noopener,noreferrer');
+                            completeTask(idx);
+                          }}
+                        >
+                          {task.actionLabel}
+                        </Button>
+                      )}
+                    </ItemActions>
+                  </Item>
+                );
+              })}
+            </Stack>
+          </Section>
         </Stack>
           </Stack>
         </TabsContent>
 
         <TabsContent value="activity">
-          <Card>
-            <CardHeader>
-              <Heading level="3">Recent Activity</Heading>
-            </CardHeader>
-            <CardContent>
-              <Text variant="muted">Activity feed coming soon...</Text>
-            </CardContent>
-          </Card>
+          <Section
+            title="Recent Activity"
+            description="Track changes and updates across your compliance program"
+          >
+            <Text variant="muted">Activity feed coming soon...</Text>
+          </Section>
         </TabsContent>
 
         <TabsContent value="insights">
-          <Card>
-            <CardHeader>
-              <Heading level="3">Compliance Insights</Heading>
-            </CardHeader>
-            <CardContent>
-              <Text variant="muted">Insights and analytics coming soon...</Text>
-            </CardContent>
-          </Card>
+          <Section
+            title="Compliance Insights"
+            description="Analytics and reporting for your compliance status"
+          >
+            <Text variant="muted">Insights and analytics coming soon...</Text>
+          </Section>
         </TabsContent>
       </PageLayout>
     </Tabs>

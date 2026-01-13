@@ -123,7 +123,7 @@ export const sidebarConfigs: Record<string, SidebarConfig> = {
         id: 'integrations',
         label: 'Integrations',
         icon: <Plug />,
-        href: '#',
+        href: '/integrations',
       },
     ],
     footer: [
@@ -176,6 +176,12 @@ export const sidebarConfigs: Record<string, SidebarConfig> = {
           { id: 'profile', label: 'Profile', href: '#' },
           { id: 'security', label: 'Security', href: '/settings/security' },
         ],
+      },
+      {
+        id: 'integrations',
+        label: 'Integrations',
+        href: '/settings/integrations',
+        icon: <Plug />,
       },
     ],
     footer: [

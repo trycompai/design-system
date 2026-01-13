@@ -31,6 +31,7 @@ import {
   DropdownMenuTrigger,
   HStack,
   Logo,
+  LogoIcon,
   OrganizationSelector,
   type Organization,
   Popover,
@@ -90,7 +91,13 @@ function NavbarLogo() {
   return (
     <HStack gap="sm" align="center">
       <Link href="/">
-        <Logo style={{ height: 22, width: 'auto' }} variant={isDark ? 'light' : 'dark'} />
+        {/* Full logo on desktop, icon only on mobile */}
+        <span className="hidden sm:block">
+          <Logo style={{ height: 22, width: 'auto' }} variant={isDark ? 'light' : 'dark'} />
+        </span>
+        <span className="block sm:hidden">
+          <LogoIcon style={{ height: 22, width: 22 }} variant={isDark ? 'light' : 'dark'} />
+        </span>
       </Link>
       <span className="text-muted-foreground pl-3">/</span>
       <OrganizationSelector

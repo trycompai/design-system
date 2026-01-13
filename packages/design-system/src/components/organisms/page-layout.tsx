@@ -4,6 +4,7 @@ import * as React from 'react';
 import { cn } from '../../../lib/utils';
 import { Stack } from '../atoms/stack';
 import { Skeleton } from '../atoms/skeleton';
+import { Heading } from '../atoms/heading';
 
 const pageLayoutVariants = cva('min-h-full bg-background text-foreground', {
   variants: {
@@ -51,16 +52,26 @@ interface PageLayoutProps
   gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '0' | '1' | '2' | '3' | '4' | '6' | '8';
   /** Whether the page is loading. Shows skeleton placeholder when true. */
   loading?: boolean;
+  /** @deprecated Use header prop instead. Page title to display during loading state. */
+  loadingTitle?: string;
+  /** Header element (e.g., PageHeader) that renders regardless of loading state. */
+  header?: React.ReactNode;
 }
 
-function PageLayoutSkeleton() {
+function PageLayoutSkeleton({ title, includeHeader = true }: { title?: string; includeHeader?: boolean }) {
   return (
     <Stack gap="lg">
-      {/* Header skeleton */}
-      <div className="space-y-2">
-        <Skeleton style={{ width: '30%', height: 24 }} />
-        <Skeleton style={{ width: '50%', height: 16 }} />
-      </div>
+      {/* Header skeleton - only shown if no header prop is provided */}
+      {includeHeader && (
+        <div className="space-y-2">
+          {title ? (
+            <Heading level="1">{title}</Heading>
+          ) : (
+            <Skeleton style={{ width: '30%', height: 24 }} />
+          )}
+          <Skeleton style={{ width: '50%', height: 16 }} />
+        </div>
+      )}
       {/* Content skeleton */}
       <div className="space-y-4">
         <Skeleton style={{ width: '100%', height: 200 }} />
@@ -81,6 +92,8 @@ function PageLayout({
   maxWidth,
   gap = 'lg',
   loading = false,
+  loadingTitle,
+  header,
   children,
   ...props
 }: PageLayoutProps) {
@@ -88,9 +101,13 @@ function PageLayout({
   const resolvedMaxWidth = maxWidth ?? (variant === 'center' ? 'sm' : 'xl');
 
   const content = loading ? (
-    <PageLayoutSkeleton />
+    <Stack gap={gap}>
+      {header}
+      <PageLayoutSkeleton title={loadingTitle} includeHeader={!header} />
+    </Stack>
   ) : (
     <Stack gap={gap}>
+      {header}
       {children}
     </Stack>
   );
