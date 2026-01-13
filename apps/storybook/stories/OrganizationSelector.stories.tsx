@@ -155,3 +155,29 @@ export const CustomEmptyState: Story = {
     </div>
   ),
 };
+
+export const ModalMode: Story = {
+  render: function ModalModeExample() {
+    const [selectedOrg, setSelectedOrg] = React.useState('');
+
+    return (
+      <Stack gap="md">
+        <p className="text-sm text-muted-foreground max-w-xs">
+          Click the trigger or press <kbd className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono">⌘O</kbd> to open in a centered modal dialog.
+        </p>
+        <OrganizationSelector
+          organizations={manyOrganizations}
+          value={selectedOrg}
+          onValueChange={setSelectedOrg}
+          modal
+          placeholder="Select organization (⌘O)"
+        />
+        {selectedOrg && (
+          <p className="text-sm text-muted-foreground">
+            Selected: <code className="bg-muted px-1 rounded">{selectedOrg}</code>
+          </p>
+        )}
+      </Stack>
+    );
+  },
+};

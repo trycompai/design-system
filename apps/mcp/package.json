@@ -1,9 +1,11 @@
 {
   "name": "@trycompai/design-system-mcp",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "MCP server for @trycompai/design-system - provides AI assistants with component documentation, design tokens, and usage guidelines",
   "type": "module",
-  "bin": "./dist/index.js",
+  "bin": {
+    "design-system-mcp": "dist/index.js"
+  },
   "main": "./dist/index.js",
   "files": [
     "dist"

@@ -24,6 +24,94 @@ import { getRepoPaths } from "./paths.js";
 // ============================================================================
 
 /**
+ * Semantic tags for components to enable better search
+ * Maps component IDs to related keywords/use cases
+ */
+const COMPONENT_TAGS: Record<string, string[]> = {
+  // Atoms
+  "atoms/button": ["action", "submit", "click", "cta", "primary", "secondary", "destructive", "link"],
+  "atoms/input": ["text", "form", "field", "type", "entry", "textbox"],
+  "atoms/textarea": ["multiline", "text", "form", "field", "long text", "description"],
+  "atoms/checkbox": ["toggle", "boolean", "form", "select", "check", "tick"],
+  "atoms/switch": ["toggle", "boolean", "on off", "setting", "preference"],
+  "atoms/label": ["form", "field", "text", "name"],
+  "atoms/badge": ["tag", "status", "indicator", "pill", "chip", "count"],
+  "atoms/avatar": ["user", "profile", "image", "photo", "initials", "person"],
+  "atoms/progress": ["loading", "bar", "percentage", "completion", "status"],
+  "atoms/spinner": ["loading", "wait", "busy", "activity"],
+  "atoms/skeleton": ["loading", "placeholder", "shimmer"],
+  "atoms/separator": ["divider", "line", "hr", "horizontal rule"],
+  "atoms/heading": ["title", "h1", "h2", "h3", "h4", "header", "typography"],
+  "atoms/text": ["paragraph", "body", "content", "typography", "p"],
+  "atoms/kbd": ["keyboard", "shortcut", "key", "hotkey"],
+  "atoms/slider": ["range", "value", "number", "input"],
+  "atoms/toggle": ["switch", "button", "on off", "state"],
+  "atoms/container": ["wrapper", "layout", "max-width", "center"],
+  "atoms/stack": ["layout", "flex", "vertical", "horizontal", "spacing", "gap"],
+  "atoms/logo": ["brand", "identity", "image"],
+  "atoms/aspect-ratio": ["image", "video", "ratio", "responsive"],
+
+  // Molecules
+  "molecules/card": ["container", "box", "panel", "content", "wrapper"],
+  "molecules/tabs": ["navigation", "switch", "panels", "sections"],
+  "molecules/accordion": ["expand", "collapse", "faq", "disclosure"],
+  "molecules/alert": ["message", "notification", "warning", "error", "info", "success"],
+  "molecules/popover": ["tooltip", "overlay", "dropdown", "floating"],
+  "molecules/tooltip": ["hint", "help", "info", "hover"],
+  "molecules/select": ["dropdown", "picker", "choice", "option", "form"],
+  "molecules/field": ["form", "input", "label", "error", "help text"],
+  "molecules/table": ["data", "grid", "list", "rows", "columns"],
+  "molecules/pagination": ["pages", "navigation", "next", "previous"],
+  "molecules/breadcrumb": ["navigation", "path", "location", "crumbs"],
+  "molecules/radio-group": ["choice", "option", "form", "select one"],
+  "molecules/toggle-group": ["buttons", "options", "select", "multiple"],
+  "molecules/button-group": ["actions", "toolbar", "buttons"],
+  "molecules/input-group": ["form", "addon", "prefix", "suffix"],
+  "molecules/scroll-area": ["overflow", "scrollbar", "container"],
+  "molecules/collapsible": ["expand", "collapse", "toggle", "disclosure"],
+  "molecules/hover-card": ["preview", "popup", "info", "details"],
+  "molecules/page-header": ["title", "description", "actions", "header"],
+  "molecules/section": ["group", "container", "panel"],
+  "molecules/settings": ["preferences", "config", "options"],
+  "molecules/theme-switcher": ["dark mode", "light mode", "theme", "toggle"],
+  "molecules/command-search": ["search", "spotlight", "quick", "cmd k"],
+  "molecules/input-otp": ["code", "verification", "2fa", "pin"],
+  "molecules/grid": ["layout", "columns", "responsive"],
+  "molecules/empty": ["no data", "placeholder", "zero state"],
+  "molecules/item": ["list item", "row", "entry"],
+  "molecules/resizable": ["resize", "split", "panels"],
+  "molecules/ai-chat": ["chatbot", "assistant", "ai", "conversation"],
+  "molecules/data-table-header": ["table", "filter", "search", "actions"],
+
+  // Organisms
+  "organisms/sidebar": ["navigation", "menu", "nav", "drawer", "panel", "left", "collapsible"],
+  "organisms/app-shell": ["layout", "structure", "page", "navbar", "sidebar", "main"],
+  "organisms/dialog": ["modal", "popup", "overlay", "form", "confirm"],
+  "organisms/sheet": ["drawer", "slide", "panel", "side", "overlay"],
+  "organisms/drawer": ["slide", "panel", "side", "overlay", "mobile"],
+  "organisms/dropdown-menu": ["menu", "actions", "context", "options"],
+  "organisms/context-menu": ["right click", "menu", "actions"],
+  "organisms/command": ["search", "palette", "cmd k", "spotlight", "keyboard"],
+  "organisms/navigation-menu": ["nav", "header", "links", "menu"],
+  "organisms/menubar": ["menu", "actions", "toolbar", "file menu"],
+  "organisms/alert-dialog": ["confirm", "warning", "destructive", "modal"],
+  "organisms/calendar": ["date", "picker", "schedule", "events"],
+  "organisms/combobox": ["autocomplete", "search", "select", "typeahead"],
+  "organisms/carousel": ["slider", "gallery", "images", "slides"],
+  "organisms/chart": ["graph", "visualization", "data", "analytics"],
+  "organisms/organization-selector": ["workspace", "team", "account", "switcher"],
+  "organisms/page-layout": ["layout", "structure", "container", "center"],
+  "organisms/sonner": ["toast", "notification", "alert", "message"],
+};
+
+/**
+ * Get semantic tags for a component
+ */
+function getComponentTags(componentId: string): string[] {
+  return COMPONENT_TAGS[componentId] || [];
+}
+
+/**
  * Parse component source to extract structured documentation
  */
 function parseComponentDocs(source: string, componentId: string) {
@@ -41,6 +129,7 @@ function parseComponentDocs(source: string, componentId: string) {
       options: string[];
     }>;
     hasClassName: boolean;
+    description?: string;
   } = {
     id: componentId,
     exports: [],
@@ -49,108 +138,111 @@ function parseComponentDocs(source: string, componentId: string) {
     hasClassName: false,
   };
 
-  // Extract exported function/const names (including forwardRef)
-  const exportMatches = source.matchAll(/(?:export\s+)?const\s+(\w+)\s*=\s*(?:React\.)?forwardRef/g);
-  for (const match of exportMatches) {
-    if (match[1]) {
-      docs.exports.push(match[1]);
+  // PRIMARY: Look for explicit export block at end of file (source of truth)
+  // This catches multiline: export {\n  Sidebar,\n  SidebarContent,\n  ...\n};
+  const exportBlockMatch = source.match(/export\s*\{([\s\S]*?)\}\s*;?\s*$/);
+  if (exportBlockMatch && exportBlockMatch[1]) {
+    const exportedNames = exportBlockMatch[1]
+      .split(',')
+      .map(s => s.trim().replace(/\n/g, ''))
+      .filter(s => s && !s.includes(' as ') && !s.toLowerCase().includes('variants'));
+    docs.exports.push(...exportedNames);
+  }
+
+  // FALLBACK: If no export block, look for inline exports
+  if (docs.exports.length === 0) {
+    // Extract exported function/const names (including forwardRef)
+    const exportMatches = source.matchAll(/(?:export\s+)?const\s+(\w+)\s*=\s*(?:React\.)?forwardRef/g);
+    for (const match of exportMatches) {
+      if (match[1] && !docs.exports.includes(match[1])) {
+        docs.exports.push(match[1]);
+      }
+    }
+
+    // Also get regular exports
+    const regularExportMatches = source.matchAll(/export\s+(?:function|const)\s+(\w+)(?!\s*=\s*(?:React\.)?forwardRef)/g);
+    for (const match of regularExportMatches) {
+      if (match[1] && !match[1].includes('Variants') && !docs.exports.includes(match[1])) {
+        docs.exports.push(match[1]);
+      }
     }
   }
 
-  // Also get regular exports
-  const regularExportMatches = source.matchAll(/export\s+(?:function|const)\s+(\w+)(?!\s*=\s*(?:React\.)?forwardRef)/g);
-  for (const match of regularExportMatches) {
-    if (match[1] && !match[1].includes('Variants') && !docs.exports.includes(match[1])) {
-      docs.exports.push(match[1]);
-    }
-  }
-
-  // Extract type Props (e.g., type ButtonProps = ...)
-  const typePropsMatches = source.matchAll(/type\s+(\w+Props)\s*=\s*[^&]*&\s*\{([^}]+)\}/gs);
+  // Extract type definitions with properties (handles both type and interface)
+  // Pattern 1: type XProps = BaseProps & { ... }
+  const typePropsMatches = source.matchAll(/type\s+(\w+(?:Props|Context(?:Props)?))\s*=\s*(?:[^{]*&\s*)?\{([^}]+)\}/gs);
   for (const match of typePropsMatches) {
     const typeName = match[1];
     const body = match[2];
     if (!typeName || !body) continue;
 
-    const properties: Array<{ name: string; type: string; optional: boolean; description?: string }> = [];
-
-    // Parse JSDoc comments and properties
-    const lines = body.split('\n');
-    let currentComment = '';
-
-    for (const line of lines) {
-      // Match JSDoc style comments
-      const commentMatch = line.match(/\/\*\*\s*(.+?)\s*\*\//);
-      if (commentMatch) {
-        currentComment = commentMatch[1] || '';
-        continue;
-      }
-
-      // Match property definitions
-      const propMatch = line.match(/^\s*(\w+)(\?)?:\s*(.+?);?\s*$/);
-      if (propMatch) {
-        const propName = propMatch[1];
-        const optional = propMatch[2] === '?';
-        const propType = propMatch[3]?.trim().replace(/;$/, '') || 'unknown';
-
-        if (propName && propName !== 'children') {
-          properties.push({
-            name: propName,
-            type: propType,
-            optional,
-            description: currentComment || undefined,
-          });
-        }
-        currentComment = '';
-      }
-    }
-
+    const properties = parsePropertiesFromBody(body);
     if (properties.length > 0) {
       docs.props.push({
-        name: typeName.replace('Props', ''),
+        name: typeName.replace(/Props$/, '').replace(/ContextProps$/, 'Context'),
         interface: typeName,
         properties,
       });
     }
   }
 
-  // Extract CVA variants - improved regex that handles nested objects
-  const cvaMatch = source.match(/const\s+(\w+Variants)\s*=\s*cva\s*\(\s*(?:"[^"]*"|'[^']*'|`[^`]*`|\[[^\]]*\])\s*,\s*\{[\s\S]*?variants:\s*\{([\s\S]*?)\}\s*,\s*defaultVariants/);
-  if (cvaMatch) {
+  // Pattern 2: Inline props in function signature - Omit<...> & { ... }
+  const inlinePropMatches = source.matchAll(/function\s+(\w+)\s*\(\s*\{[^}]*\}\s*:\s*(?:Omit<[^>]+>\s*&\s*)?\{([^}]+)\}/g);
+  for (const match of inlinePropMatches) {
+    const funcName = match[1];
+    const body = match[2];
+    if (!funcName || !body) continue;
+
+    const properties = parsePropertiesFromBody(body);
+    if (properties.length > 0 && !docs.props.find(p => p.name === funcName)) {
+      docs.props.push({
+        name: funcName,
+        interface: `${funcName}Props`,
+        properties,
+      });
+    }
+  }
+
+  // Extract ALL CVA variants from the file
+  const cvaMatches = source.matchAll(/const\s+(\w+Variants)\s*=\s*cva\s*\(\s*(?:'[^']*'|"[^"]*"|`[^`]*`|\[[^\]]*\]|[^,]+)\s*,\s*\{([\s\S]*?)\}\s*\)/g);
+  for (const cvaMatch of cvaMatches) {
     const variantName = cvaMatch[1];
-    const variantsBlock = cvaMatch[2];
+    const configBlock = cvaMatch[2];
 
-    if (variantName && variantsBlock) {
-      // Extract each variant category by finding top-level keys
-      // Match pattern: "variantName: {" at the start of a line (with indentation)
-      const categoryMatches = variantsBlock.matchAll(/^\s{6}(\w+):\s*\{/gm);
+    if (!variantName || !configBlock) continue;
 
-      for (const catMatch of categoryMatches) {
-        const categoryName = catMatch[1];
-        if (!categoryName) continue;
+    // Find the variants section
+    const variantsSection = configBlock.match(/variants:\s*\{([\s\S]*?)\}\s*(?:,\s*(?:defaultVariants|compoundVariants)|$)/);
+    if (!variantsSection || !variantsSection[1]) continue;
 
-        // Find the content of this category by looking for keys at the next indent level
-        const categoryRegex = new RegExp(`${categoryName}:\\s*\\{([\\s\\S]*?)^\\s{6}\\}`, 'm');
-        const categoryContent = variantsBlock.match(categoryRegex);
+    const variantsBlock = variantsSection[1];
 
-        if (categoryContent && categoryContent[1]) {
-          const options: string[] = [];
-          // Extract option names (keys with values)
-          const optionMatches = categoryContent[1].matchAll(/^\s+['"]?(\w+(?:-\w+)*)['"]?:/gm);
-          for (const optMatch of optionMatches) {
-            if (optMatch[1]) {
-              options.push(optMatch[1]);
-            }
-          }
+    // Extract variant categories - look for keys followed by objects
+    // This handles: variant: { default: '...', outline: '...' }
+    const categoryPattern = /(\w+):\s*\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g;
+    let categoryMatch;
+    while ((categoryMatch = categoryPattern.exec(variantsBlock)) !== null) {
+      const categoryName = categoryMatch[1];
+      const categoryContent = categoryMatch[2];
 
-          if (options.length > 0) {
-            docs.variants.push({
-              component: variantName.replace('Variants', ''),
-              variantName: categoryName,
-              options,
-            });
-          }
+      if (!categoryName || !categoryContent) continue;
+
+      // Extract option names (the keys inside this category)
+      const options: string[] = [];
+      const optionPattern = /['"]?([\w-]+)['"]?\s*:/g;
+      let optionMatch;
+      while ((optionMatch = optionPattern.exec(categoryContent)) !== null) {
+        if (optionMatch[1] && !options.includes(optionMatch[1])) {
+          options.push(optionMatch[1]);
         }
+      }
+
+      if (options.length > 0) {
+        docs.variants.push({
+          component: variantName.replace('Variants', ''),
+          variantName: categoryName,
+          options,
+        });
       }
     }
   }
@@ -162,6 +254,44 @@ function parseComponentDocs(source: string, componentId: string) {
 }
 
 /**
+ * Helper to parse properties from a TypeScript object body
+ */
+function parsePropertiesFromBody(body: string): Array<{ name: string; type: string; optional: boolean; description?: string }> {
+  const properties: Array<{ name: string; type: string; optional: boolean; description?: string }> = [];
+  const lines = body.split('\n');
+  let currentComment = '';
+
+  for (const line of lines) {
+    // Match JSDoc style comments
+    const commentMatch = line.match(/\/\*\*\s*(.+?)\s*\*\//);
+    if (commentMatch) {
+      currentComment = commentMatch[1] || '';
+      continue;
+    }
+
+    // Match property definitions
+    const propMatch = line.match(/^\s*(\w+)(\?)?:\s*(.+?);?\s*$/);
+    if (propMatch) {
+      const propName = propMatch[1];
+      const optional = propMatch[2] === '?';
+      const propType = propMatch[3]?.trim().replace(/;$/, '') || 'unknown';
+
+      if (propName && propName !== 'children' && propName !== 'className' && propName !== 'style') {
+        properties.push({
+          name: propName,
+          type: propType,
+          optional,
+          description: currentComment || undefined,
+        });
+      }
+      currentComment = '';
+    }
+  }
+
+  return properties;
+}
+
+/**
  * Generate agent-friendly documentation for a component
  */
 function formatComponentDocsForAgent(
@@ -169,16 +299,27 @@ function formatComponentDocsForAgent(
   storySource: string | null,
   componentSource: string
 ): string {
-  let output = `# ${docs.exports[0] || docs.id} Component\n\n`;
+  // Use the component ID to derive a nice title
+  const componentName = docs.id.split('/')[1]?.split('-').map(s => s[0]?.toUpperCase() + s.slice(1)).join('') || docs.id;
+  let output = `# ${componentName} Component\n\n`;
 
   // Critical warning
   output += `## CRITICAL: No className Prop\n`;
   output += `This component does NOT accept \`className\` or \`style\` props. Use variants and props only.\n\n`;
 
-  // Exported components
+  // Exported components - show ALL exports for compound components
   if (docs.exports.length > 0) {
-    output += `## Exports\n`;
-    output += docs.exports.map(e => `- \`${e}\``).join('\n') + '\n\n';
+    output += `## Exports (${docs.exports.length} components)\n`;
+    if (docs.exports.length > 5) {
+      // For compound components, organize exports
+      const mainExport = docs.exports[0];
+      const subExports = docs.exports.slice(1);
+      output += `**Main:** \`${mainExport}\`\n\n`;
+      output += `**Sub-components:**\n`;
+      output += subExports.map(e => `- \`${e}\``).join('\n') + '\n\n';
+    } else {
+      output += docs.exports.map(e => `- \`${e}\``).join('\n') + '\n\n';
+    }
   }
 
   // Variants (most important for agents)
@@ -612,20 +753,55 @@ async function main() {
       if (name === "search") {
         const { query, limit, includeSource } = zSearchArgs.parse(args);
         const q = query.toLowerCase();
+        const queryWords = q.split(/\s+/).filter(Boolean);
 
         const components = await listDesignSystemComponents(repoPaths);
         const hits: Array<
-          | { kind: "component"; id: string; filePath: string; match: "id" | "source" }
+          | { kind: "component"; id: string; filePath: string; match: "id" | "tags" | "source"; tags?: string[] }
           | { kind: "story"; name: string; filePath: string; match: "name" }
         > = [];
+        const seenIds = new Set<string>();
 
+        // First pass: exact ID matches (highest priority)
         for (const c of components) {
           if (c.id.toLowerCase().includes(q) || c.fileStem.toLowerCase().includes(q)) {
-            hits.push({ kind: "component", id: c.id, filePath: c.filePath, match: "id" });
+            if (!seenIds.has(c.id)) {
+              hits.push({ kind: "component", id: c.id, filePath: c.filePath, match: "id" });
+              seenIds.add(c.id);
+            }
             if (hits.length >= limit) break;
           }
+        }
 
-          if (includeSource) {
+        // Second pass: semantic tag matches
+        if (hits.length < limit) {
+          for (const c of components) {
+            if (seenIds.has(c.id)) continue;
+
+            const tags = getComponentTags(c.id);
+            const matchingTags = tags.filter(tag =>
+              queryWords.some(word => tag.includes(word) || word.includes(tag))
+            );
+
+            if (matchingTags.length > 0) {
+              hits.push({
+                kind: "component",
+                id: c.id,
+                filePath: c.filePath,
+                match: "tags",
+                tags: matchingTags,
+              });
+              seenIds.add(c.id);
+              if (hits.length >= limit) break;
+            }
+          }
+        }
+
+        // Third pass: source code search (if enabled)
+        if (includeSource && hits.length < limit) {
+          for (const c of components) {
+            if (seenIds.has(c.id)) continue;
+
             const source = await readTextFile(c.filePath);
             if (source.toLowerCase().includes(q)) {
               hits.push({
@@ -634,11 +810,13 @@ async function main() {
                 filePath: c.filePath,
                 match: "source",
               });
+              seenIds.add(c.id);
               if (hits.length >= limit) break;
             }
           }
         }
 
+        // Fourth pass: story matches
         if (hits.length < limit) {
           const stories = await listStorybookStories(repoPaths);
           for (const s of stories) {

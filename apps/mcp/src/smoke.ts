@@ -75,7 +75,7 @@ async function main() {
     `framework=${installData.framework}, steps=${installData.steps?.length || 0}`,
   );
 
-  // Test the new comprehensive docs tool
+  // Test the new comprehensive docs tool with button (inline exports)
   const docsResult = await client.callTool({
     name: "get_component_docs",
     arguments: { id: "atoms/button" },
@@ -84,10 +84,34 @@ async function main() {
   const docsJson = (docsResult as any).content?.[1]?.text;
   const docsData = docsJson ? JSON.parse(docsJson) : {};
   console.log(
-    "get_component_docs:",
+    "get_component_docs (button):",
     `exports=${docsData.exports?.length || 0}, variants=${docsData.variants?.length || 0}, hasStory=${docsData.hasStory}`,
   );
   console.log("  -> includes className warning:", docsText.includes("className"));
+
+  // Test compound component with multiline export block (sidebar)
+  const sidebarDocsResult = await client.callTool({
+    name: "get_component_docs",
+    arguments: { id: "organisms/sidebar" },
+  });
+  const sidebarDocsJson = (sidebarDocsResult as any).content?.[1]?.text;
+  const sidebarDocsData = sidebarDocsJson ? JSON.parse(sidebarDocsJson) : {};
+  console.log(
+    "get_component_docs (sidebar):",
+    `exports=${sidebarDocsData.exports?.length || 0}, variants=${sidebarDocsData.variants?.length || 0}`,
+  );
+
+  // Test semantic search
+  const searchResult = await client.callTool({
+    name: "search",
+    arguments: { query: "navigation menu" },
+  });
+  const searchData = JSON.parse((searchResult as any).content?.[0]?.text || "{}");
+  console.log(
+    "search (navigation menu):",
+    `hits=${searchData.hits?.length || 0}`,
+    searchData.hits?.slice(0, 3).map((h: any) => h.id || h.name),
+  );
 
   await transport.close();
 }

@@ -93,14 +93,13 @@ function NavbarLogo() {
         <Logo style={{ height: 22, width: 'auto' }} variant={isDark ? 'light' : 'dark'} />
       </Link>
       <span className="text-muted-foreground">/</span>
-      <div className="w-44">
-        <OrganizationSelector
-          organizations={organizations}
-          value={selectedOrg}
-          onValueChange={setSelectedOrg}
-          size="sm"
-        />
-      </div>
+      <OrganizationSelector
+        organizations={organizations}
+        value={selectedOrg}
+        onValueChange={setSelectedOrg}
+        size="sm"
+        modal
+      />
     </HStack>
   );
 }

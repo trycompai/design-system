@@ -3,6 +3,7 @@ import * as React from 'react';
 
 import { cn } from '../../../lib/utils';
 import { Stack } from '../atoms/stack';
+import { Skeleton } from '../atoms/skeleton';
 
 const pageLayoutVariants = cva('min-h-full bg-background text-foreground', {
   variants: {
@@ -48,6 +49,29 @@ interface PageLayoutProps
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   /** Vertical gap between children. Defaults to 'lg' (gap-6). */
   gap?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '0' | '1' | '2' | '3' | '4' | '6' | '8';
+  /** Whether the page is loading. Shows skeleton placeholder when true. */
+  loading?: boolean;
+}
+
+function PageLayoutSkeleton() {
+  return (
+    <Stack gap="lg">
+      {/* Header skeleton */}
+      <div className="space-y-2">
+        <Skeleton variant="text" width="30%" />
+        <Skeleton variant="text" width="50%" />
+      </div>
+      {/* Content skeleton */}
+      <div className="space-y-4">
+        <Skeleton variant="rectangular" height={200} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <Skeleton variant="rectangular" height={120} />
+          <Skeleton variant="rectangular" height={120} />
+          <Skeleton variant="rectangular" height={120} />
+        </div>
+      </div>
+    </Stack>
+  );
 }
 
 function PageLayout({
@@ -56,13 +80,16 @@ function PageLayout({
   container = true,
   maxWidth,
   gap = 'lg',
+  loading = false,
   children,
   ...props
 }: PageLayoutProps) {
   // For center variant, default to smaller max-width (sm) for auth-style pages
   const resolvedMaxWidth = maxWidth ?? (variant === 'center' ? 'sm' : 'xl');
 
-  const content = (
+  const content = loading ? (
+    <PageLayoutSkeleton />
+  ) : (
     <Stack gap={gap}>
       {children}
     </Stack>
@@ -72,6 +99,7 @@ function PageLayout({
     <div
       data-slot="page-layout"
       data-variant={variant}
+      data-loading={loading || undefined}
       className={pageLayoutVariants({ variant, padding })}
       {...props}
     >
