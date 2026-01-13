@@ -13,6 +13,7 @@ import {
   Input,
   Label,
   Stack,
+  Textarea,
 } from '@trycompai/design-system';
 
 const meta = {
@@ -118,4 +119,50 @@ export const Destructive: Story = {
       </DialogContent>
     </Dialog>
   ),
+};
+
+export const WithTextarea: Story = {
+  render: () => (
+    <Dialog>
+      <DialogTrigger render={<Button variant="outline" />}>Approve Changes</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Approve Policy Changes</DialogTitle>
+          <DialogDescription>
+            Are you sure you want to approve these policy changes? You can optionally add a comment
+            that will be visible in the policy history.
+          </DialogDescription>
+        </DialogHeader>
+        <Textarea placeholder="Add optional comment or reason (will be added as a comment)" />
+        <DialogFooter>
+          <DialogClose render={<Button variant="secondary" />}>Cancel</DialogClose>
+          <Button>Approve</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Open the dialog
+    const triggerButton = canvas.getByRole('button', { name: 'Approve Changes' });
+    await userEvent.click(triggerButton);
+
+    // Wait for dialog to open
+    const dialog = await within(document.body).findByRole('dialog');
+    await expect(dialog).toBeInTheDocument();
+
+    // Find the textarea and verify it's visible and can receive input
+    const textarea = within(dialog).getByRole('textbox');
+    await expect(textarea).toBeInTheDocument();
+    await expect(textarea).toBeVisible();
+
+    // Type in the textarea
+    await userEvent.type(textarea, 'Approved after security review');
+    await expect(textarea).toHaveValue('Approved after security review');
+
+    // Close dialog
+    const closeButton = within(dialog).getByRole('button', { name: /close/i });
+    await userEvent.click(closeButton);
+  },
 };
