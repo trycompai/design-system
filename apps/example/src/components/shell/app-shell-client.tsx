@@ -92,7 +92,7 @@ function NavbarLogo() {
       <Link href="/">
         <Logo style={{ height: 22, width: 'auto' }} variant={isDark ? 'light' : 'dark'} />
       </Link>
-      <span className="text-muted-foreground px-1">/</span>
+      <span className="text-muted-foreground pl-3">/</span>
       <OrganizationSelector
         organizations={organizations}
         value={selectedOrg}
