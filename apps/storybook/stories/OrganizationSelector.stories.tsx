@@ -181,3 +181,28 @@ export const ModalMode: Story = {
     );
   },
 };
+
+export const WithCreateAction: Story = {
+  render: function CreateActionExample() {
+    const [selectedOrg, setSelectedOrg] = React.useState('');
+
+    return (
+      <Stack gap="md">
+        <div className="w-[280px]">
+          <OrganizationSelector
+            organizations={organizations}
+            value={selectedOrg}
+            onValueChange={setSelectedOrg}
+            createLabel="Create organization"
+            onCreate={() => alert('Create organization')}
+          />
+        </div>
+        {selectedOrg && (
+          <p className="text-sm text-muted-foreground">
+            Selected: <code className="bg-muted px-1 rounded">{selectedOrg}</code>
+          </p>
+        )}
+      </Stack>
+    );
+  },
+};

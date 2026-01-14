@@ -5,7 +5,6 @@ import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import { Checkmark, ChevronDown, Search } from '@carbon/icons-react';
 import * as React from 'react';
-
 // ============================================================================
 // Types
 // ============================================================================
@@ -54,6 +53,12 @@ export interface OrganizationSelectorProps {
   hotkey?: string | null;
   /** Whether to open as a full-screen modal (like Cmd+K) instead of dropdown */
   modal?: boolean;
+  /** Optional footer content rendered below the list (e.g., create org action) */
+  footer?: React.ReactNode;
+  /** Optional label for a create action rendered as the final list item */
+  createLabel?: string;
+  /** Callback when create action is selected */
+  onCreate?: () => void;
 }
 
 // ============================================================================
@@ -124,6 +129,9 @@ function OrganizationSelector({
   maxWidth = '150px',
   hotkey = 'o',
   modal = false,
+  footer,
+  createLabel = 'Create organization',
+  onCreate,
 }: OrganizationSelectorProps) {
   const [internalValue, setInternalValue] = React.useState(defaultValue ?? '');
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -295,6 +303,28 @@ function OrganizationSelector({
                     </CommandPrimitive.Group>
                   )}
                 </CommandPrimitive.List>
+                {(footer || onCreate) && (
+                  <div
+                    data-slot="organization-selector-footer"
+                    className="border-t border-border p-2"
+                  >
+                    {footer ?? (
+                      <button
+                        type="button"
+                        disabled={disabled || loading}
+                        onClick={() => {
+                          onCreate?.();
+                          setSearchQuery('');
+                          setOpen(false);
+                        }}
+                        className="hover:bg-accent hover:text-foreground w-full rounded-md px-2 py-1.5 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        <span className="mr-1 text-base leading-none">+</span>
+                        {createLabel}
+                      </button>
+                    )}
+                  </div>
+                )}
               </CommandPrimitive>
             </DialogPrimitive.Popup>
           </DialogPrimitive.Portal>
@@ -365,7 +395,7 @@ function OrganizationSelector({
                     key={org.id}
                     data-slot="organization-selector-item"
                     value={org.id}
-                    className="data-highlighted:bg-accent data-highlighted:text-accent-foreground gap-2 rounded-md py-1.5 pr-8 pl-2 text-sm relative flex w-full cursor-default items-center outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                    className="data-highlighted:bg-accent data-highlighted:text-accent-foreground gap-2 rounded-md py-1.5 pr-8 pl-2 text-sm relative flex w-full cursor-default items-center outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50"
                   >
                     <OrganizationItemContent org={org} />
                     <ComboboxPrimitive.ItemIndicator
@@ -379,6 +409,28 @@ function OrganizationSelector({
                 ))
               )}
             </ComboboxPrimitive.List>
+            {(footer || onCreate) && (
+              <div
+                data-slot="organization-selector-footer"
+                className="border-t border-border p-2"
+              >
+                {footer ?? (
+                  <button
+                    type="button"
+                    disabled={disabled || loading}
+                    onClick={() => {
+                      onCreate?.();
+                      setSearchQuery('');
+                      triggerRef.current?.click();
+                    }}
+                    className="hover:bg-accent hover:text-foreground w-full rounded-md px-2 py-1.5 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <span className="mr-1 text-base leading-none">+</span>
+                    {createLabel}
+                  </button>
+                )}
+              </div>
+            )}
           </ComboboxPrimitive.Popup>
         </ComboboxPrimitive.Positioner>
       </ComboboxPrimitive.Portal>

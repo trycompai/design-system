@@ -106,6 +106,8 @@ function NavbarLogo() {
         onValueChange={setSelectedOrg}
         size="sm"
         modal
+        createLabel="Create organization"
+        onCreate={() => alert('Create organization')}
       />
     </HStack>
   );
