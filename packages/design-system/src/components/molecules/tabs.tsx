@@ -28,13 +28,13 @@ const tabsListVariants = cva(
       },
     },
     defaultVariants: {
-      variant: 'default',
+      variant: 'underline',
     },
   },
 );
 
 function TabsList({
-  variant = 'default',
+  variant = 'underline',
   ...props
 }: Omit<TabsPrimitive.List.Props, 'className'> & VariantProps<typeof tabsListVariants>) {
   return (
