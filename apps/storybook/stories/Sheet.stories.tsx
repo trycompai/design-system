@@ -10,6 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetBody,
   Stack,
 } from '@trycompai/design-system';
 
@@ -36,7 +37,7 @@ export const Right: Story = {
             Make changes to your profile here. Click save when you're done.
           </SheetDescription>
         </SheetHeader>
-        <div className="py-4">
+        <SheetBody>
           <Stack gap="4">
             <Stack gap="2">
               <Label htmlFor="name">Name</Label>
@@ -47,7 +48,7 @@ export const Right: Story = {
               <Input id="username" defaultValue="@johndoe" />
             </Stack>
           </Stack>
-        </div>
+        </SheetBody>
         <SheetFooter>
           <Button>Save changes</Button>
         </SheetFooter>
@@ -65,7 +66,7 @@ export const Left: Story = {
           <SheetTitle>Navigation</SheetTitle>
           <SheetDescription>Browse through different sections.</SheetDescription>
         </SheetHeader>
-        <div className="py-4">
+        <SheetBody>
           <Stack gap="2">
             <div className="w-full">
               <Button variant="ghost">Dashboard</Button>
@@ -80,7 +81,7 @@ export const Left: Story = {
               <Button variant="ghost">Help</Button>
             </div>
           </Stack>
-        </div>
+        </SheetBody>
       </SheetContent>
     </Sheet>
   ),
@@ -109,7 +110,7 @@ export const Bottom: Story = {
           <SheetTitle>Actions</SheetTitle>
           <SheetDescription>Choose an action to perform.</SheetDescription>
         </SheetHeader>
-        <div className="py-4">
+        <SheetBody>
           <Stack direction="row" gap="2">
             <div className="flex-1">
               <Button>Share</Button>
@@ -121,7 +122,7 @@ export const Bottom: Story = {
               <Button variant="outline">Download</Button>
             </div>
           </Stack>
-        </div>
+        </SheetBody>
       </SheetContent>
     </Sheet>
   ),
