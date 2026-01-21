@@ -5,6 +5,13 @@ import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import { Checkmark, ChevronDown, Search } from '@carbon/icons-react';
 import * as React from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../molecules/select';
 // ============================================================================
 // Types
 // ============================================================================
@@ -18,9 +25,19 @@ export interface Organization {
   icon?: React.ReactNode;
   /** Optional logo URL to display */
   logoUrl?: string;
+  /** Optional created at timestamp used for sorting */
+  createdAt?: string | number | Date;
   /** Optional brand color for the indicator dot (e.g., "#10b981" or "bg-green-500") */
   color?: string;
 }
+
+type OrganizationSortKey = 'name' | 'createdAt';
+type OrganizationSortDirection = 'asc' | 'desc';
+
+type OrganizationSort = {
+  key: OrganizationSortKey;
+  direction: OrganizationSortDirection;
+};
 
 export interface OrganizationSelectorProps {
   /** List of organizations to display */
@@ -61,6 +78,12 @@ export interface OrganizationSelectorProps {
   createLabel?: string;
   /** Callback when create action is selected */
   onCreate?: () => void;
+  /** Whether to close the selector after selecting an organization */
+  closeOnSelect?: boolean;
+  /** Default sort mode for the organization list */
+  defaultSort?: OrganizationSort;
+  /** Whether to show the sort control */
+  enableSorting?: boolean;
 }
 
 // ============================================================================
@@ -139,6 +162,40 @@ function OrganizationItemContent({ org, maxWidth }: { org: Organization; maxWidt
   );
 }
 
+function getSortLabel(sort: OrganizationSort) {
+  if (sort.key === 'name') {
+    return sort.direction === 'asc' ? 'Alphabetical (A–Z)' : 'Alphabetical (Z–A)';
+  }
+  return sort.direction === 'asc' ? 'Created (oldest)' : 'Created (newest)';
+}
+
+const sortOptions: { value: string; label: string }[] = [
+  { value: 'name:asc', label: 'Alphabetical (A–Z)' },
+  { value: 'name:desc', label: 'Alphabetical (Z–A)' },
+  { value: 'createdAt:desc', label: 'Created (newest)' },
+  { value: 'createdAt:asc', label: 'Created (oldest)' },
+];
+
+function parseSortValue(value: string): OrganizationSort {
+  const [key, direction] = value.split(':');
+  if (key === 'createdAt' && (direction === 'asc' || direction === 'desc')) {
+    return { key, direction };
+  }
+  if (key === 'name' && (direction === 'asc' || direction === 'desc')) {
+    return { key, direction };
+  }
+  return { key: 'name', direction: 'asc' };
+}
+
+function getCreatedAtValue(value?: string | number | Date) {
+  if (!value) return null;
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? null : value.getTime();
+  }
+  const parsed = new Date(value).getTime();
+  return Number.isNaN(parsed) ? null : parsed;
+}
+
 // ============================================================================
 // Main Component
 // ============================================================================
@@ -163,10 +220,16 @@ function OrganizationSelector({
   footer,
   createLabel = 'Create organization',
   onCreate,
+  closeOnSelect = false,
+  defaultSort = { key: 'name', direction: 'asc' },
+  enableSorting = true,
 }: OrganizationSelectorProps) {
   const [internalValue, setInternalValue] = React.useState(defaultValue ?? '');
   const [searchQuery, setSearchQuery] = React.useState('');
   const [open, setOpen] = React.useState(false);
+  const [sort, setSort] = React.useState<OrganizationSort>(defaultSort);
+  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  const [sortOpen, setSortOpen] = React.useState(false);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
 
   const selectedValue = value ?? internalValue;
@@ -202,6 +265,24 @@ function OrganizationSelector({
     );
   }, [organizations, searchQuery]);
 
+  const sortedOrganizations = React.useMemo(() => {
+    const sorted = [...filteredOrganizations];
+    sorted.sort((a, b) => {
+      if (sort.key === 'name') {
+        const comparison = a.name.localeCompare(b.name);
+        return sort.direction === 'asc' ? comparison : -comparison;
+      }
+
+      const aTime = getCreatedAtValue(a.createdAt);
+      const bTime = getCreatedAtValue(b.createdAt);
+      if (aTime === null && bTime === null) return 0;
+      if (aTime === null) return 1;
+      if (bTime === null) return -1;
+      return sort.direction === 'asc' ? aTime - bTime : bTime - aTime;
+    });
+    return sorted;
+  }, [filteredOrganizations, sort]);
+
   const handleValueChange = React.useCallback(
     (newValue: string | null) => {
       const orgId = newValue ?? '';
@@ -210,9 +291,12 @@ function OrganizationSelector({
       }
       onValueChange?.(orgId);
       setSearchQuery(''); // Clear search on selection
-      setOpen(false); // Close modal on selection
+      if (closeOnSelect) {
+        setOpen(false); // Close modal on selection
+        setDropdownOpen(false); // Close dropdown on selection
+      }
     },
-    [value, onValueChange]
+    [value, onValueChange, closeOnSelect]
   );
 
   const triggerSizeClass = size === 'sm' ? 'h-7' : 'h-8';
@@ -220,7 +304,7 @@ function OrganizationSelector({
   // Determine content state
   const hasError = Boolean(error);
   const isEmpty = organizations.length === 0;
-  const hasNoResults = filteredOrganizations.length === 0 && !isEmpty;
+  const hasNoResults = sortedOrganizations.length === 0 && !isEmpty;
 
   const triggerButton = (
     <button
@@ -279,8 +363,29 @@ function OrganizationSelector({
                   return 0;
                 }}
               >
+                {/* Sort Menu */}
+                {enableSorting && (
+                  <div data-slot="organization-selector-sort" className="border-b border-border p-2">
+                    <Select
+                      value={`${sort.key}:${sort.direction}`}
+                      onValueChange={(value) => value && setSort(parseSortValue(value))}
+                    >
+                    <SelectTrigger size="sm">
+                      <span>{getSortLabel(sort)}</span>
+                    </SelectTrigger>
+                      <SelectContent align="start">
+                        {sortOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
                 {/* Search Input */}
-                <div data-slot="command-input-wrapper" className="p-1 pb-0">
+                <div data-slot="command-input-wrapper" className="border-b border-border p-2">
                   <div
                     data-slot="input-group"
                     role="group"
@@ -304,7 +409,7 @@ function OrganizationSelector({
                 {/* Organization List */}
                 <CommandPrimitive.List
                   data-slot="command-list"
-                  className="no-scrollbar max-h-72 scroll-py-1 outline-none overflow-x-hidden overflow-y-auto"
+                  className="no-scrollbar max-h-72 scroll-py-1 outline-none overflow-x-hidden overflow-y-auto pt-2"
                 >
                   {loading ? (
                     <EmptyState icon={<LoadingSpinner />} text={loadingText} />
@@ -317,7 +422,7 @@ function OrganizationSelector({
                       <CommandPrimitive.Empty data-slot="command-empty" className="py-6 text-center text-sm">
                         {emptySearchText}
                       </CommandPrimitive.Empty>
-                      {organizations.map((org) => (
+                      {sortedOrganizations.map((org) => (
                         <CommandPrimitive.Item
                           key={org.id}
                           data-slot="command-item"
@@ -366,7 +471,15 @@ function OrganizationSelector({
 
   // Dropdown mode (default): inline combobox
   return (
-    <ComboboxPrimitive.Root value={selectedValue} onValueChange={handleValueChange}>
+    <ComboboxPrimitive.Root
+      value={selectedValue}
+      onValueChange={handleValueChange}
+      open={dropdownOpen}
+      onOpenChange={(nextOpen) => {
+        if (sortOpen && !nextOpen) return;
+        setDropdownOpen(nextOpen);
+      }}
+    >
       <ComboboxPrimitive.Trigger
         ref={triggerRef}
         data-slot="organization-selector-trigger"
@@ -389,10 +502,32 @@ function OrganizationSelector({
           align="start"
           className="isolate z-50"
         >
-          <ComboboxPrimitive.Popup
-            data-slot="organization-selector-content"
-            className="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 max-h-80 min-w-56 overflow-hidden rounded-lg shadow-md ring-1 duration-100 group/org-selector relative max-h-(--available-height) w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin)"
-          >
+        <ComboboxPrimitive.Popup
+          data-slot="organization-selector-content"
+          className="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 max-h-80 min-w-56 overflow-visible rounded-lg shadow-md ring-1 duration-100 group/org-selector relative max-h-(--available-height) w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin)"
+        >
+            {/* Sort Menu */}
+            {enableSorting && (
+              <div data-slot="organization-selector-sort" className="border-b border-border p-2">
+                <Select
+                  value={`${sort.key}:${sort.direction}`}
+                  onValueChange={(value) => value && setSort(parseSortValue(value))}
+                  onOpenChange={setSortOpen}
+                >
+                <SelectTrigger size="sm">
+                  <span>{getSortLabel(sort)}</span>
+                </SelectTrigger>
+                  <SelectContent align="start">
+                    {sortOptions.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            )}
+
             {/* Search Input */}
             <div className="border-b border-border p-2">
               <div className="bg-muted/50 flex items-center gap-2 rounded-md px-2.5">
@@ -410,7 +545,7 @@ function OrganizationSelector({
             {/* Organization List */}
             <ComboboxPrimitive.List
               data-slot="organization-selector-list"
-              className="no-scrollbar max-h-64 scroll-py-1 overflow-y-auto p-1 overscroll-contain"
+              className="no-scrollbar max-h-64 scroll-py-1 overflow-y-auto px-1 pb-1 pt-2 overscroll-contain"
             >
               {loading ? (
                 <EmptyState icon={<LoadingSpinner />} text={loadingText} />
@@ -421,7 +556,7 @@ function OrganizationSelector({
               ) : hasNoResults ? (
                 <EmptyState text={emptySearchText} />
               ) : (
-                filteredOrganizations.map((org) => (
+                sortedOrganizations.map((org) => (
                   <ComboboxPrimitive.Item
                     key={org.id}
                     data-slot="organization-selector-item"

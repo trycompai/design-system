@@ -21,27 +21,27 @@ type Story = StoryObj<typeof meta>;
 
 // Sample organizations
 const organizations: Organization[] = [
-  { id: 'org_acme123', name: 'Acme Corp', color: '#10b981' },
-  { id: 'org_beta456', name: 'Beta Inc', color: '#3b82f6' },
-  { id: 'org_gamma789', name: 'Gamma LLC', color: '#8b5cf6' },
-  { id: 'org_delta012', name: 'Delta Systems', color: '#f59e0b' },
-  { id: 'org_epsilon', name: 'Epsilon Technologies', color: '#ef4444' },
+  { id: 'org_acme123', name: 'Acme Corp', color: '#10b981', createdAt: '2024-01-05' },
+  { id: 'org_beta456', name: 'Beta Inc', color: '#3b82f6', createdAt: '2023-12-12' },
+  { id: 'org_gamma789', name: 'Gamma LLC', color: '#8b5cf6', createdAt: '2024-03-22' },
+  { id: 'org_delta012', name: 'Delta Systems', color: '#f59e0b', createdAt: '2022-11-08' },
+  { id: 'org_epsilon', name: 'Epsilon Technologies', color: '#ef4444', createdAt: '2024-06-14' },
 ];
 
 const organizationsWithLogos: Organization[] = [
-  { id: 'org_acme123', name: 'Acme Corp', logoUrl: 'https://img.logo.dev/airbnb.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_beta456', name: 'Beta Inc', logoUrl: 'https://img.logo.dev/stripe.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_gamma789', name: 'Gamma LLC', logoUrl: 'https://img.logo.dev/figma.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_delta012', name: 'Delta Systems', logoUrl: 'https://img.logo.dev/linear.app?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_epsilon', name: 'Epsilon Technologies', logoUrl: 'https://img.logo.dev/notion.so?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  { id: 'org_acme123', name: 'Acme Corp', createdAt: '2024-01-05', logoUrl: 'https://img.logo.dev/airbnb.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  { id: 'org_beta456', name: 'Beta Inc', createdAt: '2023-12-12', logoUrl: 'https://img.logo.dev/stripe.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  { id: 'org_gamma789', name: 'Gamma LLC', createdAt: '2024-03-22', logoUrl: 'https://img.logo.dev/figma.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  { id: 'org_delta012', name: 'Delta Systems', createdAt: '2022-11-08', logoUrl: 'https://img.logo.dev/linear.app?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  { id: 'org_epsilon', name: 'Epsilon Technologies', createdAt: '2024-06-14', logoUrl: 'https://img.logo.dev/notion.so?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
 ];
 
 const organizationsWithFallbacks: Organization[] = [
-  { id: 'org_acme123', name: 'Acme Corp', logoUrl: 'https://img.logo.dev/airbnb.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_beta456', name: 'Beta Inc' },
-  { id: 'org_gamma789', name: 'Gamma LLC', logoUrl: 'https://img.logo.dev/figma.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_delta012', name: 'Delta Systems' },
-  { id: 'org_epsilon', name: 'Epsilon Technologies', logoUrl: 'https://img.logo.dev/notion.so?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  { id: 'org_acme123', name: 'Acme Corp', createdAt: '2024-01-05', logoUrl: 'https://img.logo.dev/airbnb.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  { id: 'org_beta456', name: 'Beta Inc', createdAt: '2023-12-12' },
+  { id: 'org_gamma789', name: 'Gamma LLC', createdAt: '2024-03-22', logoUrl: 'https://img.logo.dev/figma.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  { id: 'org_delta012', name: 'Delta Systems', createdAt: '2022-11-08' },
+  { id: 'org_epsilon', name: 'Epsilon Technologies', createdAt: '2024-06-14', logoUrl: 'https://img.logo.dev/notion.so?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
 ];
 
 // Generate many organizations for testing large lists
@@ -49,6 +49,7 @@ const manyOrganizations: Organization[] = Array.from({ length: 60 }, (_, i) => (
   id: `org_${String(i + 1).padStart(3, '0')}`,
   name: `Organization ${i + 1}`,
   color: `hsl(${(i * 37) % 360}, 70%, 50%)`,
+  createdAt: new Date(2023, 0, 1 + i).toISOString(),
 }));
 
 export const Default: Story = {
