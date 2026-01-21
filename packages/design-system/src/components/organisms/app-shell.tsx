@@ -643,7 +643,7 @@ function AppShellSearch({
   return (
     <div className={appShellSearchVariants({ searchWidth })}>
       <InputGroup>
-        <InputGroupAddon align="inline-start">
+        <InputGroupAddon align="inline-start" variant="icon">
           <Search />
         </InputGroupAddon>
         <InputGroupInput placeholder={placeholder} {...props} />

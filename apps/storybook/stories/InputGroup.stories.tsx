@@ -25,7 +25,7 @@ export const WithIconLeft: Story = {
   render: () => (
     <div className="w-[300px]">
       <InputGroup>
-        <InputGroupAddon align="inline-start">
+        <InputGroupAddon align="inline-start" variant="icon">
           <Search />
         </InputGroupAddon>
         <InputGroupInput placeholder="Search..." />
@@ -39,7 +39,7 @@ export const WithIconRight: Story = {
     <div className="w-[300px]">
       <InputGroup>
         <InputGroupInput placeholder="Enter email" />
-        <InputGroupAddon align="inline-end">
+        <InputGroupAddon align="inline-end" variant="icon">
           <Mail />
         </InputGroupAddon>
       </InputGroup>
@@ -73,7 +73,7 @@ export const Currency: Story = {
   render: () => (
     <div className="w-[200px]">
       <InputGroup>
-        <InputGroupAddon align="inline-start">
+        <InputGroupAddon align="inline-start" variant="icon">
           <DollarSign />
         </InputGroupAddon>
         <InputGroupInput type="number" placeholder="0.00" />
@@ -104,7 +104,7 @@ export const AllExamples: Story = {
         <Stack gap="2">
           <Label>Search</Label>
           <InputGroup>
-            <InputGroupAddon align="inline-start">
+            <InputGroupAddon align="inline-start" variant="icon">
               <Search />
             </InputGroupAddon>
             <InputGroupInput placeholder="Search..." />
