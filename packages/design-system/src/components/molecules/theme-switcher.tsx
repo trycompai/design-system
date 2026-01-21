@@ -56,7 +56,7 @@ interface ThemeSwitcherProps
 
 function ThemeSwitcher({
   value: valueProp,
-  defaultValue = 'system',
+  defaultValue = 'light',
   onChange,
   showSystem = true,
   size = 'default',

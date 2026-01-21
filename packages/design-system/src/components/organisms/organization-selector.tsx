@@ -16,6 +16,8 @@ export interface Organization {
   name: string;
   /** Optional icon or avatar to display */
   icon?: React.ReactNode;
+  /** Optional logo URL to display */
+  logoUrl?: string;
   /** Optional brand color for the indicator dot (e.g., "#10b981" or "bg-green-500") */
   color?: string;
 }
@@ -100,10 +102,39 @@ function EmptyState({ icon, text }: { icon?: React.ReactNode; text: string }) {
 }
 
 function OrganizationItemContent({ org, maxWidth }: { org: Organization; maxWidth?: string }) {
+  const initials = org.name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join('');
+
+  const leading = org.icon ? (
+    <span className="shrink-0">{org.icon}</span>
+  ) : org.logoUrl ? (
+    <img
+      src={org.logoUrl}
+      alt={`${org.name} logo`}
+      width={20}
+      height={20}
+      className="size-5 rounded-sm object-contain shrink-0"
+      loading="lazy"
+    />
+  ) : (
+    <span
+      className="size-5 rounded-full bg-muted text-muted-foreground flex items-center justify-center text-[10px] font-medium shrink-0"
+      aria-hidden
+    >
+      {initials || '?'}
+    </span>
+  );
+
   return (
     <>
-      {org.icon && <span className="shrink-0">{org.icon}</span>}
-      <span className="truncate" style={maxWidth ? { maxWidth } : undefined}>{org.name}</span>
+      {leading}
+      <span className="truncate" style={maxWidth ? { maxWidth } : undefined}>
+        {org.name}
+      </span>
     </>
   );
 }

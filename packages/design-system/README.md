@@ -101,7 +101,7 @@ The design system includes:
 
 ## Theme Switching
 
-The design system uses CSS class-based theming. Dark mode is enabled by adding the `.dark` class to the `<html>` element.
+The design system uses CSS class-based theming. Light mode is the default. Dark mode is enabled by adding the `.dark` class to the `<html>` element.
 
 ### Theme Components
 
@@ -175,7 +175,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           {children}
         </ThemeProvider>
       </body>
