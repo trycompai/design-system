@@ -191,7 +191,7 @@ function Table({
           {...props}
         />
       </div>
-      {paginationContent && (
+      {pagination && (
         <div
           data-slot="table-pagination"
           data-has-size={showPageSizeSelector ? 'true' : 'false'}
