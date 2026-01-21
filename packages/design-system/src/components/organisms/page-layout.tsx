@@ -101,15 +101,19 @@ function PageLayout({
   const resolvedMaxWidth = maxWidth ?? (variant === 'center' ? 'sm' : 'xl');
 
   const content = loading ? (
-    <Stack gap={gap}>
-      {header}
-      <PageLayoutSkeleton title={loadingTitle} includeHeader={!header} />
-    </Stack>
+    <div data-slot="page-layout-content" className="pb-6">
+      <Stack gap={gap}>
+        {header}
+        <PageLayoutSkeleton title={loadingTitle} includeHeader={!header} />
+      </Stack>
+    </div>
   ) : (
-    <Stack gap={gap}>
-      {header}
-      {children}
-    </Stack>
+    <div data-slot="page-layout-content" className="pb-6">
+      <Stack gap={gap}>
+        {header}
+        {children}
+      </Stack>
+    </div>
   );
 
   return (
