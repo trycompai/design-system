@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import * as React from 'react';
 import {
   Table,
   TableBody,
@@ -123,6 +124,68 @@ export const WithBadges: Story = {
       </TableBody>
     </Table>
   ),
+};
+
+export const WithPagination: Story = {
+  render: function WithPaginationExample() {
+    const [page, setPage] = React.useState(1);
+    const [pageSize, setPageSize] = React.useState(20);
+    const allInvoices = React.useMemo(
+      () =>
+        Array.from({ length: 57 }, (_, index) => {
+          const base = invoices[index % invoices.length];
+          return {
+            ...base,
+            invoice: `${base.invoice}-${index + 1}`,
+          };
+        }),
+      [],
+    );
+    const pageCount = Math.max(1, Math.ceil(allInvoices.length / pageSize));
+    const startIndex = (page - 1) * pageSize;
+    const pageRows = allInvoices.slice(startIndex, startIndex + pageSize);
+
+    React.useEffect(() => {
+      if (page > pageCount) {
+        setPage(pageCount);
+      }
+    }, [page, pageCount]);
+
+    return (
+      <Table
+        pagination={{
+          page,
+          pageCount,
+          onPageChange: setPage,
+          pageSize,
+          pageSizeOptions: [20, 50, 100],
+          onPageSizeChange: (nextPageSize) => {
+            setPageSize(nextPageSize);
+            setPage(1);
+          },
+        }}
+      >
+        <TableHeader>
+          <TableRow>
+            <TableHead>Invoice</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Method</TableHead>
+            <TableHead>Amount</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {pageRows.map((invoice) => (
+            <TableRow key={invoice.invoice}>
+              <TableCell>{invoice.invoice}</TableCell>
+              <TableCell>{invoice.status}</TableCell>
+              <TableCell>{invoice.method}</TableCell>
+              <TableCell>{invoice.amount}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    );
+  },
 };
 
 export const Bordered: Story = {

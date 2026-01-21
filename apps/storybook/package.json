@@ -1,8 +1,9 @@
 {
   "name": "@comp/storybook",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@tanstack/react-table": "^8.21.3",
     "@trycompai/design-system": "workspace:*",
     "lucide-react": "^0.469.0",
     "react": "^19.0.0",
