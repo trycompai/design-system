@@ -258,3 +258,36 @@ export const WithTabs: Story = {
     </PageLayout>
   ),
 };
+
+export const LongPage: Story = {
+  args: {
+    variant: 'default',
+    padding: 'default',
+    container: true,
+    maxWidth: 'lg',
+  },
+  render: (args) => (
+    <PageLayout {...args}>
+      <Stack gap="6">
+        <Heading level="1">Long Page Example</Heading>
+        <Text variant="muted">
+          Scroll to the bottom to verify the vertical padding matches the top.
+        </Text>
+        <Stack gap="4">
+          {Array.from({ length: 16 }, (_, index) => (
+            <Card key={index}>
+              <CardHeader>
+                <Heading level="3">Section {index + 1}</Heading>
+              </CardHeader>
+              <CardContent>
+                <Text variant="muted">
+                  Placeholder content for section {index + 1}.
+                </Text>
+              </CardContent>
+            </Card>
+          ))}
+        </Stack>
+      </Stack>
+    </PageLayout>
+  ),
+};
