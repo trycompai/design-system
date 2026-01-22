@@ -6,7 +6,7 @@ import { Stack } from '../atoms/stack';
 import { Skeleton } from '../atoms/skeleton';
 import { Heading } from '../atoms/heading';
 
-const pageLayoutVariants = cva('min-h-full bg-background text-foreground', {
+const pageLayoutVariants = cva('bg-background text-foreground', {
   variants: {
     variant: {
       default: 'flex flex-col',
@@ -18,10 +18,15 @@ const pageLayoutVariants = cva('min-h-full bg-background text-foreground', {
       default: 'px-1.5 sm:px-2 md:px-3 lg:px-4 py-2 sm:py-3 md:py-4 lg:py-5',
       lg: 'px-2 sm:px-3 md:px-4 lg:px-6 py-3 sm:py-4 md:py-5 lg:py-6',
     },
+    fillHeight: {
+      true: 'min-h-full',
+      false: '',
+    },
   },
   defaultVariants: {
     variant: 'default',
     padding: 'none',
+    fillHeight: false,
   },
 });
 
@@ -56,6 +61,8 @@ interface PageLayoutProps
   loadingTitle?: string;
   /** Header element (e.g., PageHeader) that renders regardless of loading state. */
   header?: React.ReactNode;
+  /** Whether to fill the parent height (min-h-full). Defaults to false. */
+  fillHeight?: boolean;
 }
 
 function PageLayoutSkeleton({ title, includeHeader = true }: { title?: string; includeHeader?: boolean }) {
@@ -88,6 +95,7 @@ function PageLayoutSkeleton({ title, includeHeader = true }: { title?: string; i
 function PageLayout({
   variant,
   padding,
+  fillHeight = false,
   container = true,
   maxWidth,
   gap = 'lg',
@@ -121,7 +129,7 @@ function PageLayout({
       data-slot="page-layout"
       data-variant={variant}
       data-loading={loading || undefined}
-      className={pageLayoutVariants({ variant, padding })}
+      className={pageLayoutVariants({ variant, padding, fillHeight })}
       {...props}
     >
       {container ? (

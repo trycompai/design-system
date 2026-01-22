@@ -291,3 +291,51 @@ export const LongPage: Story = {
     </PageLayout>
   ),
 };
+
+export const FillHeightOff: Story = {
+  args: {
+    variant: 'default',
+    padding: 'default',
+    container: true,
+    maxWidth: 'lg',
+    fillHeight: false,
+  },
+  render: (args) => (
+    <PageLayout {...args}>
+      <Stack gap="4">
+        <Heading level="2">fillHeight = false (default)</Heading>
+        <Text variant="muted">
+          The layout height should wrap content with no extra whitespace at the bottom.
+        </Text>
+        <Card>
+          <CardContent>
+            <Text>Small card</Text>
+          </CardContent>
+        </Card>
+      </Stack>
+    </PageLayout>
+  ),
+};
+
+export const FillHeightOn: Story = {
+  args: {
+    variant: 'default',
+    padding: 'default',
+    container: true,
+    maxWidth: 'lg',
+    fillHeight: true,
+  },
+  render: (args) => (
+    <PageLayout {...args}>
+      <Stack gap="4">
+        <Heading level="2">fillHeight = true</Heading>
+        <Text variant="muted">This should stretch to fill the available height.</Text>
+        <Card>
+          <CardContent>
+            <Text>Small card</Text>
+          </CardContent>
+        </Card>
+      </Stack>
+    </PageLayout>
+  ),
+};
