@@ -182,7 +182,7 @@ function Table({
     <div
       data-slot="table-container"
       data-variant={variant}
-      className="relative w-full data-[variant=bordered]:border data-[variant=bordered]:rounded-lg"
+      className="relative w-full data-[variant=bordered]:border data-[variant=bordered]:rounded-lg data-[variant=bordered]:overflow-hidden"
     >
       <div data-slot="table-scroll" className="w-full overflow-x-auto">
         <table
@@ -235,7 +235,13 @@ function Table({
 }
 
 function TableHeader({ ...props }: Omit<React.ComponentProps<'thead'>, 'className'>) {
-  return <thead data-slot="table-header" className="bg-muted [&_tr]:border-b" {...props} />;
+  return (
+    <thead
+      data-slot="table-header"
+      className="bg-muted [&_tr]:border-b in-data-[variant=bordered]:rounded-t-lg in-data-[variant=bordered]:overflow-hidden"
+      {...props}
+    />
+  );
 }
 
 function TableBody({ ...props }: Omit<React.ComponentProps<'tbody'>, 'className'>) {

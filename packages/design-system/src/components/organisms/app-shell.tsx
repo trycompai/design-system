@@ -70,7 +70,7 @@ const sidebarWidths = {
 } as const;
 
 const appShellSidebarVariants = cva(
-  'shrink-0 overflow-hidden hidden md:flex md:flex-col transition-[width,padding,opacity] duration-200 ease-in-out',
+  'shrink-0 overflow-hidden overscroll-none hidden md:flex md:flex-col transition-[width,padding,opacity] duration-200 ease-in-out',
   {
     variants: {
       variant: {
@@ -85,7 +85,9 @@ const appShellSidebarVariants = cva(
   },
 );
 
-const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-background min-h-0 border-l border-border', {
+const appShellContentVariants = cva(
+  'flex flex-1 flex-col overflow-auto overscroll-none bg-background min-h-0 border-l border-border',
+  {
   variants: {
     padding: {
       none: '',
@@ -97,7 +99,8 @@ const appShellContentVariants = cva('flex flex-1 flex-col overflow-auto bg-backg
   defaultVariants: {
     padding: 'default',
   },
-});
+  },
+);
 
 const appShellSearchVariants = cva('', {
   variants: {
@@ -351,7 +354,7 @@ function AppShellBody({ children, ...props }: AppShellBodyProps) {
   const { mobileDrawerOpen, setMobileDrawerOpen, railContent, sidebarContent, sidebarVariant } = useAppShell();
 
   return (
-    <div data-slot="app-shell-body" className=" flex flex-1 overflow-hidden bg-background/50 min-h-0 gap-0" {...props}>
+    <div data-slot="app-shell-body" className="flex flex-1 overflow-hidden overscroll-none bg-background/50 min-h-0 gap-0" {...props}>
       {/* Mobile drawer - shows both rail and sidebar */}
       <div className="md:hidden">
         {/* Backdrop */}
