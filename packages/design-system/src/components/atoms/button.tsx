@@ -70,6 +70,8 @@ const buttonVariants = cva(
 
 type ButtonProps = Omit<ButtonPrimitive.Props, 'className'> &
   VariantProps<typeof buttonVariants> & {
+    /** Button type attribute for native button usage */
+    type?: 'button' | 'submit' | 'reset';
     /** Show loading spinner and disable button */
     loading?: boolean;
     /** Icon to show on the left side of the button */
@@ -88,6 +90,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       iconLeft,
       iconRight,
       disabled,
+      type = 'button',
       children,
       render,
       ...props
@@ -105,6 +108,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={buttonVariants({ variant, width, size })}
         render={render}
         nativeButton={!render}
+        type={render ? undefined : type}
         {...props}
       >
         {loading ? (
