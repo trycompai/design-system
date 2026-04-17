@@ -157,7 +157,7 @@ function CarouselItem({ ...props }: Omit<React.ComponentProps<'div'>, 'className
   );
 }
 
-function CarouselPrevious({ ...props }: Omit<ButtonPrimitive.Props, 'className'>) {
+function CarouselPrevious({ ...props }: Omit<ButtonPrimitive.Props, 'className' | 'nativeButton'>) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
   return (
@@ -180,7 +180,7 @@ function CarouselPrevious({ ...props }: Omit<ButtonPrimitive.Props, 'className'>
   );
 }
 
-function CarouselNext({ ...props }: Omit<ButtonPrimitive.Props, 'className'>) {
+function CarouselNext({ ...props }: Omit<ButtonPrimitive.Props, 'className' | 'nativeButton'>) {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (

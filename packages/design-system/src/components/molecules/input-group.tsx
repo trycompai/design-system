@@ -82,7 +82,7 @@ function InputGroupButton({
   variant = 'ghost',
   size = 'xs',
   ...props
-}: Omit<ButtonPrimitive.Props, 'className' | 'type'> &
+}: Omit<ButtonPrimitive.Props, 'className' | 'type' | 'nativeButton'> &
   VariantProps<typeof inputGroupButtonVariants> & {
     variant?: 'default' | 'outline' | 'secondary' | 'ghost' | 'destructive' | 'link';
     type?: 'button' | 'submit' | 'reset';

@@ -248,7 +248,7 @@ function Sidebar({
   );
 }
 
-function SidebarTrigger({ onClick, ...props }: Omit<ButtonPrimitive.Props, 'className'>) {
+function SidebarTrigger({ onClick, ...props }: Omit<ButtonPrimitive.Props, 'className' | 'nativeButton'>) {
   const { toggleSidebar } = useSidebar();
 
   return (
