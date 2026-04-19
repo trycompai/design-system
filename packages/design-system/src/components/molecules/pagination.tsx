@@ -33,6 +33,7 @@ type PaginationLinkProps = {
 function PaginationLink({ isActive, size = 'icon', ...props }: PaginationLinkProps) {
   return (
     <ButtonPrimitive
+      nativeButton={false}
       className={buttonVariants({ variant: isActive ? 'outline' : 'ghost', size })}
       render={
         <a
@@ -49,6 +50,7 @@ function PaginationLink({ isActive, size = 'icon', ...props }: PaginationLinkPro
 function PaginationPrevious({ ...props }: Omit<PaginationLinkProps, 'size'>) {
   return (
     <ButtonPrimitive
+      nativeButton={false}
       className={`${buttonVariants({ variant: 'ghost', size: 'default' })} pl-2`}
       render={<a aria-label="Go to previous page" data-slot="pagination-link" {...props} />}
     >
@@ -61,6 +63,7 @@ function PaginationPrevious({ ...props }: Omit<PaginationLinkProps, 'size'>) {
 function PaginationNext({ ...props }: Omit<PaginationLinkProps, 'size'>) {
   return (
     <ButtonPrimitive
+      nativeButton={false}
       className={`${buttonVariants({ variant: 'ghost', size: 'default' })} pr-2`}
       render={<a aria-label="Go to next page" data-slot="pagination-link" {...props} />}
     >
