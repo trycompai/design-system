@@ -1,32 +1,49 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent, within } from 'storybook/test';
-import { Button } from '@trycompai/design-system';
-import { ArrowRight, Mail, Plus } from 'lucide-react';
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, fn, userEvent, within } from "storybook/test";
+import { Button } from "@trycompai/design-system";
+import { ArrowRight, Mail, Plus } from "lucide-react";
 
 const meta = {
-  title: 'Atoms/Button',
+  title: "Atoms/Button",
   component: Button,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   args: {
     onClick: fn(),
   },
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['default', 'outline', 'secondary', 'ghost', 'destructive', 'link'],
+      control: "select",
+      options: [
+        "default",
+        "outline",
+        "secondary",
+        "ghost",
+        "destructive",
+        "link",
+      ],
     },
     size: {
-      control: 'select',
-      options: ['default', 'xs', 'sm', 'lg', 'icon', 'icon-xs', 'icon-sm', 'icon-lg'],
+      control: "select",
+      options: [
+        "default",
+        "xs",
+        "sm",
+        "lg",
+        "xl",
+        "icon",
+        "icon-xs",
+        "icon-sm",
+        "icon-lg",
+      ],
     },
     loading: {
-      control: 'boolean',
+      control: "boolean",
     },
     disabled: {
-      control: 'boolean',
+      control: "boolean",
     },
   },
 } satisfies Meta<typeof Button>;
@@ -36,15 +53,15 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: 'Button',
-    variant: 'default',
-    size: 'default',
+    children: "Button",
+    variant: "default",
+    size: "default",
   },
   play: async ({ args, canvasElement }) => {
     const canvas = within(canvasElement);
 
     // Find the button
-    const button = canvas.getByRole('button', { name: 'Button' });
+    const button = canvas.getByRole("button", { name: "Button" });
     await expect(button).toBeInTheDocument();
     await expect(button).toBeEnabled();
 
@@ -56,66 +73,68 @@ export const Default: Story = {
 
 export const Outline: Story = {
   args: {
-    children: 'Outline',
-    variant: 'outline',
+    children: "Outline",
+    variant: "outline",
   },
 };
 
 export const Secondary: Story = {
   args: {
-    children: 'Secondary',
-    variant: 'secondary',
+    children: "Secondary",
+    variant: "secondary",
   },
 };
 
 export const Ghost: Story = {
   args: {
-    children: 'Ghost',
-    variant: 'ghost',
+    children: "Ghost",
+    variant: "ghost",
   },
 };
 
 export const Destructive: Story = {
   args: {
-    children: 'Delete',
-    variant: 'destructive',
+    children: "Delete",
+    variant: "destructive",
   },
 };
 
 export const Link: Story = {
   args: {
-    children: 'Link Button',
-    variant: 'link',
+    children: "Link Button",
+    variant: "link",
   },
 };
 
 export const Loading: Story = {
   args: {
-    children: 'Loading...',
+    children: "Loading...",
     loading: true,
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
     // Verify button is disabled when loading
-    const button = canvas.getByRole('button');
+    const button = canvas.getByRole("button");
     await expect(button).toBeDisabled();
 
     // Verify spinner is shown
-    await expect(canvas.getByRole('status', { name: 'Loading' })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("status", { name: "Loading" }),
+    ).toBeInTheDocument();
   },
 };
 
 export const WithIconLeft: Story = {
   args: {
-    children: 'Send Email',
+    children: "Send Email",
     iconLeft: <Mail />,
   },
 };
 
 export const WithIconRight: Story = {
   args: {
-    children: 'Continue',
+    children: "Continue",
     iconRight: <ArrowRight />,
   },
 };
@@ -123,8 +142,8 @@ export const WithIconRight: Story = {
 export const IconOnly: Story = {
   args: {
     children: <Plus />,
-    size: 'icon',
-    'aria-label': 'Add item',
+    size: "icon",
+    "aria-label": "Add item",
   },
 };
 
@@ -135,6 +154,7 @@ export const Sizes: Story = {
       <Button size="sm">Small</Button>
       <Button size="default">Default</Button>
       <Button size="lg">Large</Button>
+      <Button size="xl">Extra Large</Button>
     </div>
   ),
 };
@@ -173,4 +193,3 @@ export const AllVariants: Story = {
     </div>
   ),
 };
-

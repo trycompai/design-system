@@ -1,10 +1,29 @@
-'use client';
+"use client";
 
-import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
-import * as React from 'react';
+import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
+import { cva, type VariantProps } from "class-variance-authority";
+import * as React from "react";
 
-import { Close } from '@carbon/icons-react';
-import { Button } from '../atoms/button';
+import { Close } from "@carbon/icons-react";
+import { Button } from "../atoms/button";
+
+const dialogContentVariants = cva(
+  "bg-background data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 grid max-w-[calc(100%-2rem)] gap-4 rounded-xl p-4 text-sm ring-1 duration-100 fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 outline-none",
+  {
+    variants: {
+      size: {
+        sm: "sm:max-w-sm",
+        md: "sm:max-w-md",
+        lg: "sm:max-w-lg",
+        xl: "sm:max-w-xl",
+        "2xl": "sm:max-w-2xl",
+      },
+    },
+    defaultVariants: {
+      size: "sm",
+    },
+  },
+);
 
 function Dialog({ ...props }: DialogPrimitive.Root.Props) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
@@ -22,7 +41,9 @@ function DialogClose({ ...props }: DialogPrimitive.Close.Props) {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
 
-function DialogOverlay({ ...props }: Omit<DialogPrimitive.Backdrop.Props, 'className'>) {
+function DialogOverlay({
+  ...props
+}: Omit<DialogPrimitive.Backdrop.Props, "className">) {
   return (
     <DialogPrimitive.Backdrop
       data-slot="dialog-overlay"
@@ -35,16 +56,18 @@ function DialogOverlay({ ...props }: Omit<DialogPrimitive.Backdrop.Props, 'class
 function DialogContent({
   children,
   showCloseButton = true,
+  size,
   ...props
-}: Omit<DialogPrimitive.Popup.Props, 'className'> & {
-  showCloseButton?: boolean;
-}) {
+}: Omit<DialogPrimitive.Popup.Props, "className"> &
+  VariantProps<typeof dialogContentVariants> & {
+    showCloseButton?: boolean;
+  }) {
   return (
     <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Popup
         data-slot="dialog-content"
-        className="bg-background data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 grid max-w-[calc(100%-2rem)] gap-4 rounded-xl p-4 text-sm ring-1 duration-100 sm:max-w-sm fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 outline-none"
+        className={dialogContentVariants({ size })}
         {...props}
       >
         {children}
@@ -63,15 +86,19 @@ function DialogContent({
   );
 }
 
-function DialogHeader({ ...props }: Omit<React.ComponentProps<'div'>, 'className'>) {
-  return <div data-slot="dialog-header" className="gap-2 flex flex-col" {...props} />;
+function DialogHeader({
+  ...props
+}: Omit<React.ComponentProps<"div">, "className">) {
+  return (
+    <div data-slot="dialog-header" className="gap-2 flex flex-col" {...props} />
+  );
 }
 
 function DialogFooter({
   showCloseButton = false,
   children,
   ...props
-}: Omit<React.ComponentProps<'div'>, 'className'> & {
+}: Omit<React.ComponentProps<"div">, "className"> & {
   showCloseButton?: boolean;
 }) {
   return (
@@ -82,13 +109,17 @@ function DialogFooter({
     >
       {children}
       {showCloseButton && (
-        <DialogPrimitive.Close render={<Button variant="outline" />}>Close</DialogPrimitive.Close>
+        <DialogPrimitive.Close render={<Button variant="outline" />}>
+          Close
+        </DialogPrimitive.Close>
       )}
     </div>
   );
 }
 
-function DialogTitle({ ...props }: Omit<DialogPrimitive.Title.Props, 'className'>) {
+function DialogTitle({
+  ...props
+}: Omit<DialogPrimitive.Title.Props, "className">) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
@@ -98,7 +129,9 @@ function DialogTitle({ ...props }: Omit<DialogPrimitive.Title.Props, 'className'
   );
 }
 
-function DialogDescription({ ...props }: Omit<DialogPrimitive.Description.Props, 'className'>) {
+function DialogDescription({
+  ...props
+}: Omit<DialogPrimitive.Description.Props, "className">) {
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"

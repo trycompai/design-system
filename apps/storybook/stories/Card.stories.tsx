@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import {
   Badge,
   Button,
@@ -13,36 +13,46 @@ import {
   Label,
   Stack,
   Text,
-} from '@trycompai/design-system';
+} from "@trycompai/design-system";
 
 const meta = {
-  title: 'Molecules/Card',
+  title: "Molecules/Card",
   component: Card,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
   argTypes: {
     width: {
-      control: 'select',
-      options: ['auto', 'full', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'],
-      description: 'Fixed width of the card',
+      control: "select",
+      options: ["auto", "full", "sm", "md", "lg", "xl", "2xl", "3xl"],
+      description: "Fixed width of the card",
     },
     maxWidth: {
-      control: 'select',
-      options: ['sm', 'md', 'lg', 'xl', '2xl', '3xl', 'full'],
-      description: 'Maximum width constraint',
+      control: "select",
+      options: ["sm", "md", "lg", "xl", "2xl", "3xl", "full"],
+      description: "Maximum width constraint",
     },
     size: {
-      control: 'select',
-      options: ['default', 'sm'],
-      description: 'Padding size',
+      control: "select",
+      options: ["default", "sm"],
+      description: "Padding size",
+    },
+    shadow: {
+      control: "select",
+      options: ["none", "soft", "md"],
+      description: "Drop shadow intensity",
+    },
+    radius: {
+      control: "select",
+      options: ["md", "lg", "xl", "2xl"],
+      description: "Corner radius",
     },
     title: {
-      control: 'text',
+      control: "text",
     },
     description: {
-      control: 'text',
+      control: "text",
     },
   },
 } satisfies Meta<typeof Card>;
@@ -53,20 +63,23 @@ type Story = StoryObj<typeof meta>;
 // Simple API examples
 export const SimpleAPI: Story = {
   args: {
-    title: 'Card Title',
-    description: 'This is a simple card using the props-based API.',
-    width: 'md',
+    title: "Card Title",
+    description: "This is a simple card using the props-based API.",
+    width: "md",
     children: (
-      <Text>Content is automatically wrapped in CardContent. No need for compound components!</Text>
+      <Text>
+        Content is automatically wrapped in CardContent. No need for compound
+        components!
+      </Text>
     ),
   },
 };
 
 export const WithFooter: Story = {
   args: {
-    title: 'Confirm Action',
-    description: 'Are you sure you want to proceed?',
-    width: 'sm',
+    title: "Confirm Action",
+    description: "Are you sure you want to proceed?",
+    width: "sm",
     children: <Text>This action cannot be undone.</Text>,
     footer: (
       <>
@@ -79,24 +92,24 @@ export const WithFooter: Story = {
 
 export const WithHeaderAction: Story = {
   args: {
-    title: 'Team Settings',
-    description: 'Manage your team preferences',
+    title: "Team Settings",
+    description: "Manage your team preferences",
     headerAction: <Badge variant="secondary">Pro</Badge>,
-    width: 'md',
+    width: "md",
     children: <Text>Configure your team settings here.</Text>,
   },
 };
 
 export const FullExample: Story = {
   args: {
-    title: 'Create Project',
-    description: 'Start a new project from scratch',
+    title: "Create Project",
+    description: "Start a new project from scratch",
     headerAction: (
       <Button variant="ghost" size="icon-sm">
         ✕
       </Button>
     ),
-    width: 'md',
+    width: "md",
     children: (
       <Stack gap="4">
         <Stack gap="2">
@@ -124,14 +137,17 @@ export const CompoundComponents: Story = {
     <Card width="md">
       <CardHeader>
         <CardTitle>Advanced Layout</CardTitle>
-        <CardDescription>Using compound components for full control</CardDescription>
+        <CardDescription>
+          Using compound components for full control
+        </CardDescription>
         <CardAction>
           <Badge>New</Badge>
         </CardAction>
       </CardHeader>
       <CardContent>
         <Text>
-          Use compound components when you need custom layouts or multiple content sections.
+          Use compound components when you need custom layouts or multiple
+          content sections.
         </Text>
       </CardContent>
       <CardFooter>
@@ -144,19 +160,58 @@ export const CompoundComponents: Story = {
 
 export const ContentOnly: Story = {
   args: {
-    width: 'sm',
-    children: <Text variant="muted">A minimal card with just content, no header or footer.</Text>,
+    width: "sm",
+    children: (
+      <Text variant="muted">
+        A minimal card with just content, no header or footer.
+      </Text>
+    ),
   },
 };
 
 export const Small: Story = {
   args: {
-    size: 'sm',
-    width: 'sm',
-    title: 'Compact Card',
-    description: 'Smaller padding for compact layouts.',
+    size: "sm",
+    width: "sm",
+    title: "Compact Card",
+    description: "Smaller padding for compact layouts.",
     children: <Text size="sm">This card uses the small size variant.</Text>,
   },
+};
+
+export const Shadows: Story = {
+  render: () => (
+    <Stack gap="md">
+      <Card
+        shadow="none"
+        width="sm"
+        title="No shadow"
+        description="Flat surface against the background."
+      >
+        <Text size="sm">
+          Use for inline lists, nested cards, or grid items.
+        </Text>
+      </Card>
+      <Card
+        shadow="soft"
+        width="sm"
+        title="Soft shadow"
+        description="Subtle lift — ideal for marketing / public surfaces."
+      >
+        <Text size="sm">
+          Use for hero sections, trust-portal cards, and empty states.
+        </Text>
+      </Card>
+      <Card
+        shadow="md"
+        width="sm"
+        title="Medium shadow"
+        description="Pronounced lift — for floating panels and callouts."
+      >
+        <Text size="sm">Use sparingly for emphasis above dense layouts.</Text>
+      </Card>
+    </Stack>
+  ),
 };
 
 // Width examples - fixed widths that maintain size regardless of content
@@ -217,7 +272,8 @@ export const AutoWidth: Story = {
         </Text>
         <Card width="auto" title="Auto Width">
           <Text size="sm">
-            This card has longer content so it will be wider, but still shrinks to fit.
+            This card has longer content so it will be wider, but still shrinks
+            to fit.
           </Text>
         </Card>
       </Stack>
@@ -229,8 +285,14 @@ export const AutoWidth: Story = {
 export const FullWidth: Story = {
   render: () => (
     <div className="w-[600px]">
-      <Card width="full" title="Full Width Card" description="Fills the parent container">
-        <Text size="sm">This card takes up the full width of its container (600px here).</Text>
+      <Card
+        width="full"
+        title="Full Width Card"
+        description="Fills the parent container"
+      >
+        <Text size="sm">
+          This card takes up the full width of its container (600px here).
+        </Text>
       </Card>
     </div>
   ),
