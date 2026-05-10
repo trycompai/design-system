@@ -26,6 +26,7 @@ const splitButtonVariants = cva(
         sm: 'h-6 text-xs',
         default: 'h-7 text-[13px]',
         lg: 'h-8 text-[13px]',
+        xl: 'h-10 text-sm',
       },
     },
     defaultVariants: {
@@ -51,6 +52,7 @@ const splitButtonMainVariants = cva(
         sm: "px-2 [&_svg:not([class*='size-'])]:size-3.5",
         default: "px-2 [&_svg:not([class*='size-'])]:size-4",
         lg: "px-2.5 [&_svg:not([class*='size-'])]:size-4",
+        xl: "gap-2 px-5 [&_svg:not([class*='size-'])]:size-4",
       },
     },
     defaultVariants: {
@@ -61,7 +63,7 @@ const splitButtonMainVariants = cva(
 );
 
 const splitButtonTriggerVariants = cva(
-  'inline-flex items-center justify-center rounded-r-md transition-all duration-200 ease-out outline-none select-none cursor-pointer disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+  'inline-flex items-center justify-center rounded-r-md transition-all duration-200 ease-out outline-none select-none cursor-pointer disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:transition-transform [&_svg]:duration-200 data-[popup-open]:[&_svg]:rotate-180',
   {
     variants: {
       variant: {
@@ -76,6 +78,7 @@ const splitButtonTriggerVariants = cva(
         sm: "w-6 [&_svg:not([class*='size-'])]:size-3.5",
         default: "w-7 [&_svg:not([class*='size-'])]:size-4",
         lg: "w-8 [&_svg:not([class*='size-'])]:size-4",
+        xl: "w-10 [&_svg:not([class*='size-'])]:size-4",
       },
     },
     defaultVariants: {

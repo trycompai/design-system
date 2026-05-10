@@ -8,7 +8,7 @@ import { Close } from "@carbon/icons-react";
 import { Button } from "../atoms/button";
 
 const dialogContentVariants = cva(
-  "bg-background data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 grid max-w-[calc(100%-2rem)] gap-4 rounded-xl p-4 text-sm ring-1 duration-100 fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 outline-none",
+  "bg-background data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 ring-foreground/10 grid max-w-[calc(100%-2rem)] gap-4 text-sm ring-1 duration-100 fixed top-1/2 left-1/2 z-50 w-full -translate-x-1/2 -translate-y-1/2 outline-none overflow-hidden",
   {
     variants: {
       size: {
@@ -17,10 +17,27 @@ const dialogContentVariants = cva(
         lg: "sm:max-w-lg",
         xl: "sm:max-w-xl",
         "2xl": "sm:max-w-2xl",
+        "3xl": "sm:max-w-3xl",
+        "4xl": "sm:max-w-4xl",
+      },
+      padding: {
+        none: "p-0 [--dialog-px:0px]",
+        default: "p-4 [--dialog-px:--spacing(4)]",
+        lg: "p-6 [--dialog-px:--spacing(6)]",
+        xl: "p-8 [--dialog-px:--spacing(8)]",
+      },
+      radius: {
+        md: "rounded-md [--dialog-radius:--spacing(1.5)]",
+        lg: "rounded-lg [--dialog-radius:--spacing(2)]",
+        xl: "rounded-xl [--dialog-radius:--spacing(3)]",
+        "2xl": "rounded-2xl [--dialog-radius:--spacing(4)]",
+        "3xl": "rounded-3xl [--dialog-radius:--spacing(6)]",
       },
     },
     defaultVariants: {
       size: "sm",
+      padding: "default",
+      radius: "xl",
     },
   },
 );
@@ -57,6 +74,8 @@ function DialogContent({
   children,
   showCloseButton = true,
   size,
+  padding,
+  radius,
   ...props
 }: Omit<DialogPrimitive.Popup.Props, "className"> &
   VariantProps<typeof dialogContentVariants> & {
@@ -67,7 +86,7 @@ function DialogContent({
       <DialogOverlay />
       <DialogPrimitive.Popup
         data-slot="dialog-content"
-        className={dialogContentVariants({ size })}
+        className={dialogContentVariants({ size, padding, radius })}
         {...props}
       >
         {children}
@@ -104,7 +123,7 @@ function DialogFooter({
   return (
     <div
       data-slot="dialog-footer"
-      className="bg-muted -mx-4 -mb-4 rounded-b-xl border-t p-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
+      className="bg-muted border-t p-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:items-center [margin-inline:calc(var(--dialog-px,--spacing(4))*-1)] last:[border-bottom-left-radius:var(--dialog-radius,--spacing(3))] last:[border-bottom-right-radius:var(--dialog-radius,--spacing(3))] last:[margin-bottom:calc(var(--dialog-px,--spacing(4))*-1)]"
       {...props}
     >
       {children}
