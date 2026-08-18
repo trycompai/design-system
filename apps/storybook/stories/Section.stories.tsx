@@ -68,7 +68,9 @@ export const Composable: Story = {
           <SectionDescription>Configure how you receive notifications.</SectionDescription>
         </div>
         <SectionActions>
-          <Button variant="outline" size="sm">Reset</Button>
+          <Button variant="outline" size="sm">
+            Reset
+          </Button>
           <Button size="sm">Save</Button>
         </SectionActions>
       </SectionHeader>
@@ -103,12 +105,18 @@ export const MultipleSections: Story = {
       <Section
         title="Security"
         description="Manage your security settings."
-        actions={<Button variant="outline" size="sm">Change Password</Button>}
+        actions={
+          <Button variant="outline" size="sm">
+            Change Password
+          </Button>
+        }
       >
         <Card>
           <CardContent>
             <div className="py-4">
-              <Text size="sm" variant="muted">Last password change: 30 days ago</Text>
+              <Text size="sm" variant="muted">
+                Last password change: 30 days ago
+              </Text>
             </div>
           </CardContent>
         </Card>

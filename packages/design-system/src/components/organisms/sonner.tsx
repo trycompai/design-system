@@ -1,10 +1,4 @@
-import {
-  CheckmarkFilled,
-  Information,
-  Misuse,
-  Renew,
-  Warning,
-} from '@carbon/icons-react';
+import { CheckmarkFilled, Information, Misuse, Renew, Warning } from '@carbon/icons-react';
 import { Toaster as Sonner, type ToasterProps } from 'sonner';
 
 const Toaster = ({ theme = 'system', ...props }: ToasterProps) => {

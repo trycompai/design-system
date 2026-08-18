@@ -85,9 +85,7 @@ export const Default: Story = {
         <MenubarTrigger>View</MenubarTrigger>
         <MenubarContent>
           <MenubarCheckboxItem>Always Show Bookmarks Bar</MenubarCheckboxItem>
-          <MenubarCheckboxItem checked>
-            Always Show Full URLs
-          </MenubarCheckboxItem>
+          <MenubarCheckboxItem checked>Always Show Full URLs</MenubarCheckboxItem>
           <MenubarSeparator />
           <MenubarItem>
             Reload <MenubarShortcut>⌘R</MenubarShortcut>
@@ -118,4 +116,3 @@ export const Default: Story = {
     </Menubar>
   ),
 };
-

@@ -10,31 +10,31 @@ import {
   DropdownMenuSeparator,
 } from '../organisms/dropdown-menu';
 
-const splitButtonVariants = cva(
-  'inline-flex items-stretch rounded-md',
-  {
-    variants: {
-      variant: {
-        default: 'bg-primary text-primary-foreground [&_[data-slot=split-button-divider]]:bg-primary-foreground/20',
-        outline: 'border border-border bg-background [&_[data-slot=split-button-divider]]:bg-border',
-        secondary: 'bg-secondary text-secondary-foreground [&_[data-slot=split-button-divider]]:bg-secondary-foreground/20',
-        ghost: '[&_[data-slot=split-button-divider]]:bg-border',
-        destructive: 'bg-destructive/10 text-destructive [&_[data-slot=split-button-divider]]:bg-destructive/20',
-      },
-      size: {
-        xs: 'h-5 text-[11px]',
-        sm: 'h-6 text-xs',
-        default: 'h-7 text-[13px]',
-        lg: 'h-8 text-[13px]',
-        xl: 'h-10 text-sm',
-      },
+const splitButtonVariants = cva('inline-flex items-stretch rounded-md', {
+  variants: {
+    variant: {
+      default:
+        'bg-primary text-primary-foreground [&_[data-slot=split-button-divider]]:bg-primary-foreground/20',
+      outline: 'border border-border bg-background [&_[data-slot=split-button-divider]]:bg-border',
+      secondary:
+        'bg-secondary text-secondary-foreground [&_[data-slot=split-button-divider]]:bg-secondary-foreground/20',
+      ghost: '[&_[data-slot=split-button-divider]]:bg-border',
+      destructive:
+        'bg-destructive/10 text-destructive [&_[data-slot=split-button-divider]]:bg-destructive/20',
     },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
+    size: {
+      xs: 'h-5 text-[11px]',
+      sm: 'h-6 text-xs',
+      default: 'h-7 text-[13px]',
+      lg: 'h-8 text-[13px]',
+      xl: 'h-10 text-sm',
     },
-  }
-);
+  },
+  defaultVariants: {
+    variant: 'default',
+    size: 'default',
+  },
+});
 
 const splitButtonMainVariants = cva(
   'inline-flex items-center justify-center gap-1 font-medium leading-none rounded-l-md transition-all duration-200 ease-out outline-none select-none cursor-pointer disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
@@ -59,7 +59,7 @@ const splitButtonMainVariants = cva(
       variant: 'default',
       size: 'default',
     },
-  }
+  },
 );
 
 const splitButtonTriggerVariants = cva(
@@ -85,7 +85,7 @@ const splitButtonTriggerVariants = cva(
       variant: 'default',
       size: 'default',
     },
-  }
+  },
 );
 
 type SplitButtonAction = {
@@ -139,10 +139,7 @@ function SplitButton({
   const isDisabled = disabled || loading;
 
   return (
-    <div
-      data-slot="split-button"
-      className={splitButtonVariants({ variant, size })}
-    >
+    <div data-slot="split-button" className={splitButtonVariants({ variant, size })}>
       <button
         type="button"
         data-slot="split-button-main"
@@ -150,18 +147,10 @@ function SplitButton({
         disabled={isDisabled}
         className={splitButtonMainVariants({ variant, size })}
       >
-        {loading ? (
-          <Spinner />
-        ) : iconLeft ? (
-          <span data-icon="inline-start">{iconLeft}</span>
-        ) : null}
+        {loading ? <Spinner /> : iconLeft ? <span data-icon="inline-start">{iconLeft}</span> : null}
         {children}
       </button>
-      <span
-        data-slot="split-button-divider"
-        className="w-px self-stretch"
-        aria-hidden="true"
-      />
+      <span data-slot="split-button-divider" className="w-px self-stretch" aria-hidden="true" />
       <MenuPrimitive.Root>
         <MenuPrimitive.Trigger
           disabled={isDisabled}

@@ -50,13 +50,7 @@ function EmptyMedia({
 }
 
 function EmptyTitle({ ...props }: Omit<React.ComponentProps<'div'>, 'className'>) {
-  return (
-    <div
-      data-slot="empty-title"
-      className="text-lg font-medium tracking-tight"
-      {...props}
-    />
-  );
+  return <div data-slot="empty-title" className="text-lg font-medium tracking-tight" {...props} />;
 }
 
 function EmptyDescription({ ...props }: Omit<React.ComponentProps<'p'>, 'className'>) {

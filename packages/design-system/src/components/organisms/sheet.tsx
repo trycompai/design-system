@@ -69,7 +69,9 @@ function SheetHeader({ ...props }: Omit<React.ComponentProps<'div'>, 'className'
 }
 
 function SheetBody({ ...props }: Omit<React.ComponentProps<'div'>, 'className'>) {
-  return <div data-slot="sheet-body" className="flex-1 min-h-0 overflow-y-auto px-6 py-4" {...props} />;
+  return (
+    <div data-slot="sheet-body" className="flex-1 min-h-0 overflow-y-auto px-6 py-4" {...props} />
+  );
 }
 
 function SheetFooter({ ...props }: Omit<React.ComponentProps<'div'>, 'className'>) {

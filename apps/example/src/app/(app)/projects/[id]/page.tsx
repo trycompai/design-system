@@ -38,31 +38,27 @@ const tasks = [
   { id: 6, title: 'User testing', completed: false },
 ];
 
-export default function ProjectDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const project = projectData[id as keyof typeof projectData] || projectData['1'];
 
   return (
     <PageLayout>
-      <PageHeader
-        title={project.name}
-        backHref="/projects"
-        backLabel="Projects"
-      />
+      <PageHeader title={project.name} backHref="/projects" backLabel="Projects" />
 
       <HStack gap="4" align="center">
         <Badge>{project.status}</Badge>
         <HStack gap="1" align="center">
           <UserMultiple size={16} className="text-muted-foreground" />
-          <Text variant="muted" size="sm">{project.members} members</Text>
+          <Text variant="muted" size="sm">
+            {project.members} members
+          </Text>
         </HStack>
         <HStack gap="1" align="center">
           <Calendar size={16} className="text-muted-foreground" />
-          <Text variant="muted" size="sm">Due {project.dueDate}</Text>
+          <Text variant="muted" size="sm">
+            Due {project.dueDate}
+          </Text>
         </HStack>
       </HStack>
 
@@ -104,17 +100,23 @@ export default function ProjectDetailPage({
                   <div className="flex items-center gap-2">
                     <div className="size-2 rounded-full bg-green-500" />
                     <Text size="sm">Design mockup approved</Text>
-                    <Text variant="muted" size="sm">2h ago</Text>
+                    <Text variant="muted" size="sm">
+                      2h ago
+                    </Text>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="size-2 rounded-full bg-blue-500" />
                     <Text size="sm">New file uploaded</Text>
-                    <Text variant="muted" size="sm">4h ago</Text>
+                    <Text variant="muted" size="sm">
+                      4h ago
+                    </Text>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="size-2 rounded-full bg-yellow-500" />
                     <Text size="sm">Comment added</Text>
-                    <Text variant="muted" size="sm">1d ago</Text>
+                    <Text variant="muted" size="sm">
+                      1d ago
+                    </Text>
                   </div>
                 </Stack>
               </CardContent>

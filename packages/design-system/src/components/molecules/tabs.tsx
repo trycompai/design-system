@@ -24,7 +24,8 @@ const tabsListVariants = cva(
       variant: {
         default: 'bg-muted',
         line: 'gap-1 bg-transparent',
-        underline: 'p-0 pb-px bg-transparent w-full max-w-full justify-start items-stretch shadow-[inset_0_-1px_0_0_var(--color-border)]',
+        underline:
+          'p-0 pb-px bg-transparent w-full max-w-full justify-start items-stretch shadow-[inset_0_-1px_0_0_var(--color-border)]',
       },
     },
     defaultVariants: {

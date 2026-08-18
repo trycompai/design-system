@@ -17,7 +17,7 @@ function renderRail(children: React.ReactNode) {
       <AppShellBody>
         <AppShellRail>{children}</AppShellRail>
       </AppShellBody>
-    </AppShell>
+    </AppShell>,
   );
 
   const rail = container.querySelector<HTMLElement>('[data-slot="app-shell-rail"]');
@@ -57,9 +57,7 @@ describe('AppShellRailItem', () => {
   });
 
   it('renders as the element given to `render`, with no nested button', () => {
-    const rail = renderRail(
-      <AppShellRailItem icon={<Icon />} render={<a href="/compliance" />} />
-    );
+    const rail = renderRail(<AppShellRailItem icon={<Icon />} render={<a href="/compliance" />} />);
 
     const item = getRailItem(rail);
     expect(item.tagName).toBe('A');
@@ -72,7 +70,7 @@ describe('AppShellRailItem', () => {
 
   it('keeps the tooltip label and aria-label when rendered as an anchor', () => {
     const rail = renderRail(
-      <AppShellRailItem icon={<Icon />} label="Compliance" render={<a href="/compliance" />} />
+      <AppShellRailItem icon={<Icon />} label="Compliance" render={<a href="/compliance" />} />,
     );
 
     const item = getRailItem(rail);
@@ -95,7 +93,7 @@ describe('AppShellRailItem', () => {
     expect(getRailItem(buttonRail)).toBeDisabled();
 
     const anchorRail = renderRail(
-      <AppShellRailItem icon={<Icon />} id="rail-anchor" render={<a href="/x" />} />
+      <AppShellRailItem icon={<Icon />} id="rail-anchor" render={<a href="/x" />} />,
     );
     expect(getRailItem(anchorRail)).toHaveAttribute('id', 'rail-anchor');
   });
@@ -112,7 +110,7 @@ describe('AppShellRailItem', () => {
             <AppShellRailItem icon={<Icon />} label="Two" render={<a href="/two" />} />
           </AppShellRail>
         </AppShellBody>
-      </AppShell>
+      </AppShell>,
     );
 
     // Two items, each rendered twice (desktop rail + mobile drawer).

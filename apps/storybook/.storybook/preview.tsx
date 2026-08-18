@@ -28,7 +28,9 @@ const preview: Preview = {
       const isFullscreen = context.parameters?.layout === 'fullscreen';
       return (
         <div className={isDark ? 'dark' : ''}>
-          <div className={`bg-background text-foreground min-h-screen ${isFullscreen ? '' : 'p-6'}`}>
+          <div
+            className={`bg-background text-foreground min-h-screen ${isFullscreen ? '' : 'p-6'}`}
+          >
             <Story />
           </div>
         </div>

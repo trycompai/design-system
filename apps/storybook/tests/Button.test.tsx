@@ -42,7 +42,7 @@ describe('Button', () => {
     render(
       <Button disabled onClick={handleClick}>
         Disabled
-      </Button>
+      </Button>,
     );
     await user.click(screen.getByRole('button'));
 
@@ -63,7 +63,7 @@ describe('Button', () => {
     render(
       <Button loading iconLeft={<Mail data-testid="mail-icon" />}>
         Loading
-      </Button>
+      </Button>,
     );
     expect(screen.queryByTestId('mail-icon')).not.toBeInTheDocument();
   });

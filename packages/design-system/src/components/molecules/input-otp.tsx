@@ -3,10 +3,7 @@ import * as React from 'react';
 
 import { Subtract } from '@carbon/icons-react';
 
-function InputOTP({
-  className: _className,
-  ...props
-}: React.ComponentProps<typeof OTPInput>) {
+function InputOTP({ className: _className, ...props }: React.ComponentProps<typeof OTPInput>) {
   return (
     <OTPInput
       data-slot="input-otp"

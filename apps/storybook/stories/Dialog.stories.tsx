@@ -59,9 +59,7 @@ export const Default: Story = {
 
     // Verify dialog title and description
     await expect(within(dialog).getByText('Dialog Title')).toBeInTheDocument();
-    await expect(
-      within(dialog).getByText(/This is the dialog description/)
-    ).toBeInTheDocument();
+    await expect(within(dialog).getByText(/This is the dialog description/)).toBeInTheDocument();
 
     // Close the dialog using the close button
     const closeButton = within(dialog).getByRole('button', { name: /close/i });

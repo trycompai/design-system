@@ -90,7 +90,7 @@ export default function ControlsPage() {
     return allControlCategories.filter(
       (category) =>
         category.name.toLowerCase().includes(query) ||
-        category.description.toLowerCase().includes(query)
+        category.description.toLowerCase().includes(query),
     );
   }, [searchQuery]);
 
@@ -107,8 +107,12 @@ export default function ControlsPage() {
 
       <Stack gap="4">
         <HStack gap="4">
-          <Badge>{passedControls} of {totalControls} controls passing</Badge>
-          <Badge variant="secondary">{totalControls > 0 ? Math.round((passedControls / totalControls) * 100) : 0}% complete</Badge>
+          <Badge>
+            {passedControls} of {totalControls} controls passing
+          </Badge>
+          <Badge variant="secondary">
+            {totalControls > 0 ? Math.round((passedControls / totalControls) * 100) : 0}% complete
+          </Badge>
         </HStack>
 
         <DataTableHeader>

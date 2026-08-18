@@ -20,27 +20,47 @@ describe('Badge', () => {
     });
 
     it('applies secondary variant classes', () => {
-      render(<Badge variant="secondary" data-testid="badge">Secondary</Badge>);
+      render(
+        <Badge variant="secondary" data-testid="badge">
+          Secondary
+        </Badge>,
+      );
       expect(screen.getByTestId('badge')).toHaveClass('bg-secondary');
     });
 
     it('applies destructive variant classes', () => {
-      render(<Badge variant="destructive" data-testid="badge">Error</Badge>);
+      render(
+        <Badge variant="destructive" data-testid="badge">
+          Error
+        </Badge>,
+      );
       expect(screen.getByTestId('badge')).toHaveClass('bg-destructive/10');
     });
 
     it('applies outline variant classes', () => {
-      render(<Badge variant="outline" data-testid="badge">Outline</Badge>);
+      render(
+        <Badge variant="outline" data-testid="badge">
+          Outline
+        </Badge>,
+      );
       expect(screen.getByTestId('badge')).toHaveClass('border-border');
     });
 
     it('applies ghost variant classes', () => {
-      render(<Badge variant="ghost" data-testid="badge">Ghost</Badge>);
+      render(
+        <Badge variant="ghost" data-testid="badge">
+          Ghost
+        </Badge>,
+      );
       expect(screen.getByTestId('badge')).toHaveClass('bg-transparent');
     });
 
     it('applies link variant classes', () => {
-      render(<Badge variant="link" data-testid="badge">Link</Badge>);
+      render(
+        <Badge variant="link" data-testid="badge">
+          Link
+        </Badge>,
+      );
       expect(screen.getByTestId('badge')).toHaveClass('text-primary');
     });
   });
@@ -54,7 +74,7 @@ describe('Badge', () => {
     render(
       <Badge render={<a href="#" />} data-testid="badge">
         Link Badge
-      </Badge>
+      </Badge>,
     );
     expect(screen.getByTestId('badge').tagName).toBe('A');
   });

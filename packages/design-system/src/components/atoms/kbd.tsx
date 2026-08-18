@@ -9,13 +9,7 @@ function Kbd({ ...props }: Omit<React.ComponentProps<'kbd'>, 'className'>) {
 }
 
 function KbdGroup({ ...props }: Omit<React.ComponentProps<'div'>, 'className'>) {
-  return (
-    <kbd
-      data-slot="kbd-group"
-      className="gap-1 inline-flex items-center"
-      {...props}
-    />
-  );
+  return <kbd data-slot="kbd-group" className="gap-1 inline-flex items-center" {...props} />;
 }
 
 export { Kbd, KbdGroup };

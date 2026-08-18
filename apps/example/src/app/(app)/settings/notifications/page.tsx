@@ -16,10 +16,7 @@ export default function SettingsNotificationsPage() {
       <PageHeader title="Notifications" />
 
       <Stack gap="6">
-        <Section
-          title="Email Notifications"
-          description="Choose which emails you want to receive."
-        >
+        <Section title="Email Notifications" description="Choose which emails you want to receive.">
           <Stack gap="6">
             <HStack justify="between" align="center">
               <Stack gap="1">
@@ -60,10 +57,7 @@ export default function SettingsNotificationsPage() {
           </Stack>
         </Section>
 
-        <Section
-          title="Push Notifications"
-          description="Configure push notification settings."
-        >
+        <Section title="Push Notifications" description="Configure push notification settings.">
           <Stack gap="6">
             <HStack justify="between" align="center">
               <Stack gap="1">

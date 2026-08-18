@@ -75,7 +75,9 @@ function AIChat({
       <div
         data-slot="ai-chat-panel"
         className={`fixed top-16 right-3 bottom-3 z-30 w-full max-w-md flex flex-col bg-background/95 backdrop-blur-xl border border-border/50 rounded-2xl overflow-hidden transition-all duration-300 ease-out ring-1 ring-black/[0.03] dark:ring-white/[0.05] ${
-          isOpen ? 'translate-x-0 opacity-100 scale-100' : 'translate-x-2 opacity-0 scale-[0.98] pointer-events-none'
+          isOpen
+            ? 'translate-x-0 opacity-100 scale-100'
+            : 'translate-x-2 opacity-0 scale-[0.98] pointer-events-none'
         }`}
         style={{
           boxShadow: isOpen
@@ -120,9 +122,7 @@ function AIChatTrigger({ onClick, isOpen, shortcut = 'J' }: AIChatTriggerProps) 
           </button>
         }
       />
-      <TooltipContent side="bottom">
-        {isOpen ? 'Close AI Chat' : 'Open AI Chat'}
-      </TooltipContent>
+      <TooltipContent side="bottom">{isOpen ? 'Close AI Chat' : 'Open AI Chat'}</TooltipContent>
     </Tooltip>
   );
 }
@@ -231,7 +231,9 @@ function AIChatDefaultContent({ onClose }: { onClose: () => void }) {
         </div>
         <div className="mt-3 flex items-center justify-center gap-2 text-xs text-muted-foreground/70">
           <Keyboard className="size-3" />
-          <span>Press <Kbd>Esc</Kbd> to close</span>
+          <span>
+            Press <Kbd>Esc</Kbd> to close
+          </span>
         </div>
       </div>
     </>

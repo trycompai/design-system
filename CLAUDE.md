@@ -44,17 +44,18 @@ packages/
 ### Component Organization
 
 Components in `packages/design-system/src/components/` follow atomic design:
+
 - `atoms/` - Basic building blocks (Button, Input, Badge, etc.)
 - `molecules/` - Combined components (Card, Tabs, Dialog, etc.)
 - `organisms/` - Complex sections (Sidebar, NavigationMenu, AppShell, etc.)
 
 ### Key Files
 
-| File | Purpose |
-|------|---------|
-| `packages/design-system/agents.md` | Component usage rules (MUST READ) |
-| `packages/design-system/src/styles/globals.css` | CSS variables, theming, dark mode |
-| `packages/design-system/lib/utils.ts` | `cn()` utility (clsx + tailwind-merge) |
+| File                                            | Purpose                                |
+| ----------------------------------------------- | -------------------------------------- |
+| `packages/design-system/agents.md`              | Component usage rules (MUST READ)      |
+| `packages/design-system/src/styles/globals.css` | CSS variables, theming, dark mode      |
+| `packages/design-system/lib/utils.ts`           | `cn()` utility (clsx + tailwind-merge) |
 
 ## Critical: Component Styling Rules
 
@@ -105,7 +106,7 @@ const buttonVariants = cva('...', {
   variants: {
     variant: {
       // ... existing variants
-      warning: 'bg-yellow-500 text-white',  // Add new variant
+      warning: 'bg-yellow-500 text-white', // Add new variant
     },
   },
 });

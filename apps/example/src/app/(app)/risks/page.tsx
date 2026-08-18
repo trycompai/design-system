@@ -91,8 +91,7 @@ export default function RisksPage() {
     const query = searchQuery.toLowerCase();
     return allRisks.filter(
       (risk) =>
-        risk.title.toLowerCase().includes(query) ||
-        risk.owner.toLowerCase().includes(query)
+        risk.title.toLowerCase().includes(query) || risk.owner.toLowerCase().includes(query),
     );
   }, [searchQuery]);
 
@@ -169,4 +168,3 @@ export default function RisksPage() {
     </PageLayout>
   );
 }
-

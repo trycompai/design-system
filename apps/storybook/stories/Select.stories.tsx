@@ -26,7 +26,15 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render: () => (
     <div className="w-[180px]">
-      <Select items={{ apple: 'Apple', banana: 'Banana', orange: 'Orange', grape: 'Grape', mango: 'Mango' }}>
+      <Select
+        items={{
+          apple: 'Apple',
+          banana: 'Banana',
+          orange: 'Orange',
+          grape: 'Grape',
+          mango: 'Mango',
+        }}
+      >
         <SelectTrigger>
           <SelectValue placeholder="Select a fruit" />
         </SelectTrigger>

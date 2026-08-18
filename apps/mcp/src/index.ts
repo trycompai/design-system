@@ -1,23 +1,20 @@
 #!/usr/bin/env node
-import path from "node:path";
-import process from "node:process";
-import { fileURLToPath } from "node:url";
+import path from 'node:path';
+import process from 'node:process';
+import { fileURLToPath } from 'node:url';
 
-import { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema,
-} from "@modelcontextprotocol/sdk/types.js";
-import { z } from "zod";
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import { z } from 'zod';
 
-import { readTextFile } from "./fs-utils.js";
+import { readTextFile } from './fs-utils.js';
 import {
   bestGuessStoryNameFromComponentFileStem,
   listDesignSystemComponents,
-} from "./design-system-index.js";
-import { listStorybookStories, findStoryByName } from "./storybook-index.js";
-import { getRepoPaths } from "./paths.js";
+} from './design-system-index.js';
+import { listStorybookStories, findStoryByName } from './storybook-index.js';
+import { getRepoPaths } from './paths.js';
 
 // ============================================================================
 // Helper Functions
@@ -29,79 +26,88 @@ import { getRepoPaths } from "./paths.js";
  */
 const COMPONENT_TAGS: Record<string, string[]> = {
   // Atoms
-  "atoms/button": ["action", "submit", "click", "cta", "primary", "secondary", "destructive", "link"],
-  "atoms/input": ["text", "form", "field", "type", "entry", "textbox"],
-  "atoms/textarea": ["multiline", "text", "form", "field", "long text", "description"],
-  "atoms/checkbox": ["toggle", "boolean", "form", "select", "check", "tick"],
-  "atoms/switch": ["toggle", "boolean", "on off", "setting", "preference"],
-  "atoms/label": ["form", "field", "text", "name"],
-  "atoms/badge": ["tag", "status", "indicator", "pill", "chip", "count"],
-  "atoms/avatar": ["user", "profile", "image", "photo", "initials", "person"],
-  "atoms/progress": ["loading", "bar", "percentage", "completion", "status"],
-  "atoms/spinner": ["loading", "wait", "busy", "activity"],
-  "atoms/skeleton": ["loading", "placeholder", "shimmer"],
-  "atoms/separator": ["divider", "line", "hr", "horizontal rule"],
-  "atoms/heading": ["title", "h1", "h2", "h3", "h4", "header", "typography"],
-  "atoms/text": ["paragraph", "body", "content", "typography", "p"],
-  "atoms/kbd": ["keyboard", "shortcut", "key", "hotkey"],
-  "atoms/slider": ["range", "value", "number", "input"],
-  "atoms/toggle": ["switch", "button", "on off", "state"],
-  "atoms/container": ["wrapper", "layout", "max-width", "center"],
-  "atoms/stack": ["layout", "flex", "vertical", "horizontal", "spacing", "gap"],
-  "atoms/logo": ["brand", "identity", "image"],
-  "atoms/aspect-ratio": ["image", "video", "ratio", "responsive"],
+  'atoms/button': [
+    'action',
+    'submit',
+    'click',
+    'cta',
+    'primary',
+    'secondary',
+    'destructive',
+    'link',
+  ],
+  'atoms/input': ['text', 'form', 'field', 'type', 'entry', 'textbox'],
+  'atoms/textarea': ['multiline', 'text', 'form', 'field', 'long text', 'description'],
+  'atoms/checkbox': ['toggle', 'boolean', 'form', 'select', 'check', 'tick'],
+  'atoms/switch': ['toggle', 'boolean', 'on off', 'setting', 'preference'],
+  'atoms/label': ['form', 'field', 'text', 'name'],
+  'atoms/badge': ['tag', 'status', 'indicator', 'pill', 'chip', 'count'],
+  'atoms/avatar': ['user', 'profile', 'image', 'photo', 'initials', 'person'],
+  'atoms/progress': ['loading', 'bar', 'percentage', 'completion', 'status'],
+  'atoms/spinner': ['loading', 'wait', 'busy', 'activity'],
+  'atoms/skeleton': ['loading', 'placeholder', 'shimmer'],
+  'atoms/separator': ['divider', 'line', 'hr', 'horizontal rule'],
+  'atoms/heading': ['title', 'h1', 'h2', 'h3', 'h4', 'header', 'typography'],
+  'atoms/text': ['paragraph', 'body', 'content', 'typography', 'p'],
+  'atoms/kbd': ['keyboard', 'shortcut', 'key', 'hotkey'],
+  'atoms/slider': ['range', 'value', 'number', 'input'],
+  'atoms/toggle': ['switch', 'button', 'on off', 'state'],
+  'atoms/container': ['wrapper', 'layout', 'max-width', 'center'],
+  'atoms/stack': ['layout', 'flex', 'vertical', 'horizontal', 'spacing', 'gap'],
+  'atoms/logo': ['brand', 'identity', 'image'],
+  'atoms/aspect-ratio': ['image', 'video', 'ratio', 'responsive'],
 
   // Molecules
-  "molecules/card": ["container", "box", "panel", "content", "wrapper"],
-  "molecules/tabs": ["navigation", "switch", "panels", "sections"],
-  "molecules/accordion": ["expand", "collapse", "faq", "disclosure"],
-  "molecules/alert": ["message", "notification", "warning", "error", "info", "success"],
-  "molecules/popover": ["tooltip", "overlay", "dropdown", "floating"],
-  "molecules/tooltip": ["hint", "help", "info", "hover"],
-  "molecules/select": ["dropdown", "picker", "choice", "option", "form"],
-  "molecules/field": ["form", "input", "label", "error", "help text"],
-  "molecules/table": ["data", "grid", "list", "rows", "columns"],
-  "molecules/pagination": ["pages", "navigation", "next", "previous"],
-  "molecules/breadcrumb": ["navigation", "path", "location", "crumbs"],
-  "molecules/radio-group": ["choice", "option", "form", "select one"],
-  "molecules/toggle-group": ["buttons", "options", "select", "multiple"],
-  "molecules/button-group": ["actions", "toolbar", "buttons"],
-  "molecules/input-group": ["form", "addon", "prefix", "suffix"],
-  "molecules/scroll-area": ["overflow", "scrollbar", "container"],
-  "molecules/collapsible": ["expand", "collapse", "toggle", "disclosure"],
-  "molecules/hover-card": ["preview", "popup", "info", "details"],
-  "molecules/page-header": ["title", "description", "actions", "header"],
-  "molecules/section": ["group", "container", "panel"],
-  "molecules/settings": ["preferences", "config", "options"],
-  "molecules/theme-switcher": ["dark mode", "light mode", "theme", "toggle"],
-  "molecules/command-search": ["search", "spotlight", "quick", "cmd k"],
-  "molecules/input-otp": ["code", "verification", "2fa", "pin"],
-  "molecules/grid": ["layout", "columns", "responsive"],
-  "molecules/empty": ["no data", "placeholder", "zero state"],
-  "molecules/item": ["list item", "row", "entry"],
-  "molecules/resizable": ["resize", "split", "panels"],
-  "molecules/ai-chat": ["chatbot", "assistant", "ai", "conversation"],
-  "molecules/data-table-header": ["table", "filter", "search", "actions"],
+  'molecules/card': ['container', 'box', 'panel', 'content', 'wrapper'],
+  'molecules/tabs': ['navigation', 'switch', 'panels', 'sections'],
+  'molecules/accordion': ['expand', 'collapse', 'faq', 'disclosure'],
+  'molecules/alert': ['message', 'notification', 'warning', 'error', 'info', 'success'],
+  'molecules/popover': ['tooltip', 'overlay', 'dropdown', 'floating'],
+  'molecules/tooltip': ['hint', 'help', 'info', 'hover'],
+  'molecules/select': ['dropdown', 'picker', 'choice', 'option', 'form'],
+  'molecules/field': ['form', 'input', 'label', 'error', 'help text'],
+  'molecules/table': ['data', 'grid', 'list', 'rows', 'columns'],
+  'molecules/pagination': ['pages', 'navigation', 'next', 'previous'],
+  'molecules/breadcrumb': ['navigation', 'path', 'location', 'crumbs'],
+  'molecules/radio-group': ['choice', 'option', 'form', 'select one'],
+  'molecules/toggle-group': ['buttons', 'options', 'select', 'multiple'],
+  'molecules/button-group': ['actions', 'toolbar', 'buttons'],
+  'molecules/input-group': ['form', 'addon', 'prefix', 'suffix'],
+  'molecules/scroll-area': ['overflow', 'scrollbar', 'container'],
+  'molecules/collapsible': ['expand', 'collapse', 'toggle', 'disclosure'],
+  'molecules/hover-card': ['preview', 'popup', 'info', 'details'],
+  'molecules/page-header': ['title', 'description', 'actions', 'header'],
+  'molecules/section': ['group', 'container', 'panel'],
+  'molecules/settings': ['preferences', 'config', 'options'],
+  'molecules/theme-switcher': ['dark mode', 'light mode', 'theme', 'toggle'],
+  'molecules/command-search': ['search', 'spotlight', 'quick', 'cmd k'],
+  'molecules/input-otp': ['code', 'verification', '2fa', 'pin'],
+  'molecules/grid': ['layout', 'columns', 'responsive'],
+  'molecules/empty': ['no data', 'placeholder', 'zero state'],
+  'molecules/item': ['list item', 'row', 'entry'],
+  'molecules/resizable': ['resize', 'split', 'panels'],
+  'molecules/ai-chat': ['chatbot', 'assistant', 'ai', 'conversation'],
+  'molecules/data-table-header': ['table', 'filter', 'search', 'actions'],
 
   // Organisms
-  "organisms/sidebar": ["navigation", "menu", "nav", "drawer", "panel", "left", "collapsible"],
-  "organisms/app-shell": ["layout", "structure", "page", "navbar", "sidebar", "main"],
-  "organisms/dialog": ["modal", "popup", "overlay", "form", "confirm"],
-  "organisms/sheet": ["drawer", "slide", "panel", "side", "overlay"],
-  "organisms/drawer": ["slide", "panel", "side", "overlay", "mobile"],
-  "organisms/dropdown-menu": ["menu", "actions", "context", "options"],
-  "organisms/context-menu": ["right click", "menu", "actions"],
-  "organisms/command": ["search", "palette", "cmd k", "spotlight", "keyboard"],
-  "organisms/navigation-menu": ["nav", "header", "links", "menu"],
-  "organisms/menubar": ["menu", "actions", "toolbar", "file menu"],
-  "organisms/alert-dialog": ["confirm", "warning", "destructive", "modal"],
-  "organisms/calendar": ["date", "picker", "schedule", "events"],
-  "organisms/combobox": ["autocomplete", "search", "select", "typeahead"],
-  "organisms/carousel": ["slider", "gallery", "images", "slides"],
-  "organisms/chart": ["graph", "visualization", "data", "analytics"],
-  "organisms/organization-selector": ["workspace", "team", "account", "switcher"],
-  "organisms/page-layout": ["layout", "structure", "container", "center"],
-  "organisms/sonner": ["toast", "notification", "alert", "message"],
+  'organisms/sidebar': ['navigation', 'menu', 'nav', 'drawer', 'panel', 'left', 'collapsible'],
+  'organisms/app-shell': ['layout', 'structure', 'page', 'navbar', 'sidebar', 'main'],
+  'organisms/dialog': ['modal', 'popup', 'overlay', 'form', 'confirm'],
+  'organisms/sheet': ['drawer', 'slide', 'panel', 'side', 'overlay'],
+  'organisms/drawer': ['slide', 'panel', 'side', 'overlay', 'mobile'],
+  'organisms/dropdown-menu': ['menu', 'actions', 'context', 'options'],
+  'organisms/context-menu': ['right click', 'menu', 'actions'],
+  'organisms/command': ['search', 'palette', 'cmd k', 'spotlight', 'keyboard'],
+  'organisms/navigation-menu': ['nav', 'header', 'links', 'menu'],
+  'organisms/menubar': ['menu', 'actions', 'toolbar', 'file menu'],
+  'organisms/alert-dialog': ['confirm', 'warning', 'destructive', 'modal'],
+  'organisms/calendar': ['date', 'picker', 'schedule', 'events'],
+  'organisms/combobox': ['autocomplete', 'search', 'select', 'typeahead'],
+  'organisms/carousel': ['slider', 'gallery', 'images', 'slides'],
+  'organisms/chart': ['graph', 'visualization', 'data', 'analytics'],
+  'organisms/organization-selector': ['workspace', 'team', 'account', 'switcher'],
+  'organisms/page-layout': ['layout', 'structure', 'container', 'center'],
+  'organisms/sonner': ['toast', 'notification', 'alert', 'message'],
 };
 
 /**
@@ -144,15 +150,17 @@ function parseComponentDocs(source: string, componentId: string) {
   if (exportBlockMatch && exportBlockMatch[1]) {
     const exportedNames = exportBlockMatch[1]
       .split(',')
-      .map(s => s.trim().replace(/\n/g, ''))
-      .filter(s => s && !s.includes(' as ') && !s.toLowerCase().includes('variants'));
+      .map((s) => s.trim().replace(/\n/g, ''))
+      .filter((s) => s && !s.includes(' as ') && !s.toLowerCase().includes('variants'));
     docs.exports.push(...exportedNames);
   }
 
   // FALLBACK: If no export block, look for inline exports
   if (docs.exports.length === 0) {
     // Extract exported function/const names (including forwardRef)
-    const exportMatches = source.matchAll(/(?:export\s+)?const\s+(\w+)\s*=\s*(?:React\.)?forwardRef/g);
+    const exportMatches = source.matchAll(
+      /(?:export\s+)?const\s+(\w+)\s*=\s*(?:React\.)?forwardRef/g,
+    );
     for (const match of exportMatches) {
       if (match[1] && !docs.exports.includes(match[1])) {
         docs.exports.push(match[1]);
@@ -160,7 +168,9 @@ function parseComponentDocs(source: string, componentId: string) {
     }
 
     // Also get regular exports
-    const regularExportMatches = source.matchAll(/export\s+(?:function|const)\s+(\w+)(?!\s*=\s*(?:React\.)?forwardRef)/g);
+    const regularExportMatches = source.matchAll(
+      /export\s+(?:function|const)\s+(\w+)(?!\s*=\s*(?:React\.)?forwardRef)/g,
+    );
     for (const match of regularExportMatches) {
       if (match[1] && !match[1].includes('Variants') && !docs.exports.includes(match[1])) {
         docs.exports.push(match[1]);
@@ -170,7 +180,9 @@ function parseComponentDocs(source: string, componentId: string) {
 
   // Extract type definitions with properties (handles both type and interface)
   // Pattern 1: type XProps = BaseProps & { ... }
-  const typePropsMatches = source.matchAll(/type\s+(\w+(?:Props|Context(?:Props)?))\s*=\s*(?:[^{]*&\s*)?\{([^}]+)\}/gs);
+  const typePropsMatches = source.matchAll(
+    /type\s+(\w+(?:Props|Context(?:Props)?))\s*=\s*(?:[^{]*&\s*)?\{([^}]+)\}/gs,
+  );
   for (const match of typePropsMatches) {
     const typeName = match[1];
     const body = match[2];
@@ -187,14 +199,16 @@ function parseComponentDocs(source: string, componentId: string) {
   }
 
   // Pattern 2: Inline props in function signature - Omit<...> & { ... }
-  const inlinePropMatches = source.matchAll(/function\s+(\w+)\s*\(\s*\{[^}]*\}\s*:\s*(?:Omit<[^>]+>\s*&\s*)?\{([^}]+)\}/g);
+  const inlinePropMatches = source.matchAll(
+    /function\s+(\w+)\s*\(\s*\{[^}]*\}\s*:\s*(?:Omit<[^>]+>\s*&\s*)?\{([^}]+)\}/g,
+  );
   for (const match of inlinePropMatches) {
     const funcName = match[1];
     const body = match[2];
     if (!funcName || !body) continue;
 
     const properties = parsePropertiesFromBody(body);
-    if (properties.length > 0 && !docs.props.find(p => p.name === funcName)) {
+    if (properties.length > 0 && !docs.props.find((p) => p.name === funcName)) {
       docs.props.push({
         name: funcName,
         interface: `${funcName}Props`,
@@ -204,7 +218,9 @@ function parseComponentDocs(source: string, componentId: string) {
   }
 
   // Extract ALL CVA variants from the file
-  const cvaMatches = source.matchAll(/const\s+(\w+Variants)\s*=\s*cva\s*\(\s*(?:'[^']*'|"[^"]*"|`[^`]*`|\[[^\]]*\]|[^,]+)\s*,\s*\{([\s\S]*?)\}\s*\)/g);
+  const cvaMatches = source.matchAll(
+    /const\s+(\w+Variants)\s*=\s*cva\s*\(\s*(?:'[^']*'|"[^"]*"|`[^`]*`|\[[^\]]*\]|[^,]+)\s*,\s*\{([\s\S]*?)\}\s*\)/g,
+  );
   for (const cvaMatch of cvaMatches) {
     const variantName = cvaMatch[1];
     const configBlock = cvaMatch[2];
@@ -212,7 +228,9 @@ function parseComponentDocs(source: string, componentId: string) {
     if (!variantName || !configBlock) continue;
 
     // Find the variants section
-    const variantsSection = configBlock.match(/variants:\s*\{([\s\S]*?)\}\s*(?:,\s*(?:defaultVariants|compoundVariants)|$)/);
+    const variantsSection = configBlock.match(
+      /variants:\s*\{([\s\S]*?)\}\s*(?:,\s*(?:defaultVariants|compoundVariants)|$)/,
+    );
     if (!variantsSection || !variantsSection[1]) continue;
 
     const variantsBlock = variantsSection[1];
@@ -256,8 +274,11 @@ function parseComponentDocs(source: string, componentId: string) {
 /**
  * Helper to parse properties from a TypeScript object body
  */
-function parsePropertiesFromBody(body: string): Array<{ name: string; type: string; optional: boolean; description?: string }> {
-  const properties: Array<{ name: string; type: string; optional: boolean; description?: string }> = [];
+function parsePropertiesFromBody(
+  body: string,
+): Array<{ name: string; type: string; optional: boolean; description?: string }> {
+  const properties: Array<{ name: string; type: string; optional: boolean; description?: string }> =
+    [];
   const lines = body.split('\n');
   let currentComment = '';
 
@@ -297,10 +318,15 @@ function parsePropertiesFromBody(body: string): Array<{ name: string; type: stri
 function formatComponentDocsForAgent(
   docs: ReturnType<typeof parseComponentDocs>,
   storySource: string | null,
-  componentSource: string
+  componentSource: string,
 ): string {
   // Use the component ID to derive a nice title
-  const componentName = docs.id.split('/')[1]?.split('-').map(s => s[0]?.toUpperCase() + s.slice(1)).join('') || docs.id;
+  const componentName =
+    docs.id
+      .split('/')[1]
+      ?.split('-')
+      .map((s) => s[0]?.toUpperCase() + s.slice(1))
+      .join('') || docs.id;
   let output = `# ${componentName} Component\n\n`;
 
   // Critical warning
@@ -316,9 +342,9 @@ function formatComponentDocsForAgent(
       const subExports = docs.exports.slice(1);
       output += `**Main:** \`${mainExport}\`\n\n`;
       output += `**Sub-components:**\n`;
-      output += subExports.map(e => `- \`${e}\``).join('\n') + '\n\n';
+      output += subExports.map((e) => `- \`${e}\``).join('\n') + '\n\n';
     } else {
-      output += docs.exports.map(e => `- \`${e}\``).join('\n') + '\n\n';
+      output += docs.exports.map((e) => `- \`${e}\``).join('\n') + '\n\n';
     }
   }
 
@@ -327,7 +353,7 @@ function formatComponentDocsForAgent(
     output += `## Available Variants\n`;
     for (const v of docs.variants) {
       output += `### ${v.component} - ${v.variantName}\n`;
-      output += `Options: ${v.options.map(o => `\`${o}\``).join(', ')}\n\n`;
+      output += `Options: ${v.options.map((o) => `\`${o}\``).join(', ')}\n\n`;
     }
   }
 
@@ -350,7 +376,9 @@ function formatComponentDocsForAgent(
   // Usage example from story
   if (storySource) {
     // Extract a simple usage example from the story
-    const storyMatch = storySource.match(/export\s+const\s+\w+:\s*Story\s*=\s*\{[\s\S]*?render:\s*\([^)]*\)\s*=>\s*\(([\s\S]*?)\),?\s*\}/);
+    const storyMatch = storySource.match(
+      /export\s+const\s+\w+:\s*Story\s*=\s*\{[\s\S]*?render:\s*\([^)]*\)\s*=>\s*\(([\s\S]*?)\),?\s*\}/,
+    );
     if (storyMatch && storyMatch[1]) {
       output += `## Usage Example\n\`\`\`tsx\n${storyMatch[1].trim()}\n\`\`\`\n\n`;
     }
@@ -431,24 +459,36 @@ function parseDesignTokens(cssSource: string) {
 function getInstallationInstructions(framework: string) {
   const baseSteps = [
     {
-      title: "Install the package",
-      command: "pnpm add @trycompai/design-system",
+      title: 'Install the package',
+      command: 'pnpm add @trycompai/design-system',
     },
     {
-      title: "Import global styles",
-      description: "Add this import to your root layout or entry file:",
+      title: 'Import global styles',
+      description: 'Add this import to your root layout or entry file:',
       code: `import '@trycompai/design-system/styles/globals.css';`,
     },
   ];
 
-  const frameworkMap: Record<string, { framework: string; steps: Array<{ title: string; description?: string; command?: string; code?: string; file?: string }> }> = {
-    "next-app": {
-      framework: "Next.js App Router",
+  const frameworkMap: Record<
+    string,
+    {
+      framework: string;
+      steps: Array<{
+        title: string;
+        description?: string;
+        command?: string;
+        code?: string;
+        file?: string;
+      }>;
+    }
+  > = {
+    'next-app': {
+      framework: 'Next.js App Router',
       steps: [
         ...baseSteps,
         {
-          title: "Setup root layout",
-          file: "app/layout.tsx",
+          title: 'Setup root layout',
+          file: 'app/layout.tsx',
           code: `import '@trycompai/design-system/styles/globals.css';
 import { cn } from '@trycompai/design-system';
 
@@ -464,13 +504,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         },
       ],
     },
-    "next-pages": {
-      framework: "Next.js Pages Router",
+    'next-pages': {
+      framework: 'Next.js Pages Router',
       steps: [
         ...baseSteps,
         {
-          title: "Setup _app.tsx",
-          file: "pages/_app.tsx",
+          title: 'Setup _app.tsx',
+          file: 'pages/_app.tsx',
           code: `import '@trycompai/design-system/styles/globals.css';
 import type { AppProps } from 'next/app';
 
@@ -481,12 +521,12 @@ export default function App({ Component, pageProps }: AppProps) {
       ],
     },
     vite: {
-      framework: "Vite + React",
+      framework: 'Vite + React',
       steps: [
         ...baseSteps,
         {
-          title: "Setup main.tsx",
-          file: "src/main.tsx",
+          title: 'Setup main.tsx',
+          file: 'src/main.tsx',
           code: `import '@trycompai/design-system/styles/globals.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -501,15 +541,15 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       ],
     },
     general: {
-      framework: "General",
+      framework: 'General',
       steps: [
         ...baseSteps,
         {
-          title: "Import styles in your entry file",
-          description: "Make sure globals.css is imported before any component usage.",
+          title: 'Import styles in your entry file',
+          description: 'Make sure globals.css is imported before any component usage.',
         },
         {
-          title: "Use components",
+          title: 'Use components',
           code: `import { Button, Card, Stack, Text } from '@trycompai/design-system';
 
 // IMPORTANT: Components do NOT accept className
@@ -542,31 +582,31 @@ function getRepoPathsResolved() {
       repoRoot: repoRootOverride,
       designSystemSrcComponentsDir: path.join(
         repoRootOverride,
-        "packages",
-        "design-system",
-        "src",
-        "components",
+        'packages',
+        'design-system',
+        'src',
+        'components',
       ),
-      storybookStoriesDir: path.join(repoRootOverride, "apps", "storybook", "stories"),
+      storybookStoriesDir: path.join(repoRootOverride, 'apps', 'storybook', 'stories'),
       globalsStylesPath: path.join(
         repoRootOverride,
-        "packages",
-        "design-system",
-        "src",
-        "styles",
-        "globals.css",
+        'packages',
+        'design-system',
+        'src',
+        'styles',
+        'globals.css',
       ),
-      agentsMdPath: path.join(repoRootOverride, "packages", "design-system", "agents.md"),
-      claudeMdPath: path.join(repoRootOverride, "CLAUDE.md"),
+      agentsMdPath: path.join(repoRootOverride, 'packages', 'design-system', 'agents.md'),
+      claudeMdPath: path.join(repoRootOverride, 'CLAUDE.md'),
     };
   }
 
   // appDir is .../apps/mcp/src
-  return getRepoPaths(path.join(getAppDir(), ".."));
+  return getRepoPaths(path.join(getAppDir(), '..'));
 }
 
 const zListComponentsArgs = z.object({
-  category: z.enum(["atoms", "molecules", "organisms"]).optional(),
+  category: z.enum(['atoms', 'molecules', 'organisms']).optional(),
 });
 
 const zGetComponentSourceArgs = z.object({
@@ -589,14 +629,14 @@ const zSuggestStoryForComponentArgs = z.object({
 });
 
 function jsonText(payload: unknown) {
-  return [{ type: "text" as const, text: JSON.stringify(payload, null, 2) }];
+  return [{ type: 'text' as const, text: JSON.stringify(payload, null, 2) }];
 }
 
 async function main() {
   const repoPaths = getRepoPathsResolved();
 
   const server = new Server(
-    { name: "design-system-mcp", version: "0.1.0" },
+    { name: 'design-system-mcp', version: '0.1.0' },
     { capabilities: { tools: {} } },
   );
 
@@ -604,114 +644,113 @@ async function main() {
     return {
       tools: [
         {
-          name: "list_components",
-          description:
-            "List all design system component source files (atoms/molecules/organisms).",
+          name: 'list_components',
+          description: 'List all design system component source files (atoms/molecules/organisms).',
           inputSchema: {
-            type: "object",
+            type: 'object',
             properties: {
               category: {
-                type: "string",
-                enum: ["atoms", "molecules", "organisms"],
-                description: "Optional filter.",
+                type: 'string',
+                enum: ['atoms', 'molecules', 'organisms'],
+                description: 'Optional filter.',
               },
             },
           },
         },
         {
-          name: "get_component_source",
+          name: 'get_component_source',
           description:
             "Fetch the source for a design system component by id (e.g. 'molecules/card').",
           inputSchema: {
-            type: "object",
+            type: 'object',
             properties: {
-              id: { type: "string" },
+              id: { type: 'string' },
             },
-            required: ["id"],
+            required: ['id'],
           },
         },
         {
-          name: "search",
-          description:
-            "Search component ids (and optionally component source) for a query string.",
+          name: 'search',
+          description: 'Search component ids (and optionally component source) for a query string.',
           inputSchema: {
-            type: "object",
+            type: 'object',
             properties: {
-              query: { type: "string" },
-              limit: { type: "number", minimum: 1, maximum: 50 },
+              query: { type: 'string' },
+              limit: { type: 'number', minimum: 1, maximum: 50 },
               includeSource: {
-                type: "boolean",
-                description: "If true, searches within file contents too (slower).",
+                type: 'boolean',
+                description: 'If true, searches within file contents too (slower).',
               },
             },
-            required: ["query"],
+            required: ['query'],
           },
         },
         {
-          name: "list_stories",
-          description: "List Storybook story files in apps/storybook/stories.",
-          inputSchema: { type: "object", properties: {} },
+          name: 'list_stories',
+          description: 'List Storybook story files in apps/storybook/stories.',
+          inputSchema: { type: 'object', properties: {} },
         },
         {
-          name: "get_story_source",
+          name: 'get_story_source',
           description:
             "Fetch a Storybook story source by story name (e.g. 'Card' for Card.stories.tsx).",
           inputSchema: {
-            type: "object",
-            properties: { name: { type: "string" } },
-            required: ["name"],
+            type: 'object',
+            properties: { name: { type: 'string' } },
+            required: ['name'],
           },
         },
         {
-          name: "suggest_story_for_component",
+          name: 'suggest_story_for_component',
           description:
-            "Best-guess the Storybook story name for a component id (e.g. molecules/card -> Card).",
+            'Best-guess the Storybook story name for a component id (e.g. molecules/card -> Card).',
           inputSchema: {
-            type: "object",
-            properties: { componentId: { type: "string" } },
-            required: ["componentId"],
+            type: 'object',
+            properties: { componentId: { type: 'string' } },
+            required: ['componentId'],
           },
         },
         {
-          name: "get_theme",
+          name: 'get_theme',
           description:
-            "Get the design system theme including CSS variables, color tokens, and design tokens for light/dark mode. Returns parsed tokens from globals.css.",
-          inputSchema: { type: "object", properties: {} },
+            'Get the design system theme including CSS variables, color tokens, and design tokens for light/dark mode. Returns parsed tokens from globals.css.',
+          inputSchema: { type: 'object', properties: {} },
         },
         {
-          name: "get_usage_guidelines",
+          name: 'get_usage_guidelines',
           description:
-            "Get the usage guidelines and rules for the design system. IMPORTANT: Components do NOT accept className - use variants and props only. This returns the agents.md file with all usage patterns.",
-          inputSchema: { type: "object", properties: {} },
+            'Get the usage guidelines and rules for the design system. IMPORTANT: Components do NOT accept className - use variants and props only. This returns the agents.md file with all usage patterns.',
+          inputSchema: { type: 'object', properties: {} },
         },
         {
-          name: "installation",
+          name: 'installation',
           description:
-            "Get installation and setup instructions for using the design system in a project.",
+            'Get installation and setup instructions for using the design system in a project.',
           inputSchema: {
-            type: "object",
+            type: 'object',
             properties: {
               framework: {
-                type: "string",
-                enum: ["next-app", "next-pages", "vite", "general"],
+                type: 'string',
+                enum: ['next-app', 'next-pages', 'vite', 'general'],
                 description: "The framework you're using.",
               },
             },
           },
         },
         {
-          name: "get_component_docs",
+          name: 'get_component_docs',
           description:
-            "Get comprehensive documentation for a component including props, variants, and usage examples. THIS IS THE RECOMMENDED TOOL for understanding how to use a component. CRITICAL: Components do NOT accept className - use variants only.",
+            'Get comprehensive documentation for a component including props, variants, and usage examples. THIS IS THE RECOMMENDED TOOL for understanding how to use a component. CRITICAL: Components do NOT accept className - use variants only.',
           inputSchema: {
-            type: "object",
+            type: 'object',
             properties: {
               id: {
-                type: "string",
-                description: "Component id (e.g., 'atoms/button', 'molecules/card'). Use list_components to see all available ids.",
+                type: 'string',
+                description:
+                  "Component id (e.g., 'atoms/button', 'molecules/card'). Use list_components to see all available ids.",
               },
             },
-            required: ["id"],
+            required: ['id'],
           },
         },
       ],
@@ -723,17 +762,15 @@ async function main() {
       const name = request.params.name;
       const args = request.params.arguments ?? {};
 
-      if (name === "list_components") {
+      if (name === 'list_components') {
         const { category } = zListComponentsArgs.parse(args);
         const components = await listDesignSystemComponents(repoPaths);
-        const filtered = category
-          ? components.filter((c) => c.category === category)
-          : components;
+        const filtered = category ? components.filter((c) => c.category === category) : components;
 
         return { content: jsonText({ repoPaths, components: filtered }) };
       }
 
-      if (name === "get_component_source") {
+      if (name === 'get_component_source') {
         const { id } = zGetComponentSourceArgs.parse(args);
         const components = await listDesignSystemComponents(repoPaths);
         const comp = components.find((c) => c.id.toLowerCase() === id.toLowerCase());
@@ -741,7 +778,7 @@ async function main() {
           return {
             content: jsonText({
               error: `Component not found: ${id}`,
-              hint: "Use list_components to see valid ids.",
+              hint: 'Use list_components to see valid ids.',
             }),
           };
         }
@@ -750,15 +787,21 @@ async function main() {
         return { content: jsonText({ component: comp, source }) };
       }
 
-      if (name === "search") {
+      if (name === 'search') {
         const { query, limit, includeSource } = zSearchArgs.parse(args);
         const q = query.toLowerCase();
         const queryWords = q.split(/\s+/).filter(Boolean);
 
         const components = await listDesignSystemComponents(repoPaths);
         const hits: Array<
-          | { kind: "component"; id: string; filePath: string; match: "id" | "tags" | "source"; tags?: string[] }
-          | { kind: "story"; name: string; filePath: string; match: "name" }
+          | {
+              kind: 'component';
+              id: string;
+              filePath: string;
+              match: 'id' | 'tags' | 'source';
+              tags?: string[];
+            }
+          | { kind: 'story'; name: string; filePath: string; match: 'name' }
         > = [];
         const seenIds = new Set<string>();
 
@@ -766,7 +809,7 @@ async function main() {
         for (const c of components) {
           if (c.id.toLowerCase().includes(q) || c.fileStem.toLowerCase().includes(q)) {
             if (!seenIds.has(c.id)) {
-              hits.push({ kind: "component", id: c.id, filePath: c.filePath, match: "id" });
+              hits.push({ kind: 'component', id: c.id, filePath: c.filePath, match: 'id' });
               seenIds.add(c.id);
             }
             if (hits.length >= limit) break;
@@ -779,16 +822,16 @@ async function main() {
             if (seenIds.has(c.id)) continue;
 
             const tags = getComponentTags(c.id);
-            const matchingTags = tags.filter(tag =>
-              queryWords.some(word => tag.includes(word) || word.includes(tag))
+            const matchingTags = tags.filter((tag) =>
+              queryWords.some((word) => tag.includes(word) || word.includes(tag)),
             );
 
             if (matchingTags.length > 0) {
               hits.push({
-                kind: "component",
+                kind: 'component',
                 id: c.id,
                 filePath: c.filePath,
-                match: "tags",
+                match: 'tags',
                 tags: matchingTags,
               });
               seenIds.add(c.id);
@@ -805,10 +848,10 @@ async function main() {
             const source = await readTextFile(c.filePath);
             if (source.toLowerCase().includes(q)) {
               hits.push({
-                kind: "component",
+                kind: 'component',
                 id: c.id,
                 filePath: c.filePath,
-                match: "source",
+                match: 'source',
               });
               seenIds.add(c.id);
               if (hits.length >= limit) break;
@@ -821,7 +864,7 @@ async function main() {
           const stories = await listStorybookStories(repoPaths);
           for (const s of stories) {
             if (s.name.toLowerCase().includes(q)) {
-              hits.push({ kind: "story", name: s.name, filePath: s.filePath, match: "name" });
+              hits.push({ kind: 'story', name: s.name, filePath: s.filePath, match: 'name' });
               if (hits.length >= limit) break;
             }
           }
@@ -830,20 +873,20 @@ async function main() {
         return { content: jsonText({ query, limit, hits }) };
       }
 
-      if (name === "list_stories") {
+      if (name === 'list_stories') {
         zListStoriesArgs.parse(args);
         const stories = await listStorybookStories(repoPaths);
         return { content: jsonText({ repoPaths, stories }) };
       }
 
-      if (name === "get_story_source") {
+      if (name === 'get_story_source') {
         const { name: storyName } = zGetStorySourceArgs.parse(args);
         const story = await findStoryByName(repoPaths, storyName);
         if (!story) {
           return {
             content: jsonText({
               error: `Story not found: ${storyName}`,
-              hint: "Use list_stories to see valid names.",
+              hint: 'Use list_stories to see valid names.',
             }),
           };
         }
@@ -851,17 +894,15 @@ async function main() {
         return { content: jsonText({ story, source }) };
       }
 
-      if (name === "suggest_story_for_component") {
+      if (name === 'suggest_story_for_component') {
         const { componentId } = zSuggestStoryForComponentArgs.parse(args);
         const components = await listDesignSystemComponents(repoPaths);
-        const comp = components.find(
-          (c) => c.id.toLowerCase() === componentId.toLowerCase(),
-        );
+        const comp = components.find((c) => c.id.toLowerCase() === componentId.toLowerCase());
         if (!comp) {
           return {
             content: jsonText({
               error: `Component not found: ${componentId}`,
-              hint: "Use list_components to see valid ids.",
+              hint: 'Use list_components to see valid ids.',
             }),
           };
         }
@@ -879,13 +920,13 @@ async function main() {
         };
       }
 
-      if (name === "get_theme") {
+      if (name === 'get_theme') {
         const cssSource = await readTextFile(repoPaths.globalsStylesPath);
         const tokens = parseDesignTokens(cssSource);
         return {
           content: [
             {
-              type: "text" as const,
+              type: 'text' as const,
               text: `Design System Theme Tokens
 
 Use these semantic tokens for consistent theming. The design system uses Tailwind CSS v4 with CSS variables.
@@ -899,35 +940,35 @@ Key token categories:
 
 Dark mode is handled automatically via .dark class selector.`,
             },
-            { type: "text" as const, text: JSON.stringify(tokens, null, 2) },
+            { type: 'text' as const, text: JSON.stringify(tokens, null, 2) },
           ],
         };
       }
 
-      if (name === "get_usage_guidelines") {
+      if (name === 'get_usage_guidelines') {
         const agentsMd = await readTextFile(repoPaths.agentsMdPath);
         return {
           content: [
             {
-              type: "text" as const,
+              type: 'text' as const,
               text: `CRITICAL: Components do NOT accept className or style props. Use variants and props only.
 
 This design system enforces strict styling through class-variance-authority (cva). For layout concerns (width, margins, grid positioning), use wrapper elements.
 
 Below are the complete usage guidelines:`,
             },
-            { type: "text" as const, text: agentsMd },
+            { type: 'text' as const, text: agentsMd },
           ],
         };
       }
 
-      if (name === "installation") {
-        const framework = (args as { framework?: string }).framework || "general";
+      if (name === 'installation') {
+        const framework = (args as { framework?: string }).framework || 'general';
         const instructions = getInstallationInstructions(framework);
         return { content: jsonText(instructions) };
       }
 
-      if (name === "get_component_docs") {
+      if (name === 'get_component_docs') {
         const { id } = zGetComponentSourceArgs.parse(args);
         const components = await listDesignSystemComponents(repoPaths);
         const comp = components.find((c) => c.id.toLowerCase() === id.toLowerCase());
@@ -936,8 +977,8 @@ Below are the complete usage guidelines:`,
           return {
             content: jsonText({
               error: `Component not found: ${id}`,
-              hint: "Use list_components to see valid ids.",
-              availableComponents: components.map(c => c.id),
+              hint: 'Use list_components to see valid ids.',
+              availableComponents: components.map((c) => c.id),
             }),
           };
         }
@@ -961,18 +1002,22 @@ Below are the complete usage guidelines:`,
 
         return {
           content: [
-            { type: "text" as const, text: formattedDocs },
+            { type: 'text' as const, text: formattedDocs },
             {
-              type: "text" as const,
-              text: JSON.stringify({
-                componentId: comp.id,
-                category: comp.category,
-                exports: parsedDocs.exports,
-                variants: parsedDocs.variants,
-                props: parsedDocs.props,
-                hasStory: Boolean(story),
-                storyName: story?.name,
-              }, null, 2),
+              type: 'text' as const,
+              text: JSON.stringify(
+                {
+                  componentId: comp.id,
+                  category: comp.category,
+                  exports: parsedDocs.exports,
+                  variants: parsedDocs.variants,
+                  props: parsedDocs.props,
+                  hasStory: Boolean(story),
+                  storyName: story?.name,
+                },
+                null,
+                2,
+              ),
             },
           ],
         };
@@ -998,4 +1043,3 @@ Below are the complete usage guidelines:`,
 
 // eslint-disable-next-line no-void
 void main();
-

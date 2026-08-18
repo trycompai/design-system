@@ -16,9 +16,7 @@ function Pagination({ ...props }: Omit<React.ComponentProps<'nav'>, 'className'>
 }
 
 function PaginationContent({ ...props }: Omit<React.ComponentProps<'ul'>, 'className'>) {
-  return (
-    <ul data-slot="pagination-content" className="gap-1 flex items-center" {...props} />
-  );
+  return <ul data-slot="pagination-content" className="gap-1 flex items-center" {...props} />;
 }
 
 function PaginationItem({ ...props }: Omit<React.ComponentProps<'li'>, 'className'>) {

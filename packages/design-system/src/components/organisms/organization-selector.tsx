@@ -5,13 +5,7 @@ import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import { Combobox as ComboboxPrimitive } from '@base-ui/react';
 import { Checkmark, ChevronDown, Search } from '@carbon/icons-react';
 import * as React from 'react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../molecules/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../molecules/select';
 // ============================================================================
 // Types
 // ============================================================================
@@ -98,14 +92,7 @@ function LoadingSpinner() {
       fill="none"
       viewBox="0 0 24 24"
     >
-      <circle
-        className="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      />
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
       <path
         className="opacity-75"
         fill="currentColor"
@@ -259,9 +246,7 @@ function OrganizationSelector({
     if (!searchQuery.trim()) return organizations;
     const query = searchQuery.toLowerCase();
     return organizations.filter(
-      (org) =>
-        org.id.toLowerCase().includes(query) ||
-        org.name.toLowerCase().includes(query)
+      (org) => org.id.toLowerCase().includes(query) || org.name.toLowerCase().includes(query),
     );
   }, [organizations, searchQuery]);
 
@@ -296,7 +281,7 @@ function OrganizationSelector({
         setDropdownOpen(false); // Close dropdown on selection
       }
     },
-    [value, onValueChange, closeOnSelect]
+    [value, onValueChange, closeOnSelect],
   );
 
   const triggerSizeClass = size === 'sm' ? 'h-7' : 'h-8';
@@ -365,14 +350,17 @@ function OrganizationSelector({
               >
                 {/* Sort Menu */}
                 {enableSorting && (
-                  <div data-slot="organization-selector-sort" className="border-b border-border p-2">
+                  <div
+                    data-slot="organization-selector-sort"
+                    className="border-b border-border p-2"
+                  >
                     <Select
                       value={`${sort.key}:${sort.direction}`}
                       onValueChange={(value) => value && setSort(parseSortValue(value))}
                     >
-                    <SelectTrigger size="sm">
-                      <span>{getSortLabel(sort)}</span>
-                    </SelectTrigger>
+                      <SelectTrigger size="sm">
+                        <span>{getSortLabel(sort)}</span>
+                      </SelectTrigger>
                       <SelectContent align="start">
                         {sortOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
@@ -418,8 +406,14 @@ function OrganizationSelector({
                   ) : isEmpty ? (
                     <EmptyState text={emptyListText} />
                   ) : (
-                    <CommandPrimitive.Group data-slot="command-group" className="text-foreground overflow-hidden p-1">
-                      <CommandPrimitive.Empty data-slot="command-empty" className="py-6 text-center text-sm">
+                    <CommandPrimitive.Group
+                      data-slot="command-group"
+                      className="text-foreground overflow-hidden p-1"
+                    >
+                      <CommandPrimitive.Empty
+                        data-slot="command-empty"
+                        className="py-6 text-center text-sm"
+                      >
                         {emptySearchText}
                       </CommandPrimitive.Empty>
                       {sortedOrganizations.map((org) => (
@@ -431,9 +425,7 @@ function OrganizationSelector({
                           className="data-[selected=true]:bg-muted data-[selected=true]:text-foreground relative flex cursor-default items-center gap-2 rounded-lg px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0"
                         >
                           <OrganizationItemContent org={org} />
-                          {selectedValue === org.id && (
-                            <Checkmark className="ml-auto size-4" />
-                          )}
+                          {selectedValue === org.id && <Checkmark className="ml-auto size-4" />}
                         </CommandPrimitive.Item>
                       ))}
                     </CommandPrimitive.Group>
@@ -502,10 +494,10 @@ function OrganizationSelector({
           align="start"
           className="isolate z-50"
         >
-        <ComboboxPrimitive.Popup
-          data-slot="organization-selector-content"
-          className="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 max-h-80 min-w-56 overflow-visible rounded-lg shadow-md ring-1 duration-100 group/org-selector relative max-h-(--available-height) w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin)"
-        >
+          <ComboboxPrimitive.Popup
+            data-slot="organization-selector-content"
+            className="bg-popover text-popover-foreground data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 ring-foreground/10 max-h-80 min-w-56 overflow-visible rounded-lg shadow-md ring-1 duration-100 group/org-selector relative max-h-(--available-height) w-(--anchor-width) max-w-(--available-width) origin-(--transform-origin)"
+          >
             {/* Sort Menu */}
             {enableSorting && (
               <div data-slot="organization-selector-sort" className="border-b border-border p-2">
@@ -514,9 +506,9 @@ function OrganizationSelector({
                   onValueChange={(value) => value && setSort(parseSortValue(value))}
                   onOpenChange={setSortOpen}
                 >
-                <SelectTrigger size="sm">
-                  <span>{getSortLabel(sort)}</span>
-                </SelectTrigger>
+                  <SelectTrigger size="sm">
+                    <span>{getSortLabel(sort)}</span>
+                  </SelectTrigger>
                   <SelectContent align="start">
                     {sortOptions.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
@@ -576,10 +568,7 @@ function OrganizationSelector({
               )}
             </ComboboxPrimitive.List>
             {(footer || onCreate) && (
-              <div
-                data-slot="organization-selector-footer"
-                className="border-t border-border p-2"
-              >
+              <div data-slot="organization-selector-footer" className="border-t border-border p-2">
                 {footer ?? (
                   <button
                     type="button"

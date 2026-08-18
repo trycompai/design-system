@@ -55,11 +55,20 @@ const stackVariants = cva('flex', {
   },
 });
 
-type StackElement = 'div' | 'section' | 'nav' | 'ul' | 'ol' | 'main' | 'article' | 'aside' | 'header' | 'footer';
+type StackElement =
+  | 'div'
+  | 'section'
+  | 'nav'
+  | 'ul'
+  | 'ol'
+  | 'main'
+  | 'article'
+  | 'aside'
+  | 'header'
+  | 'footer';
 
 interface StackProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, 'className'>,
-    VariantProps<typeof stackVariants> {
+  extends Omit<React.HTMLAttributes<HTMLElement>, 'className'>, VariantProps<typeof stackVariants> {
   as?: StackElement;
 }
 
@@ -84,7 +93,9 @@ function Stack({
 type VStackProps = Omit<StackProps, 'direction'>;
 
 function VStack({ gap, align, justify, wrap, ...props }: VStackProps) {
-  return <Stack direction="column" gap={gap} align={align} justify={justify} wrap={wrap} {...props} />;
+  return (
+    <Stack direction="column" gap={gap} align={align} justify={justify} wrap={wrap} {...props} />
+  );
 }
 
 type HStackProps = Omit<StackProps, 'direction'>;

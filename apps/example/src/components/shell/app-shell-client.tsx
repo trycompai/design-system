@@ -41,13 +41,7 @@ import {
   Text,
   ThemeToggle,
 } from '@trycompai/design-system';
-import {
-  Add,
-  Logout,
-  Notification,
-  Settings,
-  User,
-} from '@carbon/icons-react';
+import { Add, Logout, Notification, Settings, User } from '@carbon/icons-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import * as React from 'react';
@@ -158,10 +152,10 @@ function NotificationsPopover() {
       </PopoverTrigger>
       <PopoverContent align="end" style={{ width: '340px', padding: 0 }}>
         <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-          <Text weight="semibold" size="sm">Notifications</Text>
-          {unreadCount > 0 && (
-            <Badge variant="secondary">{unreadCount} new</Badge>
-          )}
+          <Text weight="semibold" size="sm">
+            Notifications
+          </Text>
+          {unreadCount > 0 && <Badge variant="secondary">{unreadCount} new</Badge>}
         </div>
         <div className="max-h-80 overflow-auto divide-y divide-border">
           {notifications.map((notification) => (
@@ -173,15 +167,21 @@ function NotificationsPopover() {
             >
               <div className="flex-1 min-w-0 space-y-0.5">
                 <div className="flex items-center gap-2">
-                  <Text size="sm" weight="medium">{notification.title}</Text>
+                  <Text size="sm" weight="medium">
+                    {notification.title}
+                  </Text>
                   {notification.unread && (
                     <div className="size-1.5 rounded-full bg-primary shrink-0" />
                   )}
                 </div>
                 <div className="truncate">
-                  <Text size="sm" variant="muted">{notification.description}</Text>
+                  <Text size="sm" variant="muted">
+                    {notification.description}
+                  </Text>
                 </div>
-                <Text size="xs" variant="muted">{notification.time}</Text>
+                <Text size="xs" variant="muted">
+                  {notification.time}
+                </Text>
               </div>
             </div>
           ))}
@@ -234,8 +234,12 @@ function UserMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" style={{ minWidth: '200px' }}>
         <div className="px-2 py-1.5">
-          <Text size="sm" weight="medium">John Doe</Text>
-          <Text size="xs" variant="muted">john@example.com</Text>
+          <Text size="sm" weight="medium">
+            John Doe
+          </Text>
+          <Text size="xs" variant="muted">
+            john@example.com
+          </Text>
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
@@ -322,18 +326,15 @@ function SidebarNavItemWithChildren({ item, pathname }: SidebarNavItemWithChildr
   // If item has children, render collapsible
   if (item.children && item.children.length > 0) {
     return (
-      <AppShellNavItemCollapsible
-        icon={item.icon}
-        label={item.label}
-        isActive={itemActive}
-      >
+      <AppShellNavItemCollapsible icon={item.icon} label={item.label} isActive={itemActive}>
         {item.children.map((child) => {
-          const childActive = child.href === '/' ? pathname === '/' : pathname === child.href || pathname.startsWith(child.href + '/');
+          const childActive =
+            child.href === '/'
+              ? pathname === '/'
+              : pathname === child.href || pathname.startsWith(child.href + '/');
           return (
             <Link key={child.id} href={child.href} className="block">
-              <AppShellNavSubItem isActive={childActive}>
-                {child.label}
-              </AppShellNavSubItem>
+              <AppShellNavSubItem isActive={childActive}>{child.label}</AppShellNavSubItem>
             </Link>
           );
         })}
@@ -401,16 +402,10 @@ export function AppShellClient({ children }: AppShellClientProps) {
         </AppShellRail>
         <AppShellMain>
           <AppShellSidebar collapsible>
-            <AppShellSidebarHeader
-              title={sidebarConfig.title}
-            />
+            <AppShellSidebarHeader title={sidebarConfig.title} />
             <AppShellNav>
               {sidebarConfig.items.map((item) => (
-                <SidebarNavItemWithChildren
-                  key={item.id}
-                  item={item}
-                  pathname={pathname}
-                />
+                <SidebarNavItemWithChildren key={item.id} item={item} pathname={pathname} />
               ))}
             </AppShellNav>
             {sidebarConfig.footer && (

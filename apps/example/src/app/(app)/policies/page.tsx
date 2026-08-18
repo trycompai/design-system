@@ -98,8 +98,7 @@ export default function PoliciesPage() {
     const query = searchQuery.toLowerCase();
     return allPolicies.filter(
       (policy) =>
-        policy.name.toLowerCase().includes(query) ||
-        policy.owner.toLowerCase().includes(query)
+        policy.name.toLowerCase().includes(query) || policy.owner.toLowerCase().includes(query),
     );
   }, [searchQuery]);
 

@@ -53,7 +53,11 @@ function FullSettingsDemo() {
         <SettingsCard
           title="Your Email"
           description="This will be the email you use to log in and receive notifications. A confirmation is required for changes."
-          hint={<a href="#" className="underline">Manage email preferences</a>}
+          hint={
+            <a href="#" className="underline">
+              Manage email preferences
+            </a>
+          }
           action={<Button disabled={!emailChanged}>Save Changes</Button>}
         >
           <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -112,7 +116,11 @@ function EmailSettingDemo() {
     <SettingsCard
       title="Your Email"
       description="This will be the email you use to log in and receive notifications. A confirmation is required for changes."
-      hint={<a href="#" className="underline">Manage email preferences</a>}
+      hint={
+        <a href="#" className="underline">
+          Manage email preferences
+        </a>
+      }
       action={<Button disabled={!hasChanges}>Save Changes</Button>}
     >
       <Input type="email" value={value} onChange={(e) => setValue(e.target.value)} />
@@ -175,11 +183,15 @@ export const NoFooter: Story = {
       <Stack gap="2">
         <HStack justify="between">
           <Text size="sm">API Calls</Text>
-          <Text size="sm" weight="medium">12,847 / 50,000</Text>
+          <Text size="sm" weight="medium">
+            12,847 / 50,000
+          </Text>
         </HStack>
         <HStack justify="between">
           <Text size="sm">Storage</Text>
-          <Text size="sm" weight="medium">2.4 GB / 10 GB</Text>
+          <Text size="sm" weight="medium">
+            2.4 GB / 10 GB
+          </Text>
         </HStack>
       </Stack>
     </SettingsCard>

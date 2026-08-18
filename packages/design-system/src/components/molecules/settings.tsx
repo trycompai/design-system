@@ -18,12 +18,11 @@ const settingRowVariants = cva(
     defaultVariants: {
       size: 'default',
     },
-  }
+  },
 );
 
 interface SettingRowProps
-  extends Omit<React.ComponentProps<'div'>, 'className'>,
-    VariantProps<typeof settingRowVariants> {
+  extends Omit<React.ComponentProps<'div'>, 'className'>, VariantProps<typeof settingRowVariants> {
   /** The setting label */
   label: string;
   /** Optional description text */
@@ -36,14 +35,7 @@ interface SettingRowProps
  * A horizontal row for a single setting with label/description on the left
  * and a control (switch, button, select, etc.) on the right.
  */
-function SettingRow({
-  label,
-  description,
-  disabled,
-  size,
-  children,
-  ...props
-}: SettingRowProps) {
+function SettingRow({ label, description, disabled, size, children, ...props }: SettingRowProps) {
   return (
     <div
       data-slot="setting-row"

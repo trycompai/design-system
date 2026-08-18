@@ -280,9 +280,7 @@ export const LongPage: Story = {
                 <Heading level="3">Section {index + 1}</Heading>
               </CardHeader>
               <CardContent>
-                <Text variant="muted">
-                  Placeholder content for section {index + 1}.
-                </Text>
+                <Text variant="muted">Placeholder content for section {index + 1}.</Text>
               </CardContent>
             </Card>
           ))}

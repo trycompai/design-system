@@ -1,7 +1,7 @@
-import path from "node:path";
+import path from 'node:path';
 
-import { pathExists, walkFiles } from "./fs-utils.js";
-import type { RepoPaths } from "./paths.js";
+import { pathExists, walkFiles } from './fs-utils.js';
+import type { RepoPaths } from './paths.js';
 
 export type ComponentEntry = {
   /** e.g. "atoms/button" */
@@ -14,24 +14,22 @@ export type ComponentEntry = {
   filePath: string;
 };
 
-const CATEGORY_DIRS = ["atoms", "molecules", "organisms"] as const;
+const CATEGORY_DIRS = ['atoms', 'molecules', 'organisms'] as const;
 
-export async function listDesignSystemComponents(
-  repoPaths: RepoPaths,
-): Promise<ComponentEntry[]> {
+export async function listDesignSystemComponents(repoPaths: RepoPaths): Promise<ComponentEntry[]> {
   const baseDir = repoPaths.designSystemSrcComponentsDir;
   if (!(await pathExists(baseDir))) return [];
 
   const files = await walkFiles(baseDir, {
-    includeExtensions: [".ts", ".tsx"],
+    includeExtensions: ['.ts', '.tsx'],
     ignore: (relPath) => {
       const parts = relPath.split(path.sep);
 
       // ignore re-export barrels
-      if (parts.at(-1) === "index.ts") return true;
+      if (parts.at(-1) === 'index.ts') return true;
 
       // ignore ui/index.ts (handled via atoms/molecules/organisms)
-      if (parts[0] === "ui") return true;
+      if (parts[0] === 'ui') return true;
 
       return false;
     },
@@ -43,7 +41,7 @@ export async function listDesignSystemComponents(
     const category = relParts[0];
     if (!category || !CATEGORY_DIRS.includes(category as any)) continue;
 
-    const stem = path.basename(file.relPath).replace(/\.(ts|tsx)$/, "");
+    const stem = path.basename(file.relPath).replace(/\.(ts|tsx)$/, '');
     out.push({
       id: `${category}/${stem}`,
       category,
@@ -59,6 +57,5 @@ export async function listDesignSystemComponents(
 export function bestGuessStoryNameFromComponentFileStem(stem: string) {
   // kebab-case / snake_case -> PascalCase-ish
   const parts = stem.split(/[-_]/g).filter(Boolean);
-  return parts.map((p) => p[0]?.toUpperCase() + p.slice(1)).join("");
+  return parts.map((p) => p[0]?.toUpperCase() + p.slice(1)).join('');
 }
-

@@ -1,10 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import {
-  OrganizationSelector,
-  type Organization,
-  Stack,
-  Label,
-} from '@trycompai/design-system';
+import { OrganizationSelector, type Organization, Stack, Label } from '@trycompai/design-system';
 import * as React from 'react';
 
 const meta = {
@@ -29,19 +24,59 @@ const organizations: Organization[] = [
 ];
 
 const organizationsWithLogos: Organization[] = [
-  { id: 'org_acme123', name: 'Acme Corp', createdAt: '2024-01-05', logoUrl: 'https://img.logo.dev/airbnb.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_beta456', name: 'Beta Inc', createdAt: '2023-12-12', logoUrl: 'https://img.logo.dev/stripe.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_gamma789', name: 'Gamma LLC', createdAt: '2024-03-22', logoUrl: 'https://img.logo.dev/figma.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_delta012', name: 'Delta Systems', createdAt: '2022-11-08', logoUrl: 'https://img.logo.dev/linear.app?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_epsilon', name: 'Epsilon Technologies', createdAt: '2024-06-14', logoUrl: 'https://img.logo.dev/notion.so?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  {
+    id: 'org_acme123',
+    name: 'Acme Corp',
+    createdAt: '2024-01-05',
+    logoUrl: 'https://img.logo.dev/airbnb.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ',
+  },
+  {
+    id: 'org_beta456',
+    name: 'Beta Inc',
+    createdAt: '2023-12-12',
+    logoUrl: 'https://img.logo.dev/stripe.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ',
+  },
+  {
+    id: 'org_gamma789',
+    name: 'Gamma LLC',
+    createdAt: '2024-03-22',
+    logoUrl: 'https://img.logo.dev/figma.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ',
+  },
+  {
+    id: 'org_delta012',
+    name: 'Delta Systems',
+    createdAt: '2022-11-08',
+    logoUrl: 'https://img.logo.dev/linear.app?token=pk_AZatYxV5QDSfWpRDaBxzRQ',
+  },
+  {
+    id: 'org_epsilon',
+    name: 'Epsilon Technologies',
+    createdAt: '2024-06-14',
+    logoUrl: 'https://img.logo.dev/notion.so?token=pk_AZatYxV5QDSfWpRDaBxzRQ',
+  },
 ];
 
 const organizationsWithFallbacks: Organization[] = [
-  { id: 'org_acme123', name: 'Acme Corp', createdAt: '2024-01-05', logoUrl: 'https://img.logo.dev/airbnb.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  {
+    id: 'org_acme123',
+    name: 'Acme Corp',
+    createdAt: '2024-01-05',
+    logoUrl: 'https://img.logo.dev/airbnb.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ',
+  },
   { id: 'org_beta456', name: 'Beta Inc', createdAt: '2023-12-12' },
-  { id: 'org_gamma789', name: 'Gamma LLC', createdAt: '2024-03-22', logoUrl: 'https://img.logo.dev/figma.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  {
+    id: 'org_gamma789',
+    name: 'Gamma LLC',
+    createdAt: '2024-03-22',
+    logoUrl: 'https://img.logo.dev/figma.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ',
+  },
   { id: 'org_delta012', name: 'Delta Systems', createdAt: '2022-11-08' },
-  { id: 'org_epsilon', name: 'Epsilon Technologies', createdAt: '2024-06-14', logoUrl: 'https://img.logo.dev/notion.so?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  {
+    id: 'org_epsilon',
+    name: 'Epsilon Technologies',
+    createdAt: '2024-06-14',
+    logoUrl: 'https://img.logo.dev/notion.so?token=pk_AZatYxV5QDSfWpRDaBxzRQ',
+  },
 ];
 
 // Generate many organizations for testing large lists
@@ -56,10 +91,7 @@ export const Default: Story = {
   args: { organizations },
   render: () => (
     <div className="w-[280px]">
-      <OrganizationSelector
-        organizations={organizations}
-        placeholder="Select organization"
-      />
+      <OrganizationSelector organizations={organizations} placeholder="Select organization" />
     </div>
   ),
 };
@@ -68,10 +100,7 @@ export const WithDefaultValue: Story = {
   args: { organizations },
   render: () => (
     <div className="w-[280px]">
-      <OrganizationSelector
-        organizations={organizations}
-        defaultValue="org_beta456"
-      />
+      <OrganizationSelector organizations={organizations} defaultValue="org_beta456" />
     </div>
   ),
 };
@@ -104,10 +133,7 @@ export const WithLabel: Story = {
     <div className="w-[280px]">
       <Stack gap="sm">
         <Label>Organization</Label>
-        <OrganizationSelector
-          organizations={organizations}
-          placeholder="Choose an organization"
-        />
+        <OrganizationSelector organizations={organizations} placeholder="Choose an organization" />
       </Stack>
     </div>
   ),
@@ -117,11 +143,7 @@ export const SmallSize: Story = {
   args: { organizations },
   render: () => (
     <div className="w-[280px]">
-      <OrganizationSelector
-        organizations={organizations}
-        defaultValue="org_gamma789"
-        size="sm"
-      />
+      <OrganizationSelector organizations={organizations} defaultValue="org_gamma789" size="sm" />
     </div>
   ),
 };
@@ -130,10 +152,7 @@ export const WithLogos: Story = {
   args: { organizations: organizationsWithLogos },
   render: () => (
     <div className="w-[280px]">
-      <OrganizationSelector
-        organizations={organizationsWithLogos}
-        defaultValue="org_beta456"
-      />
+      <OrganizationSelector organizations={organizationsWithLogos} defaultValue="org_beta456" />
     </div>
   ),
 };
@@ -142,10 +161,7 @@ export const WithLogoFallbacks: Story = {
   args: { organizations: organizationsWithFallbacks },
   render: () => (
     <div className="w-[280px]">
-      <OrganizationSelector
-        organizations={organizationsWithFallbacks}
-        defaultValue="org_beta456"
-      />
+      <OrganizationSelector organizations={organizationsWithFallbacks} defaultValue="org_beta456" />
     </div>
   ),
 };
@@ -154,11 +170,7 @@ export const Disabled: Story = {
   args: { organizations },
   render: () => (
     <div className="w-[280px]">
-      <OrganizationSelector
-        organizations={organizations}
-        defaultValue="org_acme123"
-        disabled
-      />
+      <OrganizationSelector organizations={organizations} defaultValue="org_acme123" disabled />
     </div>
   ),
 };
@@ -181,8 +193,8 @@ export const SearchByID: Story = {
   render: () => (
     <Stack gap="md">
       <p className="text-sm text-muted-foreground max-w-xs">
-        Try searching by organization ID (e.g., &quot;org_001&quot;) or name
-        (e.g., &quot;Organization 15&quot;)
+        Try searching by organization ID (e.g., &quot;org_001&quot;) or name (e.g.,
+        &quot;Organization 15&quot;)
       </p>
       <div className="w-[280px]">
         <OrganizationSelector
@@ -214,7 +226,9 @@ export const ModalMode: Story = {
     return (
       <Stack gap="md">
         <p className="text-sm text-muted-foreground max-w-xs">
-          Click the trigger or press <kbd className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono">⌘O</kbd> to open in a centered modal dialog.
+          Click the trigger or press{' '}
+          <kbd className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono">⌘O</kbd> to open in a
+          centered modal dialog.
         </p>
         <OrganizationSelector
           organizations={manyOrganizations}

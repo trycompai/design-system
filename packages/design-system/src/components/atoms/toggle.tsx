@@ -28,11 +28,7 @@ function Toggle({
   ...props
 }: Omit<TogglePrimitive.Props, 'className'> & VariantProps<typeof toggleVariants>) {
   return (
-    <TogglePrimitive
-      data-slot="toggle"
-      className={toggleVariants({ variant, size })}
-      {...props}
-    />
+    <TogglePrimitive data-slot="toggle" className={toggleVariants({ variant, size })} {...props} />
   );
 }
 

@@ -1,5 +1,5 @@
-import fs from "node:fs/promises";
-import path from "node:path";
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 export async function pathExists(p: string) {
   try {
@@ -11,7 +11,7 @@ export async function pathExists(p: string) {
 }
 
 export async function readTextFile(filePath: string) {
-  return await fs.readFile(filePath, "utf8");
+  return await fs.readFile(filePath, 'utf8');
 }
 
 export type WalkEntry = {
@@ -55,4 +55,3 @@ export async function walkFiles(
   await walk(baseDir);
   return out;
 }
-

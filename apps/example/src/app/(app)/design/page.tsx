@@ -97,7 +97,7 @@ export default function DesignPage() {
       {/* Buttons */}
       <section className="space-y-4">
         <h2 className="text-xl font-semibold">Buttons</h2>
-        
+
         <div className="space-y-6">
           <div>
             <p className="text-sm text-muted-foreground mb-3">Variants</p>
@@ -125,9 +125,15 @@ export default function DesignPage() {
             <p className="text-sm text-muted-foreground mb-3">With Icons</p>
             <div className="flex gap-3 flex-wrap">
               <Button iconLeft={<Plus />}>Add Item</Button>
-              <Button variant="outline" iconRight={<Settings />}>Settings</Button>
-              <Button size="icon"><Plus /></Button>
-              <Button size="icon" variant="outline"><Settings /></Button>
+              <Button variant="outline" iconRight={<Settings />}>
+                Settings
+              </Button>
+              <Button size="icon">
+                <Plus />
+              </Button>
+              <Button size="icon" variant="outline">
+                <Settings />
+              </Button>
             </div>
           </div>
 
@@ -160,7 +166,7 @@ export default function DesignPage() {
       {/* Form Controls */}
       <section className="space-y-4">
         <h2 className="text-xl font-semibold">Form Controls</h2>
-        
+
         <div className="grid grid-cols-2 gap-8">
           <div className="space-y-4">
             <div className="space-y-2">
@@ -234,7 +240,9 @@ export default function DesignPage() {
             <CardContent>
               <div className="flex gap-2">
                 <Button size="sm">Action</Button>
-                <Button size="sm" variant="outline">Cancel</Button>
+                <Button size="sm" variant="outline">
+                  Cancel
+                </Button>
               </div>
             </CardContent>
           </Card>

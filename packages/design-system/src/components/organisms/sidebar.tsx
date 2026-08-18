@@ -248,7 +248,10 @@ function Sidebar({
   );
 }
 
-function SidebarTrigger({ onClick, ...props }: Omit<ButtonPrimitive.Props, 'className' | 'nativeButton'>) {
+function SidebarTrigger({
+  onClick,
+  ...props
+}: Omit<ButtonPrimitive.Props, 'className' | 'nativeButton'>) {
   const { toggleSidebar } = useSidebar();
 
   return (
@@ -379,7 +382,8 @@ function SidebarGroup({
 function SidebarGroupLabel({
   render,
   ...props
-}: Omit<useRender.ComponentProps<'div'>, 'className'> & Omit<React.ComponentProps<'div'>, 'className'>) {
+}: Omit<useRender.ComponentProps<'div'>, 'className'> &
+  Omit<React.ComponentProps<'div'>, 'className'>) {
   return useRender({
     defaultTagName: 'div',
     props: mergeProps<'div'>(
@@ -400,7 +404,8 @@ function SidebarGroupLabel({
 function SidebarGroupAction({
   render,
   ...props
-}: Omit<useRender.ComponentProps<'button'>, 'className'> & Omit<React.ComponentProps<'button'>, 'className'>) {
+}: Omit<useRender.ComponentProps<'button'>, 'className'> &
+  Omit<React.ComponentProps<'button'>, 'className'>) {
   return useRender({
     defaultTagName: 'button',
     props: mergeProps<'button'>(

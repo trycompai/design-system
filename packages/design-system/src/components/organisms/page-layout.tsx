@@ -46,7 +46,8 @@ const containerVariants = cva('mx-auto w-full', {
 });
 
 interface PageLayoutProps
-  extends Omit<React.ComponentProps<'div'>, 'className' | 'children'>,
+  extends
+    Omit<React.ComponentProps<'div'>, 'className' | 'children'>,
     VariantProps<typeof pageLayoutVariants> {
   children?: React.ReactNode;
   /** Whether to wrap content in a centered container. Defaults to true. */
@@ -65,7 +66,13 @@ interface PageLayoutProps
   fillHeight?: boolean;
 }
 
-function PageLayoutSkeleton({ title, includeHeader = true }: { title?: string; includeHeader?: boolean }) {
+function PageLayoutSkeleton({
+  title,
+  includeHeader = true,
+}: {
+  title?: string;
+  includeHeader?: boolean;
+}) {
   return (
     <Stack gap="lg">
       {/* Header skeleton - only shown if no header prop is provided */}
@@ -137,7 +144,7 @@ function PageLayout({
           data-slot="page-layout-container"
           className={cn(
             containerVariants({ maxWidth: resolvedMaxWidth }),
-            variant === 'center' && 'flex items-center justify-center'
+            variant === 'center' && 'flex items-center justify-center',
           )}
         >
           {content}

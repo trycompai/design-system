@@ -26,22 +26,26 @@ import Link from 'next/link';
 import { use } from 'react';
 
 // Mock data - in real app would fetch based on id
-const policiesData: Record<string, {
-  id: number;
-  name: string;
-  status: string;
-  owner: string;
-  lastUpdated: string;
-  description: string;
-  controls: { id: number; name: string; status: string }[];
-}> = {
+const policiesData: Record<
+  string,
+  {
+    id: number;
+    name: string;
+    status: string;
+    owner: string;
+    lastUpdated: string;
+    description: string;
+    controls: { id: number; name: string; status: string }[];
+  }
+> = {
   '1': {
     id: 1,
     name: 'Access Control Policy',
     status: 'approved',
     owner: 'Sarah Chen',
     lastUpdated: 'Jan 15, 2024',
-    description: 'This policy defines the requirements for controlling access to organizational information systems and data.',
+    description:
+      'This policy defines the requirements for controlling access to organizational information systems and data.',
     controls: [
       { id: 1, name: 'User Access Management', status: 'compliant' },
       { id: 2, name: 'Password Requirements', status: 'compliant' },
@@ -55,7 +59,8 @@ const policiesData: Record<string, {
     status: 'approved',
     owner: 'Mike Johnson',
     lastUpdated: 'Jan 10, 2024',
-    description: 'This policy establishes guidelines for classifying and handling organizational data based on sensitivity levels.',
+    description:
+      'This policy establishes guidelines for classifying and handling organizational data based on sensitivity levels.',
     controls: [
       { id: 5, name: 'Data Classification Scheme', status: 'compliant' },
       { id: 6, name: 'Data Handling Procedures', status: 'compliant' },
@@ -68,7 +73,8 @@ const policiesData: Record<string, {
     status: 'pending',
     owner: 'Sarah Chen',
     lastUpdated: 'Jan 8, 2024',
-    description: 'This policy outlines the procedures for identifying, reporting, and responding to security incidents.',
+    description:
+      'This policy outlines the procedures for identifying, reporting, and responding to security incidents.',
     controls: [
       { id: 8, name: 'Incident Detection', status: 'compliant' },
       { id: 9, name: 'Incident Reporting', status: 'needs-attention' },
@@ -107,17 +113,11 @@ export default function PolicyDetailPage({ params }: { params: Promise<{ id: str
   const { id } = use(params);
   const policy = policiesData[id] || policiesData['1'];
 
-  const breadcrumbs = [
-    { label: 'Policies', href: '/policies' },
-    { label: policy.name },
-  ];
+  const breadcrumbs = [{ label: 'Policies', href: '/policies' }, { label: policy.name }];
 
   return (
     <PageLayout>
-      <PageHeader
-        title={policy.name}
-        breadcrumbs={breadcrumbs}
-      >
+      <PageHeader title={policy.name} breadcrumbs={breadcrumbs}>
         <PageHeaderActions>
           <Button variant="outline" iconLeft={<Edit size={16} />}>
             Edit
@@ -129,65 +129,73 @@ export default function PolicyDetailPage({ params }: { params: Promise<{ id: str
       </PageHeader>
 
       <Stack gap="6">
-          {/* Policy Overview */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Overview</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Stack gap="4">
-                <Text>{policy.description}</Text>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <Stack gap="1">
-                    <Text size="sm" variant="muted">Status</Text>
-                    {getStatusBadge(policy.status)}
-                  </Stack>
-                  <Stack gap="1">
-                    <Text size="sm" variant="muted">Owner</Text>
-                    <Text weight="medium">{policy.owner}</Text>
-                  </Stack>
-                  <Stack gap="1">
-                    <Text size="sm" variant="muted">Last Updated</Text>
-                    <Text weight="medium">{policy.lastUpdated}</Text>
-                  </Stack>
-                  <Stack gap="1">
-                    <Text size="sm" variant="muted">Controls</Text>
-                    <Text weight="medium">{policy.controls.length}</Text>
-                  </Stack>
-                </div>
-              </Stack>
-            </CardContent>
-          </Card>
+        {/* Policy Overview */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Overview</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Stack gap="4">
+              <Text>{policy.description}</Text>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <Stack gap="1">
+                  <Text size="sm" variant="muted">
+                    Status
+                  </Text>
+                  {getStatusBadge(policy.status)}
+                </Stack>
+                <Stack gap="1">
+                  <Text size="sm" variant="muted">
+                    Owner
+                  </Text>
+                  <Text weight="medium">{policy.owner}</Text>
+                </Stack>
+                <Stack gap="1">
+                  <Text size="sm" variant="muted">
+                    Last Updated
+                  </Text>
+                  <Text weight="medium">{policy.lastUpdated}</Text>
+                </Stack>
+                <Stack gap="1">
+                  <Text size="sm" variant="muted">
+                    Controls
+                  </Text>
+                  <Text weight="medium">{policy.controls.length}</Text>
+                </Stack>
+              </div>
+            </Stack>
+          </CardContent>
+        </Card>
 
-          {/* Related Controls */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Related Controls</CardTitle>
-              <CardDescription>Controls that are mapped to this policy.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Table variant="bordered">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Control Name</TableHead>
-                    <TableHead>Status</TableHead>
+        {/* Related Controls */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Related Controls</CardTitle>
+            <CardDescription>Controls that are mapped to this policy.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table variant="bordered">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Control Name</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {policy.controls.map((control) => (
+                  <TableRow key={control.id}>
+                    <TableCell>
+                      <Text size="sm" weight="medium">
+                        {control.name}
+                      </Text>
+                    </TableCell>
+                    <TableCell>{getControlStatusBadge(control.status)}</TableCell>
                   </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {policy.controls.map((control) => (
-                    <TableRow key={control.id}>
-                      <TableCell>
-                        <Text size="sm" weight="medium">{control.name}</Text>
-                      </TableCell>
-                      <TableCell>
-                        {getControlStatusBadge(control.status)}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </Stack>
     </PageLayout>
   );

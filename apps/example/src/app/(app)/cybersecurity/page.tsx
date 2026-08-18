@@ -48,9 +48,21 @@ const securityMetrics = [
 
 const recentThreats = [
   { id: 1, type: 'Phishing Attempt', severity: 'high', time: '2 hours ago', status: 'blocked' },
-  { id: 2, type: 'Suspicious Login', severity: 'medium', time: '5 hours ago', status: 'investigating' },
+  {
+    id: 2,
+    type: 'Suspicious Login',
+    severity: 'medium',
+    time: '5 hours ago',
+    status: 'investigating',
+  },
   { id: 3, type: 'Malware Detection', severity: 'high', time: '1 day ago', status: 'resolved' },
-  { id: 4, type: 'Data Exfiltration Attempt', severity: 'critical', time: '2 days ago', status: 'blocked' },
+  {
+    id: 4,
+    type: 'Data Exfiltration Attempt',
+    severity: 'critical',
+    time: '2 days ago',
+    status: 'blocked',
+  },
 ];
 
 export default function CybersecurityPage() {
@@ -63,16 +75,26 @@ export default function CybersecurityPage() {
           <Card key={metric.title}>
             <CardContent>
               <Stack gap="2">
-                <Text size="sm" variant="muted">{metric.title}</Text>
+                <Text size="sm" variant="muted">
+                  {metric.title}
+                </Text>
                 <HStack align="baseline" gap="xs">
-                  <Text size="lg" weight="semibold">{metric.value}</Text>
+                  <Text size="lg" weight="semibold">
+                    {metric.value}
+                  </Text>
                   {metric.suffix && <Text variant="muted">{metric.suffix}</Text>}
                 </HStack>
                 <HStack gap="1" align="center">
-                  {metric.status === 'good' && <CheckmarkFilled size={12} className="text-green-600" />}
+                  {metric.status === 'good' && (
+                    <CheckmarkFilled size={12} className="text-green-600" />
+                  )}
                   {metric.status === 'warning' && <Warning size={12} className="text-yellow-600" />}
-                  {metric.status === 'critical' && <WarningAltFilled size={12} className="text-red-600" />}
-                  <Text size="xs" variant="muted">{metric.change} from last week</Text>
+                  {metric.status === 'critical' && (
+                    <WarningAltFilled size={12} className="text-red-600" />
+                  )}
+                  <Text size="xs" variant="muted">
+                    {metric.change} from last week
+                  </Text>
                 </HStack>
               </Stack>
             </CardContent>
@@ -90,25 +112,40 @@ export default function CybersecurityPage() {
 
             <Stack gap="none">
               {recentThreats.map((threat) => (
-                <div key={threat.id} className="flex items-center justify-between py-3 border-b border-border/40 last:border-0">
+                <div
+                  key={threat.id}
+                  className="flex items-center justify-between py-3 border-b border-border/40 last:border-0"
+                >
                   <HStack gap="3" align="center">
-                    <div className={`size-8 rounded-full flex items-center justify-center ${
-                      threat.severity === 'critical' ? 'bg-red-100 text-red-600' :
-                      threat.severity === 'high' ? 'bg-orange-100 text-orange-600' :
-                      'bg-yellow-100 text-yellow-600'
-                    }`}>
+                    <div
+                      className={`size-8 rounded-full flex items-center justify-center ${
+                        threat.severity === 'critical'
+                          ? 'bg-red-100 text-red-600'
+                          : threat.severity === 'high'
+                            ? 'bg-orange-100 text-orange-600'
+                            : 'bg-yellow-100 text-yellow-600'
+                      }`}
+                    >
                       <WarningAltFilled size={16} />
                     </div>
                     <Stack gap="none">
-                      <Text size="sm" weight="medium">{threat.type}</Text>
-                      <Text size="xs" variant="muted">{threat.time}</Text>
+                      <Text size="sm" weight="medium">
+                        {threat.type}
+                      </Text>
+                      <Text size="xs" variant="muted">
+                        {threat.time}
+                      </Text>
                     </Stack>
                   </HStack>
-                  <Badge variant={
-                    threat.status === 'blocked' ? 'default' :
-                    threat.status === 'resolved' ? 'secondary' :
-                    'outline'
-                  }>
+                  <Badge
+                    variant={
+                      threat.status === 'blocked'
+                        ? 'default'
+                        : threat.status === 'resolved'
+                          ? 'secondary'
+                          : 'outline'
+                    }
+                  >
                     {threat.status}
                   </Badge>
                 </div>
@@ -126,28 +163,36 @@ export default function CybersecurityPage() {
               <Stack gap="2">
                 <HStack justify="between">
                   <Text size="sm">Network Security</Text>
-                  <Text size="sm" weight="medium">92%</Text>
+                  <Text size="sm" weight="medium">
+                    92%
+                  </Text>
                 </HStack>
                 <Progress value={92} />
               </Stack>
               <Stack gap="2">
                 <HStack justify="between">
                   <Text size="sm">Endpoint Protection</Text>
-                  <Text size="sm" weight="medium">88%</Text>
+                  <Text size="sm" weight="medium">
+                    88%
+                  </Text>
                 </HStack>
                 <Progress value={88} />
               </Stack>
               <Stack gap="2">
                 <HStack justify="between">
                   <Text size="sm">Identity & Access</Text>
-                  <Text size="sm" weight="medium">95%</Text>
+                  <Text size="sm" weight="medium">
+                    95%
+                  </Text>
                 </HStack>
                 <Progress value={95} />
               </Stack>
               <Stack gap="2">
                 <HStack justify="between">
                   <Text size="sm">Data Protection</Text>
-                  <Text size="sm" weight="medium">78%</Text>
+                  <Text size="sm" weight="medium">
+                    78%
+                  </Text>
                 </HStack>
                 <Progress value={78} />
               </Stack>

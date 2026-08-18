@@ -8,7 +8,9 @@ function Popover({ ...props }: PopoverPrimitive.Root.Props) {
 }
 
 function PopoverTrigger({ className, ...props }: PopoverPrimitive.Trigger.Props) {
-  return <PopoverPrimitive.Trigger data-slot="popover-trigger" className={cn(className)} {...props} />;
+  return (
+    <PopoverPrimitive.Trigger data-slot="popover-trigger" className={cn(className)} {...props} />
+  );
 }
 
 function PopoverContent({

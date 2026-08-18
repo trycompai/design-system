@@ -20,10 +20,7 @@ export default function SettingsSecurityPage() {
       <PageHeader title="Security" />
 
       <Stack gap="6">
-        <Section
-          title="Security Status"
-          description="Your account security is strong."
-        >
+        <Section title="Security Status" description="Your account security is strong.">
           <HStack gap="md" align="center">
             <Security size={20} className="text-green-600" />
             <div className="flex-1">

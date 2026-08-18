@@ -20,11 +20,7 @@ export default defineConfig({
         '../../packages/design-system/src/components/**/*.tsx',
         '../../packages/design-system/lib/**/*.ts',
       ],
-      exclude: [
-        '**/*.stories.tsx',
-        '**/index.ts',
-        '**/*.test.{ts,tsx}',
-      ],
+      exclude: ['**/*.stories.tsx', '**/index.ts', '**/*.test.{ts,tsx}'],
       thresholds: {
         statements: 70,
         branches: 60,

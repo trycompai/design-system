@@ -63,71 +63,70 @@ export default function VendorDetailPage() {
             </CardHeader>
             <CardContent>
               <Text size="sm" variant="muted">
-                That vendor doesn't exist (or the URL is wrong).
+                That vendor doesn&apos;t exist (or the URL is wrong).
               </Text>
             </CardContent>
           </Card>
         ) : (
           <>
+            <TabsContent value="overview">
+              <div className="pt-4">
+                <Stack gap="6">
+                  <HStack gap="4" align="center">
+                    <Avatar size="lg">
+                      <AvatarImage src={vendor.logo} />
+                      <AvatarFallback>{vendor.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+                    </Avatar>
 
-          <TabsContent value="overview">
-            <div className="pt-4">
-              <Stack gap="6">
-                <HStack gap="4" align="center">
-                  <Avatar size="lg">
-                    <AvatarImage src={vendor.logo} />
-                    <AvatarFallback>{vendor.name.slice(0, 2).toUpperCase()}</AvatarFallback>
-                  </Avatar>
+                    <Stack gap="1">
+                      <HStack gap="2" align="center">
+                        <Text size="sm" weight="medium">
+                          {vendor.name}
+                        </Text>
+                        <Badge variant="secondary">ID: {vendor.id}</Badge>
+                      </HStack>
 
-                  <Stack gap="1">
-                    <HStack gap="2" align="center">
-                      <Text size="sm" weight="medium">
-                        {vendor.name}
-                      </Text>
-                      <Badge variant="secondary">ID: {vendor.id}</Badge>
-                    </HStack>
+                      <HStack gap="2" align="center">
+                        {getRiskBadge(vendor.riskLevel)}
+                        {getStatusBadge(vendor.status)}
+                        <Text size="sm" variant="muted">
+                          Last assessed: {vendor.lastAssessment}
+                        </Text>
+                      </HStack>
+                    </Stack>
+                  </HStack>
 
-                    <HStack gap="2" align="center">
-                      {getRiskBadge(vendor.riskLevel)}
-                      {getStatusBadge(vendor.status)}
-                      <Text size="sm" variant="muted">
-                        Last assessed: {vendor.lastAssessment}
-                      </Text>
-                    </HStack>
-                  </Stack>
-                </HStack>
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <Card>
+                      <CardHeader>
+                        <Heading level="4">Category</Heading>
+                      </CardHeader>
+                      <CardContent>
+                        <Text size="sm" variant="muted">
+                          {vendor.category}
+                        </Text>
+                      </CardContent>
+                    </Card>
 
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  <Card>
-                    <CardHeader>
-                      <Heading level="4">Category</Heading>
-                    </CardHeader>
-                    <CardContent>
-                      <Text size="sm" variant="muted">
-                        {vendor.category}
-                      </Text>
-                    </CardContent>
-                  </Card>
+                    <Card>
+                      <CardHeader>
+                        <Heading level="4">Risk</Heading>
+                      </CardHeader>
+                      <CardContent>{getRiskBadge(vendor.riskLevel)}</CardContent>
+                    </Card>
 
-                  <Card>
-                    <CardHeader>
-                      <Heading level="4">Risk</Heading>
-                    </CardHeader>
-                    <CardContent>{getRiskBadge(vendor.riskLevel)}</CardContent>
-                  </Card>
+                    <Card>
+                      <CardHeader>
+                        <Heading level="4">Status</Heading>
+                      </CardHeader>
+                      <CardContent>{getStatusBadge(vendor.status)}</CardContent>
+                    </Card>
+                  </div>
+                </Stack>
+              </div>
+            </TabsContent>
 
-                  <Card>
-                    <CardHeader>
-                      <Heading level="4">Status</Heading>
-                    </CardHeader>
-                    <CardContent>{getStatusBadge(vendor.status)}</CardContent>
-                  </Card>
-                </div>
-              </Stack>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="assessments">
+            <TabsContent value="assessments">
               <Card>
                 <CardHeader>
                   <Heading level="4">Assessments</Heading>
@@ -138,9 +137,9 @@ export default function VendorDetailPage() {
                   </Text>
                 </CardContent>
               </Card>
-          </TabsContent>
+            </TabsContent>
 
-          <TabsContent value="documents">
+            <TabsContent value="documents">
               <Card>
                 <CardHeader>
                   <Heading level="4">Documents</Heading>
@@ -151,11 +150,10 @@ export default function VendorDetailPage() {
                   </Text>
                 </CardContent>
               </Card>
-          </TabsContent>
+            </TabsContent>
           </>
         )}
       </PageLayout>
     </Tabs>
   );
 }
-

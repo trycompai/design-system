@@ -96,9 +96,7 @@ function CommandSearch({
   };
 
   // Combine flat items into a default group if provided
-  const allGroups = items.length > 0
-    ? [{ id: 'default', label: '', items }, ...groups]
-    : groups;
+  const allGroups = items.length > 0 ? [{ id: 'default', label: '', items }, ...groups] : groups;
 
   return (
     <>
@@ -130,9 +128,7 @@ function CommandSearch({
                   >
                     {item.icon}
                     <span>{item.label}</span>
-                    {item.shortcut && (
-                      <CommandShortcut>{item.shortcut}</CommandShortcut>
-                    )}
+                    {item.shortcut && <CommandShortcut>{item.shortcut}</CommandShortcut>}
                   </CommandItem>
                 ))}
               </CommandGroup>

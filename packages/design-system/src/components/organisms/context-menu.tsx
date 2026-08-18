@@ -110,14 +110,10 @@ function ContextMenuSubTrigger({
   );
 }
 
-function ContextMenuSubContent({ ...props }: Omit<React.ComponentProps<typeof ContextMenuContent>, 'className'>) {
-  return (
-    <ContextMenuContent
-      data-slot="context-menu-sub-content"
-      side="right"
-      {...props}
-    />
-  );
+function ContextMenuSubContent({
+  ...props
+}: Omit<React.ComponentProps<typeof ContextMenuContent>, 'className'>) {
+  return <ContextMenuContent data-slot="context-menu-sub-content" side="right" {...props} />;
 }
 
 function ContextMenuCheckboxItem({
@@ -166,7 +162,9 @@ function ContextMenuRadioItem({
   );
 }
 
-function ContextMenuSeparator({ ...props }: Omit<ContextMenuPrimitive.Separator.Props, 'className'>) {
+function ContextMenuSeparator({
+  ...props
+}: Omit<ContextMenuPrimitive.Separator.Props, 'className'>) {
   return (
     <ContextMenuPrimitive.Separator
       data-slot="context-menu-separator"

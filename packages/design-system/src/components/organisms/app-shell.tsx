@@ -48,21 +48,18 @@ function useAppShell() {
 
 // ============ VARIANTS ============
 
-const appShellNavbarVariants = cva(
-  'flex h-14 shrink-0 items-center gap-2 bg-background/50 px-4',
-  {
-    variants: {
-      position: {
-        sticky: 'sticky top-0 z-40',
-        fixed: 'fixed top-0 inset-x-0 z-40',
-        static: '',
-      },
-    },
-    defaultVariants: {
-      position: 'sticky',
+const appShellNavbarVariants = cva('flex h-14 shrink-0 items-center gap-2 bg-background/50 px-4', {
+  variants: {
+    position: {
+      sticky: 'sticky top-0 z-40',
+      fixed: 'fixed top-0 inset-x-0 z-40',
+      static: '',
     },
   },
-);
+  defaultVariants: {
+    position: 'sticky',
+  },
+});
 
 const sidebarWidths = {
   sm: 'w-48',
@@ -90,17 +87,17 @@ const appShellSidebarVariants = cva(
 const appShellContentVariants = cva(
   'flex flex-1 flex-col overflow-auto overscroll-none bg-background min-h-0 border-l border-border',
   {
-  variants: {
-    padding: {
-      none: '',
-      sm: 'p-4',
-      default: 'p-4 md:p-6',
-      lg: 'p-6 md:p-8',
+    variants: {
+      padding: {
+        none: '',
+        sm: 'p-4',
+        default: 'p-4 md:p-6',
+        lg: 'p-6 md:p-8',
+      },
     },
-  },
-  defaultVariants: {
-    padding: 'default',
-  },
+    defaultVariants: {
+      padding: 'default',
+    },
   },
 );
 
@@ -134,7 +131,8 @@ interface AppShellProps extends Omit<React.ComponentProps<'div'>, 'className'> {
 }
 
 interface AppShellNavbarProps
-  extends Omit<React.ComponentProps<'header'>, 'className'>,
+  extends
+    Omit<React.ComponentProps<'header'>, 'className'>,
     VariantProps<typeof appShellNavbarVariants> {
   /** Shows sidebar toggle button */
   showSidebarToggle?: boolean;
@@ -147,7 +145,8 @@ interface AppShellNavbarProps
 }
 
 interface AppShellSidebarProps
-  extends Omit<React.ComponentProps<'aside'>, 'className'>,
+  extends
+    Omit<React.ComponentProps<'aside'>, 'className'>,
     VariantProps<typeof appShellSidebarVariants> {
   /** Width of the sidebar */
   width?: keyof typeof sidebarWidths;
@@ -156,11 +155,13 @@ interface AppShellSidebarProps
 }
 
 interface AppShellContentProps
-  extends Omit<React.ComponentProps<'main'>, 'className'>,
+  extends
+    Omit<React.ComponentProps<'main'>, 'className'>,
     VariantProps<typeof appShellContentVariants> {}
 
 interface AppShellSearchProps
-  extends Omit<React.ComponentProps<'input'>, 'className'>,
+  extends
+    Omit<React.ComponentProps<'input'>, 'className'>,
     VariantProps<typeof appShellSearchVariants> {
   /** Shows keyboard shortcut hint */
   showShortcut?: boolean;
@@ -224,7 +225,9 @@ function AppShell({
   // Content for mobile drawer (populated by Rail and Sidebar components)
   const [railContent, setRailContent] = React.useState<React.ReactNode>(null);
   const [sidebarContent, setSidebarContent] = React.useState<React.ReactNode>(null);
-  const [sidebarVariant, setSidebarVariant] = React.useState<'default' | 'muted' | 'primary'>('default');
+  const [sidebarVariant, setSidebarVariant] = React.useState<'default' | 'muted' | 'primary'>(
+    'default',
+  );
 
   const setSidebarOpen = React.useCallback(
     (open: boolean) => {
@@ -286,7 +289,18 @@ function AppShell({
       setAIChatOpen,
       toggleAIChat,
     }),
-    [sidebarOpen, setSidebarOpen, toggleSidebar, mobileDrawerOpen, toggleMobileDrawer, railContent, sidebarContent, sidebarVariant, aiChatOpen, toggleAIChat],
+    [
+      sidebarOpen,
+      setSidebarOpen,
+      toggleSidebar,
+      mobileDrawerOpen,
+      toggleMobileDrawer,
+      railContent,
+      sidebarContent,
+      sidebarVariant,
+      aiChatOpen,
+      toggleAIChat,
+    ],
   );
 
   return (
@@ -320,7 +334,11 @@ function AppShellNavbar({
   const { toggleSidebar, sidebarOpen, toggleMobileDrawer } = useAppShell();
 
   return (
-    <header data-slot="app-shell-navbar" className={`${appShellNavbarVariants({ position })} relative`} {...props}>
+    <header
+      data-slot="app-shell-navbar"
+      className={`${appShellNavbarVariants({ position })} relative`}
+      {...props}
+    >
       {/* Left section: sidebar toggle + start content */}
       <div className="flex items-center gap-2 z-10">
         {/* Mobile hamburger menu - always visible on mobile, controls mobile drawer */}
@@ -363,10 +381,15 @@ function AppShellNavbar({
 }
 
 function AppShellBody({ children, ...props }: AppShellBodyProps) {
-  const { mobileDrawerOpen, setMobileDrawerOpen, railContent, sidebarContent, sidebarVariant } = useAppShell();
+  const { mobileDrawerOpen, setMobileDrawerOpen, railContent, sidebarContent, sidebarVariant } =
+    useAppShell();
 
   return (
-    <div data-slot="app-shell-body" className="flex flex-1 overflow-hidden overscroll-none bg-background/50 min-h-0 gap-0" {...props}>
+    <div
+      data-slot="app-shell-body"
+      className="flex flex-1 overflow-hidden overscroll-none bg-background/50 min-h-0 gap-0"
+      {...props}
+    >
       {/* Mobile drawer - shows both rail and sidebar */}
       <div className="md:hidden">
         {/* Backdrop */}
@@ -393,7 +416,11 @@ function AppShellBody({ children, ...props }: AppShellBodyProps) {
           <div
             data-variant={sidebarVariant}
             className={`flex flex-col w-64 p-2 ${
-              sidebarVariant === 'primary' ? 'bg-primary' : sidebarVariant === 'muted' ? 'bg-muted' : 'bg-background'
+              sidebarVariant === 'primary'
+                ? 'bg-primary'
+                : sidebarVariant === 'muted'
+                  ? 'bg-muted'
+                  : 'bg-background'
             }`}
           >
             {sidebarContent}
@@ -441,54 +468,57 @@ function AppShellRail({ showSidebarToggle = true, children, ...props }: AppShell
   }, []);
 
   // Function to update indicator position
-  const updateIndicatorPosition = React.useCallback((animate = true) => {
-    if (!activeId || !itemsContainerRef.current || !indicatorRef.current) {
-      if (indicatorRef.current) {
-        indicatorRef.current.style.opacity = '0';
+  const updateIndicatorPosition = React.useCallback(
+    (animate = true) => {
+      if (!activeId || !itemsContainerRef.current || !indicatorRef.current) {
+        if (indicatorRef.current) {
+          indicatorRef.current.style.opacity = '0';
+        }
+        return;
       }
-      return;
-    }
 
-    const activeElement = itemsRef.current.get(activeId);
-    if (!activeElement) {
-      indicatorRef.current.style.opacity = '0';
-      return;
-    }
-
-    const containerRect = itemsContainerRef.current.getBoundingClientRect();
-    const itemRect = activeElement.getBoundingClientRect();
-
-    // Calculate center position of the item relative to items container
-    // Item center Y relative to container, minus half the indicator height (h-6 = 24px, so 12px)
-    const top = itemRect.top - containerRect.top + (itemRect.height / 2) - 12;
-
-    if (!animate || isFirstRender.current) {
-      // Position instantly without animation
-      indicatorRef.current.style.transition = 'none';
-      indicatorRef.current.style.top = `${top}px`;
-      if (isFirstRender.current) {
+      const activeElement = itemsRef.current.get(activeId);
+      if (!activeElement) {
         indicatorRef.current.style.opacity = '0';
-        // Force reflow
-        indicatorRef.current.offsetHeight;
-        // Re-enable transitions, then fade in
-        indicatorRef.current.style.transition = '';
-        requestAnimationFrame(() => {
-          if (indicatorRef.current) {
-            indicatorRef.current.style.opacity = '1';
-          }
-        });
-        isFirstRender.current = false;
+        return;
+      }
+
+      const containerRect = itemsContainerRef.current.getBoundingClientRect();
+      const itemRect = activeElement.getBoundingClientRect();
+
+      // Calculate center position of the item relative to items container
+      // Item center Y relative to container, minus half the indicator height (h-6 = 24px, so 12px)
+      const top = itemRect.top - containerRect.top + itemRect.height / 2 - 12;
+
+      if (!animate || isFirstRender.current) {
+        // Position instantly without animation
+        indicatorRef.current.style.transition = 'none';
+        indicatorRef.current.style.top = `${top}px`;
+        if (isFirstRender.current) {
+          indicatorRef.current.style.opacity = '0';
+          // Force reflow
+          indicatorRef.current.offsetHeight;
+          // Re-enable transitions, then fade in
+          indicatorRef.current.style.transition = '';
+          requestAnimationFrame(() => {
+            if (indicatorRef.current) {
+              indicatorRef.current.style.opacity = '1';
+            }
+          });
+          isFirstRender.current = false;
+        } else {
+          indicatorRef.current.style.opacity = '1';
+          // Force reflow then re-enable transitions
+          indicatorRef.current.offsetHeight;
+          indicatorRef.current.style.transition = '';
+        }
       } else {
+        indicatorRef.current.style.top = `${top}px`;
         indicatorRef.current.style.opacity = '1';
-        // Force reflow then re-enable transitions
-        indicatorRef.current.offsetHeight;
-        indicatorRef.current.style.transition = '';
       }
-    } else {
-      indicatorRef.current.style.top = `${top}px`;
-      indicatorRef.current.style.opacity = '1';
-    }
-  }, [activeId]);
+    },
+    [activeId],
+  );
 
   // Update indicator position when active item changes
   React.useEffect(() => {
@@ -507,7 +537,7 @@ function AppShellRail({ showSidebarToggle = true, children, ...props }: AppShell
 
   const contextValue = React.useMemo<RailIndicatorContextProps>(
     () => ({ registerItem, activeId, setActiveId }),
-    [registerItem, activeId]
+    [registerItem, activeId],
   );
 
   return (
@@ -722,7 +752,14 @@ interface AppShellNavItemProps extends Omit<React.ComponentProps<'button'>, 'cla
 
 interface AppShellNavFooterProps extends Omit<React.ComponentProps<'div'>, 'className'> {}
 
-function AppShellSidebarHeader({ icon, title, description, action, children, ...props }: AppShellSidebarHeaderProps) {
+function AppShellSidebarHeader({
+  icon,
+  title,
+  description,
+  action,
+  children,
+  ...props
+}: AppShellSidebarHeaderProps) {
   const isSimpleHeader = !icon && !action && !children;
   return (
     <div

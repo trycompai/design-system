@@ -74,4 +74,3 @@ export const vendors: Vendor[] = [
 export function getVendorById(id: number): Vendor | undefined {
   return vendors.find((v) => v.id === id);
 }
-

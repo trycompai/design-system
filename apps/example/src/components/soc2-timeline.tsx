@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  Tabs,
-  TabsList,
-  TabsContent,
-  TabsTrigger,
-  Text,
-} from '@trycompai/design-system';
+import { Tabs, TabsList, TabsContent, TabsTrigger, Text } from '@trycompai/design-system';
 
 export type Soc2StageValue = 'trust' | 'team' | 'evidence' | 'audit_ready';
 
@@ -30,7 +24,8 @@ export const SOC2_STAGES: Soc2Stage[] = [
   {
     value: 'evidence',
     title: 'Evidence collection',
-    summary: 'Start evidence collection and automate where possible to stay continuously compliant.',
+    summary:
+      'Start evidence collection and automate where possible to stay continuously compliant.',
   },
   {
     value: 'audit_ready',
@@ -80,4 +75,3 @@ export function Soc2TimelineControlled({
     </Tabs>
   );
 }
-

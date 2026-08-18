@@ -47,7 +47,13 @@ export const WithDestructiveAction: Story = {
     actions: [
       { id: 'duplicate', label: 'Duplicate', onClick: fn() },
       { id: 'template', label: 'Save as template', onClick: fn(), separator: true },
-      { id: 'delete', label: 'Delete', variant: 'destructive', icon: <TrashCan size={16} />, onClick: fn() },
+      {
+        id: 'delete',
+        label: 'Delete',
+        variant: 'destructive',
+        icon: <TrashCan size={16} />,
+        onClick: fn(),
+      },
     ],
   },
 };
@@ -55,28 +61,16 @@ export const WithDestructiveAction: Story = {
 export const Variants: Story = {
   render: () => (
     <Stack gap="4" align="start">
-      <SplitButton
-        variant="default"
-        actions={[{ id: 'alt', label: 'Alternative action' }]}
-      >
+      <SplitButton variant="default" actions={[{ id: 'alt', label: 'Alternative action' }]}>
         Default
       </SplitButton>
-      <SplitButton
-        variant="outline"
-        actions={[{ id: 'alt', label: 'Alternative action' }]}
-      >
+      <SplitButton variant="outline" actions={[{ id: 'alt', label: 'Alternative action' }]}>
         Outline
       </SplitButton>
-      <SplitButton
-        variant="secondary"
-        actions={[{ id: 'alt', label: 'Alternative action' }]}
-      >
+      <SplitButton variant="secondary" actions={[{ id: 'alt', label: 'Alternative action' }]}>
         Secondary
       </SplitButton>
-      <SplitButton
-        variant="destructive"
-        actions={[{ id: 'alt', label: 'Alternative action' }]}
-      >
+      <SplitButton variant="destructive" actions={[{ id: 'alt', label: 'Alternative action' }]}>
         Destructive
       </SplitButton>
     </Stack>
@@ -86,28 +80,16 @@ export const Variants: Story = {
 export const Sizes: Story = {
   render: () => (
     <Stack gap="4" align="start">
-      <SplitButton
-        size="xs"
-        actions={[{ id: 'alt', label: 'Alternative' }]}
-      >
+      <SplitButton size="xs" actions={[{ id: 'alt', label: 'Alternative' }]}>
         Extra Small
       </SplitButton>
-      <SplitButton
-        size="sm"
-        actions={[{ id: 'alt', label: 'Alternative' }]}
-      >
+      <SplitButton size="sm" actions={[{ id: 'alt', label: 'Alternative' }]}>
         Small
       </SplitButton>
-      <SplitButton
-        size="default"
-        actions={[{ id: 'alt', label: 'Alternative' }]}
-      >
+      <SplitButton size="default" actions={[{ id: 'alt', label: 'Alternative' }]}>
         Default
       </SplitButton>
-      <SplitButton
-        size="lg"
-        actions={[{ id: 'alt', label: 'Alternative' }]}
-      >
+      <SplitButton size="lg" actions={[{ id: 'alt', label: 'Alternative' }]}>
         Large
       </SplitButton>
     </Stack>
@@ -118,8 +100,6 @@ export const Loading: Story = {
   args: {
     children: 'Processing',
     loading: true,
-    actions: [
-      { id: 'cancel', label: 'Cancel' },
-    ],
+    actions: [{ id: 'cancel', label: 'Cancel' }],
   },
 };

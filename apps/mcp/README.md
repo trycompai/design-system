@@ -37,33 +37,33 @@ DS_REPO_ROOT=/path/to/design-system npx @trycompai/design-system-mcp
 
 ### Component Documentation (Recommended for Agents)
 
-| Tool | Description |
-|------|-------------|
-| `get_component_docs` | **RECOMMENDED** - Get comprehensive docs for a component including props, variants, and usage examples |
-| `list_components` | List all component source files (atoms/molecules/organisms) |
-| `get_component_source` | Fetch raw component source by id (e.g., `molecules/card`) |
-| `search` | Search component ids and optionally source content |
+| Tool                   | Description                                                                                            |
+| ---------------------- | ------------------------------------------------------------------------------------------------------ |
+| `get_component_docs`   | **RECOMMENDED** - Get comprehensive docs for a component including props, variants, and usage examples |
+| `list_components`      | List all component source files (atoms/molecules/organisms)                                            |
+| `get_component_source` | Fetch raw component source by id (e.g., `molecules/card`)                                              |
+| `search`               | Search component ids and optionally source content                                                     |
 
 ### Usage Guidelines
 
-| Tool | Description |
-|------|-------------|
+| Tool                   | Description                                                         |
+| ---------------------- | ------------------------------------------------------------------- |
 | `get_usage_guidelines` | Get usage rules - **IMPORTANT: Components do NOT accept className** |
-| `installation` | Get framework-specific installation instructions |
+| `installation`         | Get framework-specific installation instructions                    |
 
 ### Design Tokens
 
-| Tool | Description |
-|------|-------------|
+| Tool        | Description                                             |
+| ----------- | ------------------------------------------------------- |
 | `get_theme` | Get CSS variables and design tokens for light/dark mode |
 
 ### Storybook Stories
 
-| Tool | Description |
-|------|-------------|
-| `list_stories` | List all Storybook story files |
-| `get_story_source` | Fetch story source by name (e.g., `Card`) |
-| `suggest_story_for_component` | Best-guess story name for a component id |
+| Tool                          | Description                               |
+| ----------------------------- | ----------------------------------------- |
+| `list_stories`                | List all Storybook story files            |
+| `get_story_source`            | Fetch story source by name (e.g., `Card`) |
+| `suggest_story_for_component` | Best-guess story name for a component id  |
 
 ## Critical Usage Note
 

@@ -126,9 +126,7 @@ export const sidebarConfigs: Record<string, SidebarConfig> = {
         href: '/integrations',
       },
     ],
-    footer: [
-      { id: 'settings', label: 'Settings', href: '/settings', icon: <Settings /> },
-    ],
+    footer: [{ id: 'settings', label: 'Settings', href: '/settings', icon: <Settings /> }],
   },
   cybersecurity: {
     title: 'Cybersecurity',
@@ -138,9 +136,7 @@ export const sidebarConfigs: Record<string, SidebarConfig> = {
       { id: 'vulnerabilities', label: 'Vulnerabilities', href: '#', icon: <Warning /> },
       { id: 'assets', label: 'Assets', href: '#', icon: <Building /> },
     ],
-    footer: [
-      { id: 'help', label: 'Help', href: '#', icon: <Help /> },
-    ],
+    footer: [{ id: 'help', label: 'Help', href: '#', icon: <Help /> }],
   },
   analytics: {
     title: 'Analytics',
@@ -150,9 +146,7 @@ export const sidebarConfigs: Record<string, SidebarConfig> = {
       { id: 'compliance-reports', label: 'Compliance Reports', href: '#', icon: <Document /> },
       { id: 'audit-logs', label: 'Audit Logs', href: '#', icon: <TaskComplete /> },
     ],
-    footer: [
-      { id: 'help', label: 'Help', href: '#', icon: <Help /> },
-    ],
+    footer: [{ id: 'help', label: 'Help', href: '#', icon: <Help /> }],
   },
   settings: {
     title: 'Settings',
@@ -184,18 +178,16 @@ export const sidebarConfigs: Record<string, SidebarConfig> = {
         icon: <Plug />,
       },
     ],
-    footer: [
-      { id: 'help', label: 'Help & Support', href: '#', icon: <Help /> },
-    ],
+    footer: [{ id: 'help', label: 'Help & Support', href: '#', icon: <Help /> }],
   },
 };
 
 // Helper to get active rail item from pathname
 export function getActiveRailItem(pathname: string): string {
   for (const item of railItems) {
-    if (item.activePaths.some(path =>
-      path === '/' ? pathname === '/' : pathname.startsWith(path)
-    )) {
+    if (
+      item.activePaths.some((path) => (path === '/' ? pathname === '/' : pathname.startsWith(path)))
+    ) {
       return item.id;
     }
   }
@@ -215,7 +207,7 @@ export function isNavItemActive(item: NavItemWithChildren, pathname: string): bo
     return pathname === item.href || pathname.startsWith(item.href + '/');
   }
   if (item.children) {
-    return item.children.some(child => {
+    return item.children.some((child) => {
       if (child.href === '/') return pathname === '/';
       return pathname === child.href || pathname.startsWith(child.href + '/');
     });

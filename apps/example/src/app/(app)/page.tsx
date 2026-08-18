@@ -185,7 +185,11 @@ export default function OverviewPage() {
     [],
   );
   const completedTasks = React.useMemo(
-    () => (Object.keys(STAGE_TASKS) as Soc2StageValue[]).reduce((acc, key) => acc + (taskState[key]?.filter(Boolean).length ?? 0), 0),
+    () =>
+      (Object.keys(STAGE_TASKS) as Soc2StageValue[]).reduce(
+        (acc, key) => acc + (taskState[key]?.filter(Boolean).length ?? 0),
+        0,
+      ),
     [taskState],
   );
   const roadmapPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
@@ -205,7 +209,10 @@ export default function OverviewPage() {
   const stageMeta = SOC2_STAGES.find((s) => s.value === stage) ?? SOC2_STAGES[0];
   const tasks = STAGE_TASKS[stage];
 
-  const stageIndex = Math.max(0, SOC2_STAGES.findIndex((s) => s.value === stage));
+  const stageIndex = Math.max(
+    0,
+    SOC2_STAGES.findIndex((s) => s.value === stage),
+  );
   const blockingStage = SOC2_STAGES.slice(0, stageIndex).find((s) => !completedStages[s.value]);
   const isLocked = Boolean(blockingStage);
 
@@ -236,128 +243,128 @@ export default function OverviewPage() {
         <TabsContent value="roadmap">
           {/* Roadmap Summary + Phases */}
           <Stack gap="lg">
-        <Card>
-          <CardHeader>
-            <Stack gap="md">
-              <HStack justify="between" align="start">
-                <Stack gap="xs">
-                  <HStack align="center" gap="sm">
-                    <Text size="sm" weight="medium">
-                      SOC 2 Type II roadmap
-                    </Text>
-                    <Badge variant="secondary">On track</Badge>
-                    <Badge variant="outline">Est. {formatMinutes(remainingMinutes)} remaining</Badge>
+            <Card>
+              <CardHeader>
+                <Stack gap="md">
+                  <HStack justify="between" align="start">
+                    <Stack gap="xs">
+                      <HStack align="center" gap="sm">
+                        <Text size="sm" weight="medium">
+                          SOC 2 Type II roadmap
+                        </Text>
+                        <Badge variant="secondary">On track</Badge>
+                        <Badge variant="outline">
+                          Est. {formatMinutes(remainingMinutes)} remaining
+                        </Badge>
+                      </HStack>
+                      <Text size="sm" variant="muted">
+                        Target audit window: Nov 12–Nov 26, 2025
+                      </Text>
+                    </Stack>
+                    <Button variant="link" size="sm">
+                      View details
+                    </Button>
                   </HStack>
-                  <Text size="sm" variant="muted">
-                    Target audit window: Nov 12–Nov 26, 2025
-                  </Text>
+
+                  <Stack gap="sm">
+                    <HStack justify="between" align="baseline">
+                      <Text size="sm" variant="muted">
+                        Roadmap completed
+                      </Text>
+                      <Text size="sm" weight="medium">
+                        {roadmapPercent}%
+                      </Text>
+                    </HStack>
+                    <Progress value={roadmapPercent} />
+                    <Text size="sm" variant="muted">
+                      {completedTasks} of {totalTasks} tasks
+                    </Text>
+                  </Stack>
                 </Stack>
-                <Button variant="link" size="sm">
-                  View details
-                </Button>
-              </HStack>
+              </CardHeader>
+            </Card>
 
-              <Stack gap="sm">
-                <HStack justify="between" align="baseline">
-                  <Text size="sm" variant="muted">
-                    Roadmap completed
-                  </Text>
-                  <Text size="sm" weight="medium">
-                    {roadmapPercent}%
-                  </Text>
-                </HStack>
-                <Progress value={roadmapPercent} />
-                <Text size="sm" variant="muted">
-                  {completedTasks} of {totalTasks} tasks
-                </Text>
-              </Stack>
+            <Stack gap="sm">
+              <Soc2TimelineControlled
+                value={stage}
+                onValueChange={setStage}
+                showDetails={false}
+                completedStages={completedStages}
+              />
             </Stack>
-          </CardHeader>
-        </Card>
 
-        <Stack gap="sm">
-          <Soc2TimelineControlled
-            value={stage}
-            onValueChange={setStage}
-            showDetails={false}
-            completedStages={completedStages}
-          />
-        </Stack>
+            <Stack gap="sm">
+              {isLocked && (
+                <Alert
+                  variant="warning"
+                  title="Complete the previous steps first"
+                  description={`You can preview “${stageMeta.title}”, but you’ll need to finish “${blockingStage?.title}” before you can check off these tasks.`}
+                />
+              )}
 
-        <Stack gap="sm">
-          {isLocked && (
-            <Alert
-              variant="warning"
-              title="Complete the previous steps first"
-              description={`You can preview “${stageMeta.title}”, but you’ll need to finish “${blockingStage?.title}” before you can check off these tasks.`}
-            />
-          )}
-
-          <Section
-            title={stageMeta.title}
-            description={stageMeta.summary}
-          >
-            <Stack gap="sm" aria-disabled={isLocked || undefined}>
-              {tasks.map((task, idx) => {
-                const checked = taskState[stage]?.[idx] ?? false;
-                const actionIcon =
-                  task.actionKind === 'video' ? (
-                    <PlayIcon />
-                  ) : task.actionKind === 'link' ? (
-                    <ExternalLinkIcon />
-                  ) : (
-                    <ArrowRightIcon />
-                  );
-
-                return (
-                  <Item key={task.title} size="default" variant="outline">
-                    <ItemMedia>
-                      <Avatar size="sm" aria-hidden>
-                        <AvatarFallback
-                          style={
-                            checked
-                              ? { backgroundColor: 'var(--color-success)', color: 'white' }
-                              : {
-                                  backgroundColor: 'var(--color-muted)',
-                                  color: 'var(--color-muted-foreground)',
-                                }
-                          }
-                        >
-                          {checked ? <CheckIcon size={14} /> : idx + 1}
-                        </AvatarFallback>
-                      </Avatar>
-                    </ItemMedia>
-                    <ItemContent>
-                      <ItemTitle>
-                        <HStack align="center" gap="sm">
-                          <span>{task.title}</span>
-                          <Badge variant="outline">{task.estimate}</Badge>
-                        </HStack>
-                      </ItemTitle>
-                      <ItemDescription>{task.description}</ItemDescription>
-                    </ItemContent>
-                    <ItemActions>
-                      {checked ? (
-                        <Badge variant="secondary">Done</Badge>
+              <Section title={stageMeta.title} description={stageMeta.summary}>
+                <Stack gap="sm" aria-disabled={isLocked || undefined}>
+                  {tasks.map((task, idx) => {
+                    const checked = taskState[stage]?.[idx] ?? false;
+                    const actionIcon =
+                      task.actionKind === 'video' ? (
+                        <PlayIcon />
+                      ) : task.actionKind === 'link' ? (
+                        <ExternalLinkIcon />
                       ) : (
-                        <Button
-                          variant={task.actionKind === 'link' ? 'outline' : 'default'}
-                          iconRight={actionIcon}
-                          onClick={() => {
-                            if (task.actionHref) window.open(task.actionHref, '_blank', 'noopener,noreferrer');
-                            completeTask(idx);
-                          }}
-                        >
-                          {task.actionLabel}
-                        </Button>
-                      )}
-                    </ItemActions>
-                  </Item>
-                );
-              })}
+                        <ArrowRightIcon />
+                      );
+
+                    return (
+                      <Item key={task.title} size="default" variant="outline">
+                        <ItemMedia>
+                          <Avatar size="sm" aria-hidden>
+                            <AvatarFallback
+                              style={
+                                checked
+                                  ? { backgroundColor: 'var(--color-success)', color: 'white' }
+                                  : {
+                                      backgroundColor: 'var(--color-muted)',
+                                      color: 'var(--color-muted-foreground)',
+                                    }
+                              }
+                            >
+                              {checked ? <CheckIcon size={14} /> : idx + 1}
+                            </AvatarFallback>
+                          </Avatar>
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle>
+                            <HStack align="center" gap="sm">
+                              <span>{task.title}</span>
+                              <Badge variant="outline">{task.estimate}</Badge>
+                            </HStack>
+                          </ItemTitle>
+                          <ItemDescription>{task.description}</ItemDescription>
+                        </ItemContent>
+                        <ItemActions>
+                          {checked ? (
+                            <Badge variant="secondary">Done</Badge>
+                          ) : (
+                            <Button
+                              variant={task.actionKind === 'link' ? 'outline' : 'default'}
+                              iconRight={actionIcon}
+                              onClick={() => {
+                                if (task.actionHref)
+                                  window.open(task.actionHref, '_blank', 'noopener,noreferrer');
+                                completeTask(idx);
+                              }}
+                            >
+                              {task.actionLabel}
+                            </Button>
+                          )}
+                        </ItemActions>
+                      </Item>
+                    );
+                  })}
+                </Stack>
+              </Section>
             </Stack>
-          </Section>
-        </Stack>
           </Stack>
         </TabsContent>
 

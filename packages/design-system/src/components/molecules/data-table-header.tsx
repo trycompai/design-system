@@ -35,16 +35,9 @@ export interface DataTableSearchProps {
   onChange?: (value: string) => void;
 }
 
-function DataTableSearch({
-  placeholder = 'Search...',
-  value,
-  onChange,
-}: DataTableSearchProps) {
+function DataTableSearch({ placeholder = 'Search...', value, onChange }: DataTableSearchProps) {
   return (
-    <div
-      data-slot="data-table-search"
-      className="relative flex-1 max-w-sm"
-    >
+    <div data-slot="data-table-search" className="relative flex-1 max-w-sm">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
       <input
         type="text"
@@ -67,10 +60,7 @@ export interface DataTableFiltersProps {
 
 function DataTableFilters({ children }: DataTableFiltersProps) {
   return (
-    <div
-      data-slot="data-table-filters"
-      className="flex items-center gap-2 shrink-0"
-    >
+    <div data-slot="data-table-filters" className="flex items-center gap-2 shrink-0">
       {children}
     </div>
   );

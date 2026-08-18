@@ -32,8 +32,7 @@ function DropdownMenuTrigger({
   variant = 'default',
   className,
   ...props
-}: MenuPrimitive.Trigger.Props &
-  VariantProps<typeof dropdownMenuTriggerVariants>) {
+}: MenuPrimitive.Trigger.Props & VariantProps<typeof dropdownMenuTriggerVariants>) {
   return (
     <MenuPrimitive.Trigger
       data-slot="dropdown-menu-trigger"

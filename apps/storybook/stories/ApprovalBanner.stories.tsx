@@ -69,8 +69,7 @@ export const ApproveOnly: Story = {
   args: {
     variant: 'info',
     title: 'Welcome to the Team!',
-    description:
-      'Please review and acknowledge the company policies before continuing.',
+    description: 'Please review and acknowledge the company policies before continuing.',
     approveText: 'I Acknowledge',
     hideReject: true,
   },
@@ -87,8 +86,7 @@ export const Loading: Story = {
 export const WithConfirmationDialogs: Story = {
   args: {
     title: 'Data Retention Policy v2.1',
-    description:
-      'This policy update requires your approval before it can be published.',
+    description: 'This policy update requires your approval before it can be published.',
     approveConfirmation: {
       title: 'Approve Policy',
       description:
@@ -99,8 +97,7 @@ export const WithConfirmationDialogs: Story = {
     },
     rejectConfirmation: {
       title: 'Reject Policy',
-      description:
-        'Are you sure you want to reject this policy? The author will be notified.',
+      description: 'Are you sure you want to reject this policy? The author will be notified.',
       confirmText: 'Yes, Reject',
       cancelText: 'Cancel',
       onCancel: () => console.log('Reject dialog cancelled'),
@@ -115,13 +112,11 @@ export const InlineWithConfirmation: Story = {
     description: 'Data Retention Policy v2.1 • Submitted by John Doe',
     approveConfirmation: {
       title: 'Confirm Approval',
-      description:
-        'This will approve the policy and notify the submitter.',
+      description: 'This will approve the policy and notify the submitter.',
     },
     rejectConfirmation: {
       title: 'Confirm Rejection',
-      description:
-        'This will reject the policy. The submitter will be asked to revise.',
+      description: 'This will reject the policy. The submitter will be asked to revise.',
     },
   },
 };

@@ -14,7 +14,7 @@ describe('Card', () => {
     render(
       <Card>
         <CardContent>Card content</CardContent>
-      </Card>
+      </Card>,
     );
     expect(screen.getByText('Card content')).toBeInTheDocument();
   });
@@ -28,7 +28,7 @@ describe('Card', () => {
         </CardHeader>
         <CardContent>Content</CardContent>
         <CardFooter>Footer</CardFooter>
-      </Card>
+      </Card>,
     );
 
     expect(screen.getByText('Title')).toBeInTheDocument();
@@ -62,7 +62,7 @@ describe('CardTitle', () => {
         <CardHeader>
           <CardTitle>My Title</CardTitle>
         </CardHeader>
-      </Card>
+      </Card>,
     );
     expect(screen.getByText('My Title')).toBeInTheDocument();
   });
@@ -75,7 +75,7 @@ describe('CardDescription', () => {
         <CardHeader>
           <CardDescription>My description</CardDescription>
         </CardHeader>
-      </Card>
+      </Card>,
     );
     expect(screen.getByText('My description')).toBeInTheDocument();
   });

@@ -1,8 +1,8 @@
-import path from "node:path";
+import path from 'node:path';
 
 export function repoRootFromAppDir(appDir: string) {
   // apps/design-system-mcp -> repo root
-  return path.resolve(appDir, "..", "..");
+  return path.resolve(appDir, '..', '..');
 }
 
 export type RepoPaths = {
@@ -21,22 +21,21 @@ export function getRepoPaths(appDir: string): RepoPaths {
     repoRoot,
     designSystemSrcComponentsDir: path.join(
       repoRoot,
-      "packages",
-      "design-system",
-      "src",
-      "components",
+      'packages',
+      'design-system',
+      'src',
+      'components',
     ),
-    storybookStoriesDir: path.join(repoRoot, "apps", "storybook", "stories"),
+    storybookStoriesDir: path.join(repoRoot, 'apps', 'storybook', 'stories'),
     globalsStylesPath: path.join(
       repoRoot,
-      "packages",
-      "design-system",
-      "src",
-      "styles",
-      "globals.css",
+      'packages',
+      'design-system',
+      'src',
+      'styles',
+      'globals.css',
     ),
-    agentsMdPath: path.join(repoRoot, "packages", "design-system", "agents.md"),
-    claudeMdPath: path.join(repoRoot, "CLAUDE.md"),
+    agentsMdPath: path.join(repoRoot, 'packages', 'design-system', 'agents.md'),
+    claudeMdPath: path.join(repoRoot, 'CLAUDE.md'),
   };
 }
-

@@ -27,10 +27,7 @@ export default function LoadingStatePage() {
           This page demonstrates the loading state of PageLayout
         </PageHeaderDescription>
         <PageHeaderActions>
-          <Button
-            variant="outline"
-            onClick={() => setIsLoading(!isLoading)}
-          >
+          <Button variant="outline" onClick={() => setIsLoading(!isLoading)}>
             {isLoading ? 'Show Content' : 'Show Loading'}
           </Button>
         </PageHeaderActions>
@@ -38,8 +35,9 @@ export default function LoadingStatePage() {
 
       <Stack gap="lg">
         <Text>
-          The PageLayout component supports a <code className="bg-muted px-1.5 py-0.5 rounded text-sm">loading</code> prop
-          that displays skeleton placeholders while content is being fetched.
+          The PageLayout component supports a{' '}
+          <code className="bg-muted px-1.5 py-0.5 rounded text-sm">loading</code> prop that displays
+          skeleton placeholders while content is being fetched.
         </Text>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -49,7 +47,9 @@ export default function LoadingStatePage() {
               <CardDescription>View your metrics</CardDescription>
             </CardHeader>
             <CardContent>
-              <Text variant="muted" size="sm">Quick access to your dashboard analytics and insights.</Text>
+              <Text variant="muted" size="sm">
+                Quick access to your dashboard analytics and insights.
+              </Text>
             </CardContent>
           </Card>
 
@@ -59,7 +59,9 @@ export default function LoadingStatePage() {
               <CardDescription>Generate reports</CardDescription>
             </CardHeader>
             <CardContent>
-              <Text variant="muted" size="sm">Create and export detailed compliance reports.</Text>
+              <Text variant="muted" size="sm">
+                Create and export detailed compliance reports.
+              </Text>
             </CardContent>
           </Card>
 
@@ -69,7 +71,9 @@ export default function LoadingStatePage() {
               <CardDescription>Configure options</CardDescription>
             </CardHeader>
             <CardContent>
-              <Text variant="muted" size="sm">Customize your workspace and preferences.</Text>
+              <Text variant="muted" size="sm">
+                Customize your workspace and preferences.
+              </Text>
             </CardContent>
           </Card>
         </div>

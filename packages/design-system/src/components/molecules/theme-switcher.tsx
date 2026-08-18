@@ -4,20 +4,17 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Moon, Screen, Sun } from '@carbon/icons-react';
 import * as React from 'react';
 
-const themeSwitcherVariants = cva(
-  'inline-flex items-center rounded-full p-0.5 bg-muted',
-  {
-    variants: {
-      size: {
-        sm: 'gap-0.5',
-        default: 'gap-0.5',
-      },
-    },
-    defaultVariants: {
-      size: 'default',
+const themeSwitcherVariants = cva('inline-flex items-center rounded-full p-0.5 bg-muted', {
+  variants: {
+    size: {
+      sm: 'gap-0.5',
+      default: 'gap-0.5',
     },
   },
-);
+  defaultVariants: {
+    size: 'default',
+  },
+});
 
 const themeSwitcherButtonVariants = cva(
   'inline-flex items-center justify-center rounded-full transition-all duration-200',
@@ -42,7 +39,8 @@ const themeSwitcherButtonVariants = cva(
 type Theme = 'light' | 'dark' | 'system';
 
 interface ThemeSwitcherProps
-  extends Omit<React.ComponentProps<'div'>, 'className' | 'onChange'>,
+  extends
+    Omit<React.ComponentProps<'div'>, 'className' | 'onChange'>,
     VariantProps<typeof themeSwitcherVariants> {
   /** Current theme value */
   value?: Theme;
@@ -75,9 +73,7 @@ function ThemeSwitcher({
   const options: { value: Theme; icon: React.ReactNode; label: string }[] = [
     { value: 'light', icon: <Sun />, label: 'Light mode' },
     { value: 'dark', icon: <Moon />, label: 'Dark mode' },
-    ...(showSystem
-      ? [{ value: 'system' as Theme, icon: <Screen />, label: 'System theme' }]
-      : []),
+    ...(showSystem ? [{ value: 'system' as Theme, icon: <Screen />, label: 'System theme' }] : []),
   ];
 
   return (

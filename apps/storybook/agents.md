@@ -105,11 +105,12 @@ Don't wrap components in divs with Tailwind classes for spacing or layout.
 ## Layout Component Reference
 
 ### Stack & HStack
+
 For spacing between elements:
 
 ```tsx
 <Stack gap="xs">      // 4px
-<Stack gap="sm">      // 8px  
+<Stack gap="sm">      // 8px
 <Stack gap="md">      // 12px
 <Stack gap="lg">      // 16px
 <Stack gap="xl">      // 24px
@@ -129,6 +130,7 @@ For spacing between elements:
 ```
 
 ### PageLayout
+
 For page-level structure:
 
 ```tsx
@@ -157,6 +159,7 @@ For page-level structure:
 ```
 
 ### Container
+
 For max-width sections within a page:
 
 ```tsx
@@ -165,6 +168,7 @@ For max-width sections within a page:
 ```
 
 ### Grid
+
 For grid layouts:
 
 ```tsx
@@ -178,6 +182,7 @@ For grid layouts:
 Only use raw `<div>` when absolutely necessary:
 
 1. **Complex CSS Grid layouts** (when Grid component doesn't fit):
+
    ```tsx
    <div className="grid grid-cols-4 gap-4">
      {items.map(...)}
@@ -211,9 +216,7 @@ export const MyStory: Story = {
       <Stack gap="6">
         <Card>
           <CardContent>
-            <Stack gap="4">
-              {/* Content */}
-            </Stack>
+            <Stack gap="4">{/* Content */}</Stack>
           </CardContent>
         </Card>
       </Stack>
@@ -272,7 +275,7 @@ import {
   Grid,
   Container,
   PageLayout,
-  
+
   // Page structure
   PageHeader,
   PageHeaderDescription,
@@ -281,7 +284,7 @@ import {
   SectionHeader,
   SectionTitle,
   SectionContent,
-  
+
   // Components
   Card,
   CardHeader,
@@ -297,14 +300,14 @@ import {
 
 ## Summary
 
-| Need | Solution |
-|------|----------|
-| Spacing between items | `<Stack gap="4">` or `<HStack gap="4">` |
-| Page structure | `<PageLayout>` with `container`, `maxWidth`, `padding` props |
-| Centered content | `<PageLayout maxWidth="lg">` or `<Container size="lg">` |
-| Full-width layout | `<PageLayout container={false}>` |
-| Grid layout | `<Grid cols={3} gap="4">` |
-| Text styling | `<Text size="sm" variant="muted" weight="bold">` |
-| Component styling | Use component's variant/size props |
-| Missing prop | Add it to the design system component |
-| New pattern | Create a new design system component |
+| Need                  | Solution                                                     |
+| --------------------- | ------------------------------------------------------------ |
+| Spacing between items | `<Stack gap="4">` or `<HStack gap="4">`                      |
+| Page structure        | `<PageLayout>` with `container`, `maxWidth`, `padding` props |
+| Centered content      | `<PageLayout maxWidth="lg">` or `<Container size="lg">`      |
+| Full-width layout     | `<PageLayout container={false}>`                             |
+| Grid layout           | `<Grid cols={3} gap="4">`                                    |
+| Text styling          | `<Text size="sm" variant="muted" weight="bold">`             |
+| Component styling     | Use component's variant/size props                           |
+| Missing prop          | Add it to the design system component                        |
+| New pattern           | Create a new design system component                         |

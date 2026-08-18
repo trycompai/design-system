@@ -1,9 +1,6 @@
 import { ScrollArea as ScrollAreaPrimitive } from '@base-ui/react/scroll-area';
 
-function ScrollArea({
-  children,
-  ...props
-}: Omit<ScrollAreaPrimitive.Root.Props, 'className'>) {
+function ScrollArea({ children, ...props }: Omit<ScrollAreaPrimitive.Root.Props, 'className'>) {
   return (
     <ScrollAreaPrimitive.Root
       data-slot="scroll-area"

@@ -17,7 +17,16 @@ interface PageHeaderProps extends Omit<React.ComponentProps<'div'>, 'className'>
   tabs?: React.ReactNode;
 }
 
-function PageHeader({ title, actions, breadcrumbs, backHref, backLabel = 'Back', tabs, children, ...props }: PageHeaderProps) {
+function PageHeader({
+  title,
+  actions,
+  breadcrumbs,
+  backHref,
+  backLabel = 'Back',
+  tabs,
+  children,
+  ...props
+}: PageHeaderProps) {
   const childArray = React.Children.toArray(children);
   const extractedActionChildren: React.ReactNode[] = [];
   const extractedDescriptionChildren: React.ReactNode[] = [];
@@ -35,15 +44,15 @@ function PageHeader({ title, actions, breadcrumbs, backHref, backLabel = 'Back',
       React.isValidElement(child) &&
       (child.type === PageHeaderDescription ||
         (typeof child.type === 'function' &&
-          (child.type as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot === 'description'))
+          (child.type as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot ===
+            'description'))
     ) {
       extractedDescriptionChildren.push(child);
     }
   });
 
   const resolvedActions =
-    actions ??
-    (extractedActionChildren.length > 0 ? extractedActionChildren : undefined);
+    actions ?? (extractedActionChildren.length > 0 ? extractedActionChildren : undefined);
 
   return (
     <div data-slot="page-header" className="flex flex-col gap-1" {...props}>
@@ -82,11 +91,7 @@ function PageHeader({ title, actions, breadcrumbs, backHref, backLabel = 'Back',
       {extractedDescriptionChildren.length > 0 && extractedDescriptionChildren}
 
       {/* Tabs section */}
-      {tabs && (
-        <div className="mt-2 -mb-px">
-          {tabs}
-        </div>
-      )}
+      {tabs && <div className="mt-2 -mb-px">{tabs}</div>}
     </div>
   );
 }
@@ -105,6 +110,7 @@ function PageHeaderDescription({ ...props }: Omit<React.ComponentProps<'p'>, 'cl
 
 // Mark compound slots so PageHeader can detect them even if module instances differ.
 (PageHeaderActions as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot = 'actions';
-(PageHeaderDescription as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot = 'description';
+(PageHeaderDescription as unknown as { __pageHeaderSlot?: string }).__pageHeaderSlot =
+  'description';
 
 export { PageHeader, PageHeaderActions, PageHeaderDescription };

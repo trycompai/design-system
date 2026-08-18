@@ -4,13 +4,7 @@ import { RadioGroup as RadioGroupPrimitive } from '@base-ui/react/radio-group';
 import { CircleFilled } from '@carbon/icons-react';
 
 function RadioGroup({ ...props }: Omit<RadioGroupPrimitive.Props, 'className'>) {
-  return (
-    <RadioGroupPrimitive
-      data-slot="radio-group"
-      className="grid gap-2 w-full"
-      {...props}
-    />
-  );
+  return <RadioGroupPrimitive data-slot="radio-group" className="grid gap-2 w-full" {...props} />;
 }
 
 function RadioGroupItem({ ...props }: Omit<RadioPrimitive.Root.Props, 'className'>) {

@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import {
-  Time,
-  Information,
-  CheckmarkOutline,
-  Checkmark,
-  Close,
-} from '@carbon/icons-react';
+import { Time, Information, CheckmarkOutline, Checkmark, Close } from '@carbon/icons-react';
 
 import { Button } from '../atoms/button';
 import { Stack, HStack } from '../atoms/stack';
@@ -23,27 +17,24 @@ import {
   AlertDialogTitle,
 } from './alert-dialog';
 
-const approvalBannerVariants = cva(
-  'rounded-lg border border-l-4 bg-background p-4',
-  {
-    variants: {
-      variant: {
-        warning: 'border-l-warning border-border',
-        info: 'border-l-info border-border',
-        default: 'border-l-primary border-border',
-      },
-      layout: {
-        stacked: '',
-        inline:
-          '[&>[data-slot=stack]]:flex-row [&>[data-slot=stack]]:items-center [&>[data-slot=stack]]:justify-between [&_[data-slot=approval-banner-content]]:min-w-0 [&_[data-slot=approval-banner-content]]:flex-1 [&_[data-slot=approval-banner-actions]]:shrink-0 [&_[data-slot=approval-banner-description]]:truncate',
-      },
+const approvalBannerVariants = cva('rounded-lg border border-l-4 bg-background p-4', {
+  variants: {
+    variant: {
+      warning: 'border-l-warning border-border',
+      info: 'border-l-info border-border',
+      default: 'border-l-primary border-border',
     },
-    defaultVariants: {
-      variant: 'warning',
-      layout: 'stacked',
+    layout: {
+      stacked: '',
+      inline:
+        '[&>[data-slot=stack]]:flex-row [&>[data-slot=stack]]:items-center [&>[data-slot=stack]]:justify-between [&_[data-slot=approval-banner-content]]:min-w-0 [&_[data-slot=approval-banner-content]]:flex-1 [&_[data-slot=approval-banner-actions]]:shrink-0 [&_[data-slot=approval-banner-description]]:truncate',
     },
-  }
-);
+  },
+  defaultVariants: {
+    variant: 'warning',
+    layout: 'stacked',
+  },
+});
 
 const textVariantMap = {
   warning: 'warning',
@@ -198,30 +189,17 @@ function ApprovalBanner({
   const isInline = layout === 'inline';
 
   const bannerContent = isInline ? (
-    <div
-      data-slot="approval-banner"
-      className={approvalBannerVariants({ variant, layout })}
-    >
+    <div data-slot="approval-banner" className={approvalBannerVariants({ variant, layout })}>
       <HStack gap="3" align="start">
         <HStack gap="3" align="start" data-slot="approval-banner-content">
           <Text as="span" variant={textVariant}>
             {icon ?? <IconComponent size={20} />}
           </Text>
           <Stack gap="0">
-            <Text
-              size="sm"
-              weight="medium"
-              leading="tight"
-              variant={textVariant}
-            >
+            <Text size="sm" weight="medium" leading="tight" variant={textVariant}>
               {title}
             </Text>
-            <Text
-              as="span"
-              size="sm"
-              variant="muted"
-              data-slot="approval-banner-description"
-            >
+            <Text as="span" size="sm" variant="muted" data-slot="approval-banner-description">
               {description}
             </Text>
           </Stack>
@@ -251,22 +229,14 @@ function ApprovalBanner({
       </HStack>
     </div>
   ) : (
-    <div
-      data-slot="approval-banner"
-      className={approvalBannerVariants({ variant, layout })}
-    >
+    <div data-slot="approval-banner" className={approvalBannerVariants({ variant, layout })}>
       <HStack gap="3" align="start">
         <Text as="span" variant={textVariant}>
           {icon ?? <IconComponent size={20} />}
         </Text>
         <Stack gap="3">
           <Stack gap="1">
-            <Text
-              size="sm"
-              weight="medium"
-              leading="tight"
-              variant={textVariant}
-            >
+            <Text size="sm" weight="medium" leading="tight" variant={textVariant}>
               {title}
             </Text>
             <Text size="sm" variant="muted">
@@ -307,13 +277,9 @@ function ApprovalBanner({
       <AlertDialog open={approveDialogOpen} onOpenChange={handleApproveDialogChange}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              {approveConfirmation?.title ?? 'Confirm Approval'}
-            </AlertDialogTitle>
+            <AlertDialogTitle>{approveConfirmation?.title ?? 'Confirm Approval'}</AlertDialogTitle>
             {approveConfirmation?.description && (
-              <AlertDialogDescription>
-                {approveConfirmation.description}
-              </AlertDialogDescription>
+              <AlertDialogDescription>{approveConfirmation.description}</AlertDialogDescription>
             )}
           </AlertDialogHeader>
           {approveConfirmation?.content}
@@ -336,13 +302,9 @@ function ApprovalBanner({
       <AlertDialog open={rejectDialogOpen} onOpenChange={handleRejectDialogChange}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              {rejectConfirmation?.title ?? 'Confirm Rejection'}
-            </AlertDialogTitle>
+            <AlertDialogTitle>{rejectConfirmation?.title ?? 'Confirm Rejection'}</AlertDialogTitle>
             {rejectConfirmation?.description && (
-              <AlertDialogDescription>
-                {rejectConfirmation.description}
-              </AlertDialogDescription>
+              <AlertDialogDescription>{rejectConfirmation.description}</AlertDialogDescription>
             )}
           </AlertDialogHeader>
           {rejectConfirmation?.content}

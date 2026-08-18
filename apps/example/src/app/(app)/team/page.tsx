@@ -122,9 +122,7 @@ export default function TeamPage() {
                 <Stack gap="1">
                   <div className="flex items-center gap-2">
                     <Text weight="semibold">{member.name}</Text>
-                    <Badge variant={getRoleBadgeVariant(member.role)}>
-                      {member.role}
-                    </Badge>
+                    <Badge variant={getRoleBadgeVariant(member.role)}>{member.role}</Badge>
                   </div>
                   <div className="flex items-center gap-1 text-muted-foreground">
                     <Email size={12} />

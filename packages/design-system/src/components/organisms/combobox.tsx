@@ -5,7 +5,12 @@ import { Checkmark, ChevronDown, Close } from '@carbon/icons-react';
 import * as React from 'react';
 
 import { Button } from '../atoms/button';
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '../molecules/input-group';
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from '../molecules/input-group';
 
 const Combobox = ComboboxPrimitive.Root;
 
