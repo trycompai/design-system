@@ -116,7 +116,9 @@ function AIChatTrigger({ onClick, isOpen, shortcut = 'J' }: AIChatTriggerProps) 
             <MagicWand className="size-4" />
             <span className="hidden sm:inline">Ask AI</span>
             <span className="hidden sm:inline-flex ml-1 opacity-60 text-xs bg-foreground/10 px-1.5 py-0.5 rounded">
-              {navigator?.platform?.includes('Mac') ? '⌘' : 'Ctrl+'}
+              {typeof navigator !== 'undefined' && navigator.platform?.includes('Mac')
+                ? '⌘'
+                : 'Ctrl+'}
               {shortcut}
             </span>
           </button>
