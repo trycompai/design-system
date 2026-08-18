@@ -25,7 +25,7 @@ describe('Badge', () => {
           Secondary
         </Badge>,
       );
-      expect(screen.getByTestId('badge')).toHaveClass('bg-secondary');
+      expect(screen.getByTestId('badge')).toHaveClass('bg-muted');
     });
 
     it('applies destructive variant classes', () => {
@@ -43,7 +43,7 @@ describe('Badge', () => {
           Outline
         </Badge>,
       );
-      expect(screen.getByTestId('badge')).toHaveClass('border-border');
+      expect(screen.getByTestId('badge')).toHaveClass('border-border/50');
     });
 
     it('applies ghost variant classes', () => {

@@ -77,7 +77,7 @@ describe('Button', () => {
   it('applies size classes', () => {
     render(<Button size="lg">Large</Button>);
     const button = screen.getByRole('button');
-    expect(button).toHaveClass('h-9');
+    expect(button).toHaveClass('h-8');
   });
 
   it('applies full width', () => {

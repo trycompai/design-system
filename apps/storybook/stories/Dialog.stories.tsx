@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, within, userEvent } from 'storybook/test';
+import { expect, waitFor, within, userEvent } from 'storybook/test';
 import {
   Button,
   Dialog,
@@ -153,7 +153,10 @@ export const WithTextarea: Story = {
     // Find the textarea and verify it's visible and can receive input
     const textarea = within(dialog).getByRole('textbox');
     await expect(textarea).toBeInTheDocument();
-    await expect(textarea).toBeVisible();
+    // DialogContent fades in (`data-open:fade-in-0`, `duration-100`), so the textarea is
+    // mounted at opacity 0 for a beat. jest-dom counts zero opacity as not visible, so this
+    // has to outlast the animation rather than sample it once.
+    await waitFor(() => expect(textarea).toBeVisible());
 
     // Type in the textarea
     await userEvent.type(textarea, 'Approved after security review');
