@@ -554,6 +554,69 @@ export const WithRail: Story = {
   ),
 };
 
+export const WithRailLinks: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Pass `render` to swap the rail item’s `<button>` for another element. Here each item ' +
+          'renders as an `<a>`, so the rail supports cmd-click, middle-click and hover previews ' +
+          'without wrapping the button in an anchor (which would be invalid HTML). Frameworks can ' +
+          'pass their own link component, e.g. `render={<Link href="/compliance" />}`.',
+      },
+    },
+  },
+  render: () => (
+    <AppShell>
+      <AppShellNavbar
+        showSidebarToggle={false}
+        startContent={<Logo />}
+        endContent={
+          <AppShellUserMenu>
+            <UserMenuDemo />
+          </AppShellUserMenu>
+        }
+      />
+      <AppShellBody>
+        <AppShellRail>
+          <AppShellRailItem
+            icon={<UsersIcon />}
+            label="HR"
+            isActive
+            render={<a href="#hr" />}
+          />
+          <AppShellRailItem
+            icon={<CreditCardIcon />}
+            label="Finance"
+            render={<a href="#finance" />}
+          />
+          <AppShellRailItem
+            icon={<ShieldCheckIcon />}
+            label="Compliance"
+            render={<a href="#compliance" />}
+          />
+        </AppShellRail>
+        <AppShellMain>
+          <AppShellSidebar collapsible>
+            <RailSidebarNav />
+          </AppShellSidebar>
+          <AppShellContent>
+            <PageHeader title="Rail items as links">
+              <PageHeaderDescription>
+                Each rail item is a single anchor element — no nested button, one tab stop.
+              </PageHeaderDescription>
+            </PageHeader>
+            <Text>
+              Hover a rail icon to see the tooltip still works, and cmd-click it to open in a new
+              tab.
+            </Text>
+          </AppShellContent>
+        </AppShellMain>
+      </AppShellBody>
+    </AppShell>
+  ),
+};
+
 export const WithPageLayoutContainer: Story = {
   render: () => (
     <AppShell>

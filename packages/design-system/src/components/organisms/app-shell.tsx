@@ -1,5 +1,7 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronDown, Search, SidePanelClose, SidePanelOpen } from '@carbon/icons-react';
+import { mergeProps } from '@base-ui/react/merge-props';
+import { useRender } from '@base-ui/react/use-render';
 import * as React from 'react';
 
 import { Kbd } from '../atoms/kbd';
@@ -173,11 +175,21 @@ interface AppShellRailProps extends Omit<React.ComponentProps<'div'>, 'className
   showSidebarToggle?: boolean;
 }
 
-interface AppShellRailItemProps extends Omit<React.ComponentProps<'button'>, 'className'> {
-  isActive?: boolean;
-  icon: React.ReactNode;
-  label?: string;
-}
+/**
+ * A rail item renders a `<button>` by default. Pass `render` to render it as a
+ * different element instead - typically an anchor or a framework link, so that
+ * cmd-click, middle-click and prefetching work:
+ *
+ * ```tsx
+ * <AppShellRailItem icon={<Icon />} label="Compliance" render={<Link href="/compliance" />} />
+ * ```
+ */
+type AppShellRailItemProps = Omit<useRender.ComponentProps<'button'>, 'className'> &
+  Omit<React.ComponentProps<'button'>, 'className'> & {
+    isActive?: boolean;
+    icon: React.ReactNode;
+    label?: string;
+  };
 
 // Rail indicator context for tracking active item position
 type RailIndicatorContextProps = {
@@ -535,14 +547,16 @@ function AppShellRail({ showSidebarToggle = true, children, ...props }: AppShell
   );
 }
 
-function AppShellRailItem({ isActive, icon, label, ...props }: AppShellRailItemProps) {
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
+function AppShellRailItem({ isActive, icon, label, render, ...props }: AppShellRailItemProps) {
+  // Typed as HTMLElement because `render` can swap the button for any element
+  // (an anchor, a router link, ...).
+  const itemRef = React.useRef<HTMLElement>(null);
   const context = React.useContext(RailIndicatorContext);
   const itemId = React.useId();
 
   // Register this item with the rail
   React.useEffect(() => {
-    context?.registerItem(itemId, buttonRef.current);
+    context?.registerItem(itemId, itemRef.current);
     return () => context?.registerItem(itemId, null);
   }, [context, itemId]);
 
@@ -553,27 +567,41 @@ function AppShellRailItem({ isActive, icon, label, ...props }: AppShellRailItemP
     }
   }, [isActive, context, itemId]);
 
-  const button = (
-    <button
-      ref={buttonRef}
-      data-slot="app-shell-rail-item"
-      data-active={isActive}
-      className={`flex size-10 items-center justify-center rounded-lg transition-all duration-200 cursor-pointer ${
-        isActive
-          ? 'bg-primary text-primary-foreground shadow-md'
-          : 'text-muted-foreground hover:text-foreground hover:bg-accent dark:hover:bg-muted hover:shadow active:scale-95'
-      }`}
-      aria-label={label}
-      {...props}
-    >
-      <span className="size-5 [&>svg]:size-5">{icon}</span>
-    </button>
-  );
+  const item = useRender({
+    defaultTagName: 'button',
+    ref: itemRef,
+    render,
+    state: { slot: 'app-shell-rail-item', active: isActive },
+    stateAttributesMapping: {
+      slot: (value) => ({ 'data-slot': value }),
+      // Kept as an explicit `"true"` / `"false"` string - Base UI's default
+      // mapping would drop the attribute entirely when inactive.
+      active: (value) => (value === undefined ? null : { 'data-active': String(value) }),
+    },
+    props: mergeProps<'button'>(
+      {
+        // Base UI injects `type="button"` when it renders the default `button`
+        // tag. The rail item has always rendered a bare `<button>`, so keep the
+        // attribute off unless the caller asks for it.
+        type: undefined,
+        className: `flex size-10 items-center justify-center rounded-lg transition-all duration-200 cursor-pointer ${
+          isActive
+            ? 'bg-primary text-primary-foreground shadow-md'
+            : 'text-muted-foreground hover:text-foreground hover:bg-accent dark:hover:bg-muted hover:shadow active:scale-95'
+        }`,
+        'aria-label': label,
+      },
+      props,
+      // Merged last so the icon always wins, mirroring JSX children taking
+      // precedence over a spread `children` prop.
+      { children: <span className="size-5 [&>svg]:size-5">{icon}</span> },
+    ),
+  });
 
   if (label) {
     return (
       <Tooltip>
-        <TooltipTrigger render={button} />
+        <TooltipTrigger render={item} />
         <TooltipContent side="right" sideOffset={8}>
           {label}
         </TooltipContent>
@@ -581,7 +609,7 @@ function AppShellRailItem({ isActive, icon, label, ...props }: AppShellRailItemP
     );
   }
 
-  return button;
+  return item;
 }
 
 function AppShellSidebar({
