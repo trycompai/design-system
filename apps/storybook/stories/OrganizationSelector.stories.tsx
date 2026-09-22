@@ -28,20 +28,29 @@ const organizations: Organization[] = [
   { id: 'org_epsilon', name: 'Epsilon Technologies', color: '#ef4444', createdAt: '2024-06-14' },
 ];
 
+// Publishable Logo.dev token, supplied via STORYBOOK_LOGO_DEV_TOKEN.
+// Never commit a real token; without one, logo URLs are token-less.
+const LOGO_DEV_TOKEN = import.meta.env.STORYBOOK_LOGO_DEV_TOKEN;
+
+function logoDev(domain: string) {
+  const url = `https://img.logo.dev/${domain}`;
+  return LOGO_DEV_TOKEN ? `${url}?token=${LOGO_DEV_TOKEN}` : url;
+}
+
 const organizationsWithLogos: Organization[] = [
-  { id: 'org_acme123', name: 'Acme Corp', createdAt: '2024-01-05', logoUrl: 'https://img.logo.dev/airbnb.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_beta456', name: 'Beta Inc', createdAt: '2023-12-12', logoUrl: 'https://img.logo.dev/stripe.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_gamma789', name: 'Gamma LLC', createdAt: '2024-03-22', logoUrl: 'https://img.logo.dev/figma.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_delta012', name: 'Delta Systems', createdAt: '2022-11-08', logoUrl: 'https://img.logo.dev/linear.app?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
-  { id: 'org_epsilon', name: 'Epsilon Technologies', createdAt: '2024-06-14', logoUrl: 'https://img.logo.dev/notion.so?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  { id: 'org_acme123', name: 'Acme Corp', createdAt: '2024-01-05', logoUrl: logoDev('airbnb.com') },
+  { id: 'org_beta456', name: 'Beta Inc', createdAt: '2023-12-12', logoUrl: logoDev('stripe.com') },
+  { id: 'org_gamma789', name: 'Gamma LLC', createdAt: '2024-03-22', logoUrl: logoDev('figma.com') },
+  { id: 'org_delta012', name: 'Delta Systems', createdAt: '2022-11-08', logoUrl: logoDev('linear.app') },
+  { id: 'org_epsilon', name: 'Epsilon Technologies', createdAt: '2024-06-14', logoUrl: logoDev('notion.so') },
 ];
 
 const organizationsWithFallbacks: Organization[] = [
-  { id: 'org_acme123', name: 'Acme Corp', createdAt: '2024-01-05', logoUrl: 'https://img.logo.dev/airbnb.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  { id: 'org_acme123', name: 'Acme Corp', createdAt: '2024-01-05', logoUrl: logoDev('airbnb.com') },
   { id: 'org_beta456', name: 'Beta Inc', createdAt: '2023-12-12' },
-  { id: 'org_gamma789', name: 'Gamma LLC', createdAt: '2024-03-22', logoUrl: 'https://img.logo.dev/figma.com?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  { id: 'org_gamma789', name: 'Gamma LLC', createdAt: '2024-03-22', logoUrl: logoDev('figma.com') },
   { id: 'org_delta012', name: 'Delta Systems', createdAt: '2022-11-08' },
-  { id: 'org_epsilon', name: 'Epsilon Technologies', createdAt: '2024-06-14', logoUrl: 'https://img.logo.dev/notion.so?token=pk_AZatYxV5QDSfWpRDaBxzRQ' },
+  { id: 'org_epsilon', name: 'Epsilon Technologies', createdAt: '2024-06-14', logoUrl: logoDev('notion.so') },
 ];
 
 // Generate many organizations for testing large lists
