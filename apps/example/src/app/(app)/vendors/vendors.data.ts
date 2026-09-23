@@ -8,10 +8,13 @@ export type Vendor = {
   logo: string;
 };
 
-const LOGO_DEV_TOKEN = 'pk_AZatYxV5QDSfWpRDaBxzRQ';
+// Publishable Logo.dev token, supplied via NEXT_PUBLIC_LOGO_DEV_TOKEN
+// (see apps/example/.env.example). Never commit a real token.
+const LOGO_DEV_TOKEN = process.env.NEXT_PUBLIC_LOGO_DEV_TOKEN;
 
 function logoDev(domain: string) {
-  return `https://img.logo.dev/${domain}?token=${LOGO_DEV_TOKEN}`;
+  const url = `https://img.logo.dev/${domain}`;
+  return LOGO_DEV_TOKEN ? `${url}?token=${LOGO_DEV_TOKEN}` : url;
 }
 
 export const vendors: Vendor[] = [
