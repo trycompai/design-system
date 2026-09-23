@@ -227,9 +227,6 @@ importers:
       recharts:
         specifier: 2.15.4
         version: 2.15.4(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      shadcn:
-        specifier: ^3.6.2
-        version: 3.6.3(@types/node@22.19.3)(hono@4.11.3)(typescript@5.9.3)
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -267,6 +264,9 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.2.3(react@19.2.3)
+      shadcn:
+        specifier: ^3.6.2
+        version: 3.6.3(@types/node@22.19.3)(hono@4.11.3)(typescript@5.9.3)
       tailwindcss:
         specifier: ^4.1.8
         version: 4.1.18
