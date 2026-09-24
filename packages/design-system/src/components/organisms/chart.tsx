@@ -61,10 +61,20 @@ function ChartContainer({
   );
 }
 
+const CHART_ID_PATTERN = /^[a-zA-Z0-9_-]+$/;
+const CHART_CONFIG_KEY_PATTERN = /^[a-zA-Z0-9_-]+$/;
+
+// Colors interpolated into the <style> block must not be able to close the
+// element or break out of the declaration, so allow only a safe CSS value
+// charset (hex/rgb/hsl values, var()/theme() functions, named colors).
+const CHART_COLOR_PATTERN = /^[a-zA-Z0-9#%,.()\-\s]+$/;
+
+const isSafeChartValue = (value: string, pattern: RegExp) => pattern.test(value) && !value.includes('<');
+
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(([, config]) => config.theme || config.color);
 
-  if (!colorConfig.length) {
+  if (!colorConfig.length || !isSafeChartValue(id, CHART_ID_PATTERN)) {
     return null;
   }
 
@@ -77,8 +87,11 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
 ${prefix} [data-chart=${id}] {
 ${colorConfig
   .map(([key, itemConfig]) => {
+    if (!isSafeChartValue(key, CHART_CONFIG_KEY_PATTERN)) {
+      return null;
+    }
     const color = itemConfig.theme?.[theme as keyof typeof itemConfig.theme] || itemConfig.color;
-    return color ? `  --color-${key}: ${color};` : null;
+    return color && isSafeChartValue(color, CHART_COLOR_PATTERN) ? `  --color-${key}: ${color};` : null;
   })
   .join('\n')}
 }
